@@ -1,0 +1,14 @@
+<nav aria-label="breadcrumb">
+  <div *ngIf="BreadCrumbData.length > 0">
+    <ol class="breadcrumb">
+      <ng-container *ngFor="let route of BreadCrumbData; let last = last">
+        <li *ngIf="!last" class="breadcrumb-item">
+          <a>{{ route | uppercase }}</a>
+        </li>
+        <li *ngIf="last" class="breadcrumb-item active" aria-current="page">
+          <a>{{ route | uppercase }}</a>
+        </li>
+      </ng-container>
+    </ol>
+  </div>
+</nav>

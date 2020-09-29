@@ -1,0 +1,154 @@
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div>
+          <ul class="nav">
+            <li class="nav-item pl-1 mb-2">
+              <a href="javascript:void(0)" (click)="GotoMangeExamPage()" class="anc p-0 nav-link color-blue active">
+                <u><b>Manage Exam</b></u>
+                <i class="fas fa-angle-double-right pl-1 pr-1"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link p-0" href="javascript:void(0)">Manage Exam Detail</a>
+            </li>
+          </ul>
+        </div>
+        <div class="x_title">
+          <h2>Manage Result</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="">
+            <div class="col-12 p-0">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title text-uppercase">
+                    <u>{{PageData.ExamName}}</u>
+                  </h5>
+                  <blockquote class="blockquote mb-0 text-center">
+                    <p class="card-text">{{PageData.Description}}</p>
+                    <small class="mb-0 d-inline mr-4">
+                      <b>Expected Date:&nbsp;</b>
+                      <span>{{PageData.ExpectedDate | date}}</span>
+                    </small>
+                    <small class="mb-0 d-inline">
+                      <b>Actual Date:&nbsp;</b>
+                      <span>{{PageData.ActualDate | date}}</span>
+                    </small>
+                    <footer class="blockquote-footer">Order by <cite title="Source Title">School Administration.</cite>
+                    </footer>
+                  </blockquote>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-md-8">
+                  <div class="p-0 form-group col-12 mb-0 d-inline-block">
+                    <div class="form-row col-md-4">
+                      <div class="form-group col ibox">
+                        <select class="form-control" [(ngModel)]="SelectedClass" name="Class">
+                          <option value="">Choose Class</option>
+                          <option *ngFor="let item of Classes" value="{{ item }}">{{ item }}</option>
+                        </select>
+                      </div>
+                      <!-- <div class="form-group col ibox">
+                        <select class="form-control" name="ClassDetailUid" [(ngModel)]="ClassDetailUid">
+                          <option value="">Choose Section</option>
+                          <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">
+                            {{ sec.Section }}
+                          </option>
+                        </select>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 d-inline-block text-right no-padding">
+                  <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1">
+                    <i class="fas fa-sync"></i>&ensp;Reset
+                  </button>
+                  <button type="button" (click)="GetDetail()" class="btn btn-success">
+                    <i class="fa fa-filter"></i>&ensp;Get Exam Detail
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="IsReady" class="col-md-12 p-0">
+              <form [formGroup]="ExamDetailForm" (keydown.enter)="$event.preventDefault()">
+                <div class="x_panel">
+                  <div class="x_title mb-4">
+                    <h2>{{PageData.ExamName}}<small class="pl-2">[Class: {{SelectedClass}}, <span class="pl-2"> Exam Id:
+                          {{PageData.ExamId}}</span>]</small>
+                    </h2>
+                    <p class="p-0 right-item">
+                      {{PageData.ActualDate | date}}
+                    </p>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="col-md-12 pl-0 pr-0">
+                    <table class="table border-tr">
+                      <thead>
+                        <tr>
+                          <th>Subject Name</th>
+                          <th class="w-12">Start Time</th>
+                          <th class="w-12">End Time</th>
+                          <th>Duration</th>
+                          <th>Assigned ClassRoom</th>
+                          <th>Assigned Faculty</th>
+                          <th>Action</th>
+                        </tr>
+
+                      </thead>
+                      <tbody formArrayName="ExamDetailCollection">
+                        <tr *ngFor="let el of ExamDetailCollection().controls; let i = index" [formGroupName]="i"
+                          [attr.name]="el.get('ExamDetailId').value">
+                          <td>
+                            <label class="pl-0 p-2">{{el.get("SubjectName").value}}</label>
+                          </td>
+                          <td>
+                            <app-bh-timepicker formControlName="StartTime">
+                            </app-bh-timepicker>
+                          </td>
+                          <td>
+                            <app-bh-timepicker formControlName="EndTime">
+                            </app-bh-timepicker>
+                          </td>
+                          <td>
+                            <label class="pl-0 p-2">English</label>
+                          </td>
+                          <td>
+                            <app-iautocomplete [Data]="RoomNos" [Placeholder]="'Assign class room'"
+                              [Defaultvalue]="el.get('RoomUid').value" (OnSelect)="OnRoomNoSelection($event)">
+                            </app-iautocomplete>
+                          </td>
+                          <td>
+                            <app-iautocomplete [Data]="Faculties" [Placeholder]="'Assign class faculty'"
+                              [Defaultvalue]="el.get('FacultyUid').value" (OnSelect)="OnFacultySelection($event)">
+                            </app-iautocomplete>
+                          </td>
+                          <td>
+                            <div name="editdelete" class="save-action">
+                              <a href="javascript:void(0)" id="btnedit" class="a-icon" (click)="SaveChanges()">
+                                <i class="far fa-save" (click)="OpenTimerModal()"></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-12 p-0">
+              <app-noitempage *ngIf="!IsReady" [Data]="EmptyMessage"></app-noitempage>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

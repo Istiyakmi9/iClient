@@ -4,6 +4,88 @@ $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
 
 :root {
   --input-color: #bbb;
+  --light-green: #26b99a;
+  --light-blue: #337ab7;
+  --light-sky: #5bc0de;
+  --light-red: #d9534f;
+  --light-yellow: #f0ad4e;
+  --border: #d9d9d9;
+  --clock-width: 180px;
+  --bg-color: #f7f7f7;
+  --wing-height: 60px;
+}
+
+.color-blue {
+  color: var(--light-blue) !important;
+}
+
+.anc:hover {
+  font-size: 14px;
+  cursor: pointer !important;
+}
+
+.btn-green {
+  background: var(--light-green) !important;
+  border: 1px solid #169f85 !important;
+  color: #fff !important;
+}
+
+.btn-yellow {
+  background: var(--light-yellow) !important;
+  border-color: #eea236 !important;
+  color: #fff !important;
+}
+
+.btn-blue {
+  background: var(--light-blue) !important;
+  border: 1px solid #2e6da4 !important;
+  color: #fff !important;
+}
+
+.btn-sky {
+  background: var(--light-sky) !important;
+  border: 1px solid #46b8da !important;
+  color: #fff !important;
+}
+
+.btn-red {
+  background: var(--light-red) !important;
+  border: 1px solid #d43f3a !important;
+  color: #fff !important;
+}
+
+.btn-xs {
+  padding: 1px 5px !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  border-radius: 3px !important;
+}
+
+.page-title {
+  width: 100%;
+  height: 65px;
+  padding: 10px 0;
+}
+
+.page-title .title_right {
+  width: 55%;
+  float: left;
+  display: block;
+}
+
+.page-title .title_left {
+  width: 45%;
+  float: left;
+  display: block;
+}
+
+.clearfix:after,
+form:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
 
 .col-md-2-5 {
@@ -16,10 +98,6 @@ $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
   max-width: calc(100% - 15rem);
 }
 
-:root {
-  --bg-color: #f7f7f7;
-}
-
 input,
 select,
 textarea,
@@ -27,16 +105,44 @@ button {
   outline: none !important;
   -webkit-box-shadow: none;
   box-shadow: none !important;
-  border-width: .5px !important;
+  border-width: 0.5px !important;
 }
 
 .btn-s {
   height: 34px !important;
+  line-height: 1 !important;
+}
+
+.input-sm {
+  height: calc(1.2em + 0.75rem + 2px) !important;
+}
+
+.btn-coin {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  border-radius: 50% !important;
+  width: 60px;
+  height: 60px !important;
+  line-height: 1 !important;
+  z-index: 99999999;
+
+  i {
+    font-size: 1.6rem;
+  }
 }
 
 .btn {
   margin-bottom: 0 !important;
-  font-size: 14px !important;
+  font-size: 14px;
+}
+
+.btn,
+.buttons,
+.modal-footer .btn + .btn,
+button {
+  margin-bottom: 5px;
+  margin-right: 5px;
 }
 
 .fa,
@@ -49,11 +155,11 @@ button {
 }
 
 body {
-  color: #73879c !important;
+  color: #6d7680 !important;
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;
-  font-size: 14px !important;
+  font-size: 0.8rem !important;
   font-weight: 400 !important;
-  line-height: 1.471 !important;
+  line-height: 1.5 !important;
   background-color: var(--bg-color) !important;
 }
 
@@ -108,24 +214,24 @@ h2 {
   margin-left: 10px;
 }
 
-.panel_toolbox>li {
+.panel_toolbox > li {
   float: left;
   cursor: pointer;
 }
 
-.panel_toolbox>li>a {
+.panel_toolbox > li > a {
   padding: 5px;
   color: #c5c7cb;
   font-size: 14px;
 }
 
-.nav>li>a {
+.nav > li > a {
   position: relative;
   display: block;
   padding: 13px 15px 12px;
 }
 
-.col.ibox>input {
+.col.ibox > input {
   padding-left: 40px;
 }
 
@@ -142,13 +248,31 @@ h2 {
   }
 }
 
-.show {
+.col.ibox-right > input {
+  padding-left: 8px;
+}
+
+.col.ibox-right {
+  position: relative;
+
+  i {
+    position: absolute;
+    text-align: center;
+    border-left: 1px solid #eae7e7;
+    color: var(--input-color);
+    padding: 6px 10px;
+    margin-top: -30px;
+    right: 0px;
+  }
+}
+
+.show-tag {
   right: 0px !important;
   transition: all 500ms;
 }
 
 .show-linear {
-  animation: cssAnimation 0s ease-in .15s forwards;
+  animation: cssAnimation 0s ease-in 0.15s forwards;
   // -webkit-animation-fill-mode: forwards;
   // animation-fill-mode: forwards;
 }
@@ -175,14 +299,14 @@ h2 {
   margin-bottom: 1rem;
 }
 
-.error-filed {
+.error-field {
   border: 1px solid red !important;
   border-right: 5px solid red !important;
 }
 
 .warning-filed {
-  border: 1px solid #CDDC39 !important;
-  border-right: 5px solid #CDDC39 !important;
+  border: 1px solid #cddc39 !important;
+  border-right: 5px solid #cddc39 !important;
 }
 
 .p-text {
@@ -196,6 +320,7 @@ h2 {
   display: inline-block;
   color: #444;
   transform: translate(0px, 2px);
+  text-align: center;
 }
 
 .pagearrow a {
@@ -206,6 +331,8 @@ h2 {
 
 .pagearrow:hover {
   cursor: pointer !important;
+  font-size: 34px;
+  color: #444;
 }
 
 .a-icon {
@@ -222,6 +349,12 @@ h2 {
 
 .bg {
   background: #f7f7f7;
+}
+
+.border-tr {
+  tr {
+    border: 1px solid var(--border) !important;
+  }
 }
 
 /*-------------------------------  popup -----------------------------*/
@@ -246,7 +379,7 @@ h2 {
     background-color: white;
     border-radius: 4px;
     transform: translate(-50%, -50%);
-    animation: bubbleup-popup .2s ease-in-out;
+    animation: bubbleup-popup 0.2s ease-in-out;
   }
 
   &__header {
@@ -275,6 +408,14 @@ h2 {
   }
 }
 
+.auto-height {
+  height: calc(100vh - 5rem);
+}
+
+.table-lined {
+  border: 1px solid var(--border) !important;
+}
+
 @keyframes bubbleup-popup {
   0% {
     opacity: 0;
@@ -284,5 +425,56 @@ h2 {
   100% {
     opacity: 1;
     width: 60%;
+  }
+}
+
+.flip-box {
+  display: inline-block;
+  text-align: center;
+  color: #eee;
+  border-radius: 4px;
+  position: relative;
+  width: 100px;
+  height: 30px;
+  overflow: hidden;
+  border: 1px solid #979494;
+  cursor: pointer;
+
+  &__slider {
+    position: absolute;
+    width: 200px;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    transition: left 0.5s ease;
+  }
+
+  .off {
+    left: -86px !important;
+  }
+
+  .on {
+    left: 2px;
+  }
+
+  &__left {
+    border-right: 10px solid #f2f2f2;
+    border-radius: 2px;
+    width: 98px;
+    display: inline-block;
+    background: #5aba9a;
+    padding: 5px;
+    margin-left: -16px;
+  }
+
+  &__right {
+    border-left: 10px solid #f2f2f2;
+    border-radius: 2px;
+    width: 96px;
+    display: inline-block;
+    background: red;
+    position: relative;
+    padding: 5px;
+    margin-right: -6px;
   }
 }

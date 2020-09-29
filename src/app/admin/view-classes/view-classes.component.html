@@ -1,0 +1,81 @@
+<div class="right_col">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel full-card">
+      <div class="x_title">
+        <h2>Subject(s) <small>Add and update subject(s)</small></h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content col-12 p-0 row m-0 mt-4">
+        <form [formGroup]="Classdetail" (keydown.enter)="$event.preventDefault()" id="class-form"
+          class="col-md-4 col-sm-12 p-0">
+          <div class="border creator">
+            <div class="x_title action-box-header">
+              <h2>School class <small>Add/edit class and section</small></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div name="tab_examdesc" class="action-box" role="definition">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6 pr-m col-sm-12">
+                    <div class="form-group">
+                      <label for="subjectname">Class &nbsp;<span style="color: red;">*</span></label>
+                      <input type="text" class="form-control" formControlName="Class" placeholder="Class">
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-m col-sm-12">
+                    <div class="form-group">
+                      <label for="subjectcode">Section &nbsp;<span style="color: red;">*</span></label>
+                      <input type="text" class="form-control" upper="1" formControlName="Section" placeholder="Section">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subjectcredit">Room no.# &nbsp;<span style="color: red;">*</span></label>
+                <app-iautocomplete [Data]="RoomNos" [Placeholder]="'Assign class room'"
+                  [Defaultvalue]="Classdetail.get('RoomUid').value" (OnSelect)="OnRoomNoSelection($event)">
+                </app-iautocomplete>
+              </div>
+              <div class="form-group">
+                <label for="subjectcredit">No. of seats &nbsp;<span style="color: red;">*</span></label>
+                <input type="text" class="form-control" number="4" formControlName="TotalSeats"
+                  placeholder="Total no. of seats">
+              </div>
+              <div class="form-group">
+                <label for="subjectcredit">Seat for girls &nbsp;<span style="color: red;">*</span></label>
+                <input type="text" class="form-control" number="3" formControlName="GirlSeats"
+                  placeholder="Seat for girls">
+              </div>
+              <div class="form-group">
+                <label for="subjectcredit">Seat for boys &nbsp;<span style="color: red;">*</span></label>
+                <input type="text" class="form-control" number="3" formControlName="BoySeats"
+                  placeholder="Seat for boys">
+              </div>
+              <div class="action-dv mt-4">
+                <button class="btn btn-block btn-warning" (click)="AddClassSection()">Add Subject</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="col-md-8 pr-0" *ngIf="IsReady">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
+                <input id="ShopFilter" placeholder="Global search" class="form-control" (keyup)="FilterLocaldata()"
+                  required="required" type="text">
+              </div>
+            </div>
+            <div class="col-md-6 d-inline-block text-right no-padding">
+              <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1"><i
+                  class="fas fa-sync"></i>&ensp;Reset</button>
+              <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success"><i
+                  class="fa fa-filter"></i>&ensp;Advance Search</button>
+            </div>
+          </div>
+          <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" (Delete)="OnDelete($event)"
+            (Next)="NextPage($event)" (Previous)="PreviousPage($event)"></app-dynamic-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

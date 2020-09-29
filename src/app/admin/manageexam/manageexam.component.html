@@ -1,0 +1,172 @@
+<div class="col-12">
+
+  <div></div>
+
+  <div *ngIf="EnablePopup" class="ipopup">
+    <div class="ipopup__content pb-0">
+      <div class="ipopup__header">
+        <header>Assign date's</header>
+      </div>
+      <hr />
+      <div class="pt-2">
+        <div class="mt-2">
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3 text-right">
+              <span>Exam Name:</span>
+            </div>
+            <div class="col-md-9">
+              <input type="text" class="form-control" placeholder="Exam Name" [(ngModel)]="ExamName" name="ExamName" />
+            </div>
+          </div>
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3 text-right">
+              <span>Exam Description:</span>
+            </div>
+            <div class="col-md-9">
+              <textarea rows="3" class="form-control" placeholder="Exam Description" [(ngModel)]="ExamDesc"
+                id="ExamDesc" name="ExamDesc"></textarea>
+            </div>
+          </div>
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3 text-right">
+              <span>Expected Date:</span>
+            </div>
+            <div class="col-md-9">
+              <div class="input-group">
+                <input class="form-control btn-s" placeholder="Month dd, yyyy" name="ExpectedDate" ngbDatepicker
+                  #d1="ngbDatepicker" [(ngModel)]="ExpectedDate" readonly>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar btn-s" (click)="d1.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3 text-right">
+              <span>Actual Date:</span>
+            </div>
+            <div class="col-md-9">
+              <div class="input-group">
+                <input class="form-control btn-s" placeholder="Month dd, yyyy" name="actual" ngbDatepicker
+                  #d2="ngbDatepicker" [(ngModel)]="Actual" readonly>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar btn-s" (click)="d2.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-top">
+            <div class="form-group mt-3 col-md-12 text-right">
+              <button class="btn btn-outline-dark btn-s mr-2" (click)="Close()">
+                <i class="fas fa-times pr-1"></i>Close</button>
+              <button class="btn btn-blue btn-s" (click)="SaveChanges()">
+                <i class="fa fa-save pr-1"></i>
+                Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Manage Result</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="">
+            <div class="title_left mb-2">
+              Add and manage exam name, date and time.
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_content">
+                  <div id="exams">
+                    <ng-container>
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="form-group row">
+                            <label for="EmamName" class="col-sm-2 col-form-label">Emam Name</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" placeholder="Emam Name" [(ngModel)]="ExamName"
+                                is="ExamName" name="ExamName" [ngClass]="{'error-field': ExamName === ''}"
+                                (focus)="RemoveErrorField();" />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="ExamDescription" class="col-sm-2 col-form-label">Exam Description</label>
+                            <div class="col-sm-10">
+                              <textarea rows="3" class="form-control" placeholder="Exam Description"
+                                [(ngModel)]="ExamDesc" id="ExamDesc" name="ExamDesc"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer">
+                          <button class="btn btn-blue btn-s" (click)="AddNewExam()">
+                            <i class="fas fa-plus-square pr-1"></i>
+                            Add Exam
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="x_title mt-4">
+                      <h2>Manage Exam</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-12 pl-0 pr-0">
+                      <table class="table border-tr">
+                        <thead>
+                          <tr>
+                            <th>Index No.#</th>
+                            <th>Exam Name</th>
+                            <th>Description</th>
+                            <th>Expected Date</th>
+                            <th>Actual Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let exam of ExamDescription;let i = index;">
+                            <tr>
+                              <td>{{ i + 1 }}</td>
+                              <td>
+                                <a (click)="OpenExamDetail(exam)" href="javascript:void()"
+                                  class="color-blue anc"><b>{{ exam.ExamName }}</b></a>
+                              </td>
+                              <td>{{ exam.Description }}</td>
+                              <td>{{exam.ExpectedDate | date}}</td>
+                              <td>{{exam.ActualDate | date}}</td>
+                              <td>
+                                <div name="editdelete">
+                                  <a href="javascript:void(0)" id="btnedit" class="a-icon" (click)="EditCurrent(exam)">
+                                    <i class="far fa-edit"></i>&nbsp;
+                                  </a>
+                                  <a href="javascript:void(0)" id="btndelete" class="a-icon"
+                                    (click)="DeleteCurrent(exam.ExamDescriptionId)">
+                                    <i class="far fa-trash-alt"></i>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

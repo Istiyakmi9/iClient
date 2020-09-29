@@ -1,3 +1,4 @@
+import { ExamResult, ManageExamDetail, ManageExam } from "./../constants";
 import { Injectable } from "@angular/core";
 import * as $ from "jquery";
 import { FormGroup } from "@angular/forms";
@@ -53,7 +54,7 @@ export class CommonService {
   }
 
   public SetCurrentPageName(Name: string) {
-    if (this.IsValidString(Name)) {
+    if (IsValidString(Name)) {
       this.CurrentPageName = Name;
     }
     this.LoadMappingInitialData();
@@ -145,19 +146,6 @@ export class CommonService {
       }
     }
     return Flag;
-  }
-
-  public IsValidString(Data: any): boolean {
-    let flag = false;
-    let type = typeof Data;
-    if (type === "undefined") return flag;
-    if (type === "string") {
-      if (Data !== null) {
-        flag = true;
-        if (Data.trim() === "") flag = false;
-      }
-    } else if (type === "number") flag = true;
-    return flag;
   }
 
   public NumericOnly(e: any): boolean {
@@ -371,6 +359,8 @@ export class CommonService {
       this.DisableActiveLinkes();
     } else {
       PageName = location.hash.replace("#", "");
+      if (PageName === "/progressreport") PageName = "/" + ExamResult;
+      if (PageName === "/" + ManageExamDetail) PageName = "/" + ManageExam;
     }
     $('div[name="submenues"]').css({ display: "none" });
     let $elem = $('a[name="' + PageName + '"][type="link"]');
@@ -432,7 +422,7 @@ export class CommonService {
     let $Toast = document.getElementById("toast");
     if ($Toast !== null && $Toast !== undefined) {
       $("#toastmessage").text(Message);
-      $Toast.classList.add("show");
+      $Toast.classList.add("show-tag");
       setTimeout(() => {
         this.HideToast();
       }, TimeSpan * 998);
@@ -442,7 +432,7 @@ export class CommonService {
   HideToast() {
     let $Toast = document.getElementById("toast");
     if ($Toast !== null && $Toast !== undefined) {
-      $Toast.classList.remove("show");
+      $Toast.classList.remove("show-tag");
     }
   }
 
@@ -503,7 +493,7 @@ export class CommonService {
         let CurrentTypeData = $AutofillObject
           .find('input[name="iautofill-textfield"]')
           .attr("data");
-        if (this.IsValidString(CurrentTypeData)) {
+        if (IsValidString(CurrentTypeData)) {
           ParsedValue["data"] = JSON.parse(CurrentTypeData);
           ParsedValue["value"] = $AutofillObject
             .find('input[name="iautofill-textfield"]')
@@ -513,6 +503,26 @@ export class CommonService {
       }
     }
     return Data;
+  }
+
+  SufixNumber(SufixStr: any): string {
+    if (!isNaN(Number(SufixStr))) {
+      let SufixNumber = parseInt(SufixStr);
+      if (SufixNumber === 11 || SufixNumber === 12) {
+        return SufixNumber + "th";
+      } else {
+        switch (SufixNumber % 10) {
+          case 1:
+            return SufixNumber + "st";
+          case 2:
+            return SufixNumber + "nd";
+          case 3:
+            return SufixNumber + "rd";
+          default:
+            return SufixNumber + "th";
+        }
+      }
+    }
   }
 
   //--------------------- Auto dropdown action ends ---------------------*/
@@ -593,6 +603,48 @@ export function IsValidTime(TimeOption: any): string {
       return `${TimeOption["hour"]}:${TimeOption["minute"]}`;
     else return null;
   }
+}
+
+export function IsValidString(Data: any): boolean {
+  if (Data === undefined || Data === null || Data === "") return false;
+  else if (Data.trim() === "") return false;
+  else return true;
+}
+
+export function FormateDate(PassedDate: string, Formate: string) {
+  let FormatedDate: string = null;
+  if (IsValidString(PassedDate)) {
+    FormatedDate = new Date(PassedDate).toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  }
+  return FormatedDate;
+}
+
+export function GroupBy(ItemList: Array<any>, Key: any) {
+  return ItemList.reduce(function (rv, x) {
+    (rv[x[Key]] = rv[x[Key]] || []).push(x);
+    return rv;
+  }, {});
+}
+
+export function UniqueItem(Items: Array<any>, Key: any): Array<any> {
+  let index = 0;
+  let i = 0;
+  let UniqueItems = [];
+  if (IsValidType(Items)) {
+    while (index < Items.length) {
+      i = UniqueItems.findIndex((x) => x[Key] === Items[index][Key]);
+      if (i === -1) {
+        UniqueItems.push(Items[index]);
+      }
+      index++;
+    }
+  }
+  return UniqueItems;
 }
 
 export function ActualOrDefault(data: any, modal: any): any {

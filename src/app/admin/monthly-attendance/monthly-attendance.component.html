@@ -1,0 +1,97 @@
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="clearfix"></div>
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Monthly Attendance Report</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="col-12 p-0">
+          <div class="row mt-4">
+            <div class="col-md-8">
+              <div class="p-0 form-group col-12 mb-0 d-inline-block">
+                <div class="form-row">
+                  <div class="form-group col ibox">
+                    <select class="form-control" (change)="EnableSection()" [(ngModel)]="SelecteClass" name="Class">
+                      <option value="">Choose Class</option>
+                      <option *ngFor="let item of Classes" value="{{item}}">{{item}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col ibox">
+                    <select class="form-control" name="ClassDetailUid" [(ngModel)]="ClassDetailUid">
+                      <option value="">Choose Section</option>
+                      <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">
+                        {{sec.Section}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col">
+                    <div class="input-group">
+                      <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob" ngbDatepicker
+                        #d="ngbDatepicker" [(ngModel)]="dateModel">
+                      <div class="inbox">
+                        <button class="btn btn-outline-secondary calendar btn-s" (click)="d.toggle()" type="button">
+                          <i class="far fa-calendar-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 d-inline-block text-right no-padding">
+              <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1"><i
+                  class="fas fa-sync"></i>&ensp;Reset</button>
+              <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success"><i
+                  class="fa fa-filter"></i>&ensp;Advance Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="x_content" *ngIf="IsReady">
+          <form [formGroup]="MonthlyAttendanceData">
+            <div class="col-md-12 pl-0 pr-0" formArrayName="AttendaceDetail">
+              <table class="attendance-table">
+                <thead>
+                  <tr>
+                    <th class="text-center" colspan="32">Days</th>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">Student Name</th>
+                    <th *ngFor="let day of Days">
+                      <div>{{day}}</div>
+                      <div class="sufix-style d-none">th</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let a of AttendaceDetail.controls; let i = index;" [formGroupName]="i">
+                    <tr>
+                      <td><a>{{a.get('StudentName').value | uppercase }}</a></td>
+                      <td *ngFor="let day of Days" [ngClass]="{'available': a.get('Day' + day).value === true}"
+                        class="absent">
+                        <a name="check" [ngClass]="{'show': a.get('Day' + day).value === true}"
+                          (click)="HandleAbsentAttendace(a.get('StudentUid').value, day)">
+                          <i class="fas fa-check"></i>
+                        </a>
+                        <a name="cross" [ngClass]="{'show': a.get('Day' + day).value === false}"
+                          (click)="HandlePresentAttendace(a.get('StudentUid').value, day)">
+                          <i class="fas fa-times"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-4">
+              <button type="button" (click)="SubmitAttendance()" class="btn btn-blue">
+                <i class="far fa-save pr-1"></i>Submit Attendance</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

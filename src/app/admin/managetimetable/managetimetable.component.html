@@ -1,0 +1,244 @@
+<div class="col-md-12 col-sm-12 icard">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Manage Timetable <small>Add or change school timetable.</small></h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <!-- Smart Wizard -->
+      <p>Use this page for only teaching & non-teaching staff registration. It will take all necessary information.
+      </p>
+      <div [formGroup]="PeriodSections" class="col-md-12 setting card p-0 m-0">
+        <div class="card-header">
+          Application level setting.
+        </div>
+        <div class="card-body">
+          <ngb-tabset [justify]="currentJustify">
+            <ngb-tab title="Timetable">
+              <ng-template ngbTabContent>
+                <div class="mt-4">
+                  <div class="col-md-12 col-sm-12 d-md-flex p-0">
+                    <div class="x_panel pb-0">
+                      <div class="x_title">
+                        <h2 class="StepTitle">Contact information<small>Personal information.</small></h2>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="section-card">
+                        <div class="form-group row pt-4">
+                          <label class="col-sm-3 col-form-label">
+                            <span>School start time:#</span>
+                          </label>
+                          <div class="col-sm-12 col-md-4 col dd-dv">
+                            <div class="d-flex">
+                              <div class="input-group">
+                                <div class="input-group-prepend sm-h">
+                                  <span class="input-group-text">
+                                    <i class="fas fa-caret-left"></i>
+                                  </span>
+                                </div>
+                                <input type="text" class="form-control" number="2" id="starthrs"
+                                  (keyup)="SetStartHours()" placeholder="HH(Hrs)">
+                                <div class="input-group-append sm-h">
+                                  <span class="input-group-text">
+                                    <i class="fas fa-caret-right"></i>
+                                  </span>
+                                </div>
+                              </div>
+                              <span class="colon ml-1 mr-1">:</span>
+                              <div class="input-group">
+                                <div class="input-group-prepend sm-h">
+                                  <span class="input-group-text">
+                                    <i class="fas fa-caret-left"></i>
+                                  </span>
+                                </div>
+                                <input type="text" class="form-control" number="2" (keyup)="SetStartMinutes()"
+                                  placeholder="MM(Min)" id="startmins">
+                                <div class="input-group-append sm-h">
+                                  <span class="input-group-text">
+                                    <i class="fas fa-caret-right"></i>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-5 desc">
+                            <span>Description</span>
+                          </div>
+                        </div>
+                        <div class="form-group row pt-4 ">
+                          <label class="col-sm-3 col-form-label">
+                            <span class="lbl">Total no of period:#</span>
+                          </label>
+                          <div class="col-sm-4 col dd-dv">
+                            <select class="form-control col-9" [disabled]="EnablePeriods" formControlName="TotalPeriods"
+                              (change)="BuildPeriods()">
+                              <option value="">Select Perods.#</option>
+                              <option *ngFor="let p of PeriodsCounts" [value]="p">{{p}}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-5 desc">
+                            <span>Description</span>
+                          </div>
+                        </div>
+
+                        <div class="form-group row pt-4">
+                          <label class="col-sm-3 col-form-label">
+                            <span class="lbl">Lunch after period:</span>
+                          </label>
+                          <div class="col-sm-4 col dd-dv">
+                            <select class="form-control col-9" [disabled]="EnableSlots"
+                              formControlName="LunchAfterPeriod" (change)="LunchAfterPeriod()">
+                              <option value="">Select Perods.#</option>
+                              <option *ngFor="let p of ActualPeriods" [value]="p">{{p}}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-5 desc">
+                            <span>Description</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="section-card">
+                        <div class="col-md-12">
+                          <div class="col-md-12 mt-5">
+                            <label class="d-block w-100 text-center">
+                              Use below table to set timing.
+                            </label>
+                          </div>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Period.#</th>
+                                <th scope="col">
+                                  <div class="d-flex">
+                                    <span>
+                                      Duration in hours
+                                    </span>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend sm-h">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-caret-left"></i>
+                                        </span>
+                                      </div>
+                                      <input type="text" class="form-control" number="2"
+                                        (keyup)="GlobalHourSetting($event)" placeholder="HH (set all hours)">
+                                      <div class="input-group-append sm-h">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-caret-right"></i>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th scope="col">
+                                  <div class="d-flex">
+                                    <span>
+                                      Duration in minuts
+                                    </span>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend sm-h">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-caret-left"></i>
+                                        </span>
+                                      </div>
+                                      <input type="text" class="form-control" number="2"
+                                        (keyup)="GlobalMinuteSetting($event)" placeholder="MM (set all minutes)">
+                                      <div class="input-group-append sm-h">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-caret-right"></i>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody formArrayName="Timing">
+                              <tr *ngFor="let el of Timing.controls; let i = index" [formGroupName]="i">
+                                <th scope="row">{{el.get('SufixedNumber').value}}:</th>
+                                <td>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend sm-h">
+                                      <span class="input-group-text">
+                                        <i class="fas fa-caret-left"></i>
+                                      </span>
+                                    </div>
+                                    <input type="text" class="form-control" number="2" formControlName="DurationInHrs"
+                                      placeholder="HH (for {{el.get('SufixedNumber').value}})">
+                                    <div class="input-group-append sm-h">
+                                      <span class="input-group-text">
+                                        <i class="fas fa-caret-right"></i>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend sm-h">
+                                      <span class="input-group-text">
+                                        <i class="fas fa-caret-left"></i>
+                                      </span>
+                                    </div>
+                                    <input type="text" class="form-control" number="2" formControlName="DurationInMin"
+                                      placeholder="MM (for {{el.get('SufixedNumber').value}})">
+                                    <div class="input-group-append sm-h">
+                                      <span class="input-group-text">
+                                        <i class="fas fa-caret-right"></i>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-12 text-right mb-4">
+                        <button class="btn btn-outline-dark mr-2">
+                          <i class="fas fa-undo-alt"></i>
+                          Reset
+                        </button>
+                        <button class="btn btn-warning" (click)="SaveSetting()">
+                          <i class="fas fa-save"></i>
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle>Timings (Periods)</ng-template>
+              <ng-template ngbTabContent>
+                <div class="mt-5">
+                  <div class="col-md-12 col-sm-12 d-md-flex p-0">
+                    <div class="x_panel pb-0">
+                      <div class="x_title">
+                        <h2 class="StepTitle">Contact information<small>Personal information.</small></h2>
+                        <div class="clearfix"></div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="A very long nav title">
+              <ng-template ngbTabContent class="mb-2">
+                <p>Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla
+                  facilisi. Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt
+                  eu, congue et odio. Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie
+                  lectus
+                  ultrices et. Sed diam urna, egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor
+                  arcu. Vivamus faucibus nisl enim, nec tristique ipsum euismod facilisis. Morbi ut bibendum est, eu
+                  tincidunt odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                  Mauris aliquet odio ac lorem aliquet ultricies in eget neque. Phasellus nec tortor vel tellus pulvinar
+                  feugiat.</p>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

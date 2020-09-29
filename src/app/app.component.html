@@ -1,4 +1,4 @@
-<div *ngIf="!LoginFlag">
+<!-- <div *ngIf="!LoginFlag">
   <div class="col-md-12">
     <a class="hiddenanchor" id="signup"></a>
     <a class="hiddenanchor" id="signin"></a>
@@ -69,12 +69,9 @@
       </div>
     </form>
   </div>
-</div>
-<div class="col-12 p-0" *ngIf="LoginFlag">
+</div> -->
 
-  <!-- Dashboard -->
-  <div class="wrapper">
-    <!-- Sidebar Holder -->
+<!-- <div class="wrapper">
     <div class="col-md-12 p-0">
       <div class="row m-0">
         <div class="col-md-2-5 p-0">
@@ -83,7 +80,6 @@
           </div>
         </div>
         <div class="col-md-7-5 p-0 body-container">
-          <!-- Page Header -->
           <app-header></app-header>
           <div id="content-body" class="body-content">
             <router-outlet></router-outlet>
@@ -91,10 +87,10 @@
         </div>
       </div>
     </div>
-
   </div>
-</div>
+</div> -->
 
+<router-outlet></router-outlet>
 
 <!-- Helper Tag -->
 <div class="fadeloadscreen d-none" id="fadeloadscreen">
@@ -104,7 +100,8 @@
   <i id="ok-flag" class="d-none text-danger far fa-times-circle"></i>
   <i id="fail-flag" class="text-success far fa-check-circle"></i>
   <i id="info-flag" class="d-none fas fa-info-circle"></i>
-  <span id="toastmessage"></span> <small class="float-right">Powered by: Bottomhalf</small>
+  <span id="toastmessage"></span>
+  <small class="float-right">Powered by: Bottomhalf</small>
 </div>
 <div class="d-none">
   <!-- chatting -->

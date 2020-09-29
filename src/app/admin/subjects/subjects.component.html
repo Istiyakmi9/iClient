@@ -1,0 +1,75 @@
+<div class="right_col">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel full-card">
+      <div class="x_title">
+        <h2>Subject(s) <small>Add and update subject(s)</small></h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content col-12 p-0 row m-0 mt-4">
+        <div class="col-md-4 col-sm-12 p-0" id="subject-form">
+          <div class="border creator">
+            <div class="x_title action-box-header">
+              <h2>School class <small>View class and section</small></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div name="tab_examdesc" class="action-box" role="definition">
+              <div class="form-group">
+                <label for="subjectname">Subject Name &nbsp;<span style="color: red;">*</span></label>
+                <input type="text" class="form-control text-uppercase" [(ngModel)]="SubjectForm.SubjectName"
+                  name="SubjectName" placeholder="Subject Name" (focus)="EnableField()">
+              </div>
+              <div class="form-group">
+                <label for="subjectcode">Subject Code &nbsp;<span style="color: red;">*</span></label>
+                <input type="text" number="4" class="form-control text-uppercase" [(ngModel)]="SubjectForm.SubjectCode"
+                  name="SubjectCode" placeholder="Subject Code" (focus)="EnableField()">
+              </div>
+              <div class="form-group">
+                <label for="subjectcredit">Allocated Class &nbsp;<span style="color: red;">*</span></label>
+                <select id="forClass" class="form-control" [(ngModel)]="SubjectForm.ForClass" (focus)="EnableField()"
+                  name="ForClass">
+                  <option value="">SELECT CLASS</option>
+                  <option *ngFor="let c of Classes" [value]="c">{{c}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="subjectcredit">Subject Credit &nbsp;<span style="color: red;">*</span></label>
+                <input type="text" number="4" class="form-control text-uppercase"
+                  [(ngModel)]="SubjectForm.SubjectCredit" name="SubjectCredit" placeholder="Subject Credit"
+                  (focus)="EnableField()">
+              </div>
+              <div class="form-group">
+                <div class="">
+                  <input type="checkbox" class="chkbox mr-2" (change)="MakeActive()" [(ngModel)]="SubjectForm.IsActive"
+                    name="IsActive" />
+                  <label>&emsp; Check to make it active</label>
+                </div>
+              </div>
+
+              <div class="action-dv">
+                <button class="btn btn-block btn-warning" (click)="AddSubject()">Add Subject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8 pr-0">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
+                <input id="GlobalFilter" placeholder="Global search" class="form-control" (keyup)="FilterLocaldata()"
+                  required="required" type="text">
+              </div>
+            </div>
+            <div class="col-md-6 d-inline-block text-right no-padding">
+              <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1"><i
+                  class="fas fa-sync"></i>&ensp;Reset</button>
+              <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success"><i
+                  class="fa fa-filter"></i>&ensp;Advance Search</button>
+            </div>
+          </div>
+          <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" (Delete)="OnDelete($event)"
+            (Next)="NextPage($event)" (Previous)="PreviousPage($event)"></app-dynamic-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

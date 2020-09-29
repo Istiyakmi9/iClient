@@ -1,0 +1,114 @@
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel auto-height">
+        <div class="x_title">
+          <app-page-bread-crum></app-page-bread-crum>
+          <h2>Daily Attendance Page</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="col-12 p-0">
+          <div class="row mt-4">
+            <div class="col-md-8">
+              <div class="p-0 form-group col-12 mb-0 d-inline-block">
+                <div class="form-row">
+                  <div class="form-group col ibox">
+                    <select class="form-control btn-s" (change)="EnableSection()" [(ngModel)]="SelecteClass"
+                      name="Class">
+                      <option value="">Choose Class</option>
+                      <option *ngFor="let item of Classes" value="{{item}}">{{item}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col ibox">
+                    <select class="form-control btn-s" name="ClassDetailUid" [(ngModel)]="ClassDetailUid">
+                      <option value="">Choose Section</option>
+                      <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">
+                        {{sec.Section}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col ibox">
+                    <input class="form-control btn-s" name="PaymentYear" [(ngModel)]="PaymentYear"
+                      placeholder="Payment Year">
+                    <i class="far fa-calendar-check"></i>
+                  </div>
+                  <!-- <div class="form-group col">
+                    <div class="input-group">
+                      <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob" ngbDatepicker
+                        #d="ngbDatepicker" [(ngModel)]="dateModel">
+                      <div class="inbox">
+                        <button class="btn btn-outline-secondary calendar btn-s" (click)="d.toggle()" type="button">
+                          <i class="far fa-calendar-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 d-inline-block text-right no-padding">
+              <button type="submit" (click)="Reset()" class="btn btn-outline-info mr-1 btn-s"><i
+                  class="fas fa-sync"></i>&ensp;Reset</button>
+              <button type="button" (click)="FiltePaymentDetail()" class="btn btn-success btn-s"><i
+                  class="fa fa-filter"></i>&ensp;Filter Detail</button>
+            </div>
+          </div>
+        </div>
+        <div class="x_content col-12 p-0 row m-0 mt-2" *ngIf="IsReady">
+          <div class="col-md-6 col-sm-12 p-0">
+            <table class="table table-lined mb-0">
+              <thead>
+                <tr>
+                  <!-- <th style="width: 8%">Roll No.#</th> -->
+                  <th style="width: 40%">Name</th>
+                  <th>Detail</th>
+                  <!-- <th>Payment by month</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of PagePaymentData">
+                  <tr>
+                    <!-- <td>{{a.get("RollNo").value}}</td> -->
+                    <td>
+                      <a>{{item.FirstName}} {{item.LastName}}</a>
+                    </td>
+                    <td>
+                      {{item.RegistrationNo}}
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6 pr-0">
+            <div class="form-row border p-2">
+              <div class="form-group col-4" *ngFor="let mon of MonthInformation">
+                <div class="month-card" [ngClass]="{'payment-done': mon.IsPaid}">
+                  <a class="edit-icon" (click)="Makepayment()">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <div class="month-name">
+                    <span class="month mr-1">{{mon.MonthName}}, {{mon.ForYear}}</span>
+                  </div>
+                  <div class="amount mt-2">
+                    <span class="mr-1">Amount Paid:</span> <i class="fas fa-rupee-sign"></i> {{mon.AmountPaid}}
+                  </div>
+                  <!-- <div class="amount">
+                    <span class="mr-1">Fine Amount:</span> <i class="fas fa-rupee-sign"></i> {{mon.FineAmount}}
+                  </div> -->
+                  <div class="amount">
+                    <span class="mr-1">Pay On:</span> {{mon.AddedOn}}
+                  </div>
+                  <div *ngIf="mon.IsPaid" class="position-absolute check-ok">
+                    <i class="far fa-check-circle"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-noitempage *ngIf="!IsReady" [Data]="NotFountMessage"></app-noitempage>
+      </div>
+    </div>
+  </div>
+</div>

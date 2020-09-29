@@ -1,0 +1,81 @@
+.cell {
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.progress.progress_sm {
+  border-radius: 0;
+  margin-bottom: 18px;
+  height: 10px !important;
+}
+
+.progress.progress_sm .progress-bar {
+  height: 10px !important;
+}
+
+.page-title .title_right .pull-right {
+  margin: 10px 0;
+}
+
+.btn-s {
+  height: 35px !important;
+  border-color: #c2b7b7 !important;
+}
+
+.inbox button,
+a {
+  border-radius: 0px 4px 4px 0px;
+  border-left: none;
+}
+
+.project_progress small {
+  position: absolute;
+  top: 2rem;
+}
+
+.table td {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-right: 0px !important;
+  padding-left: 10px !important;
+}
+
+.payment-done {
+  background: #deffbe;
+}
+
+.month-card {
+  border: 1px solid #d9d9d9;
+  padding: 10px;
+  position: relative;
+
+  .month-name {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 4px;
+  }
+
+  .edit-icon {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+  }
+
+  .edit-icon {
+    cursor: pointer;
+  }
+
+  .check-ok {
+    right: 4px;
+    bottom: 0px;
+    color: #6fd66f;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .amount {
+    color: #999292;
+  }
+}

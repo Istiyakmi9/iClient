@@ -1,0 +1,120 @@
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_content">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Manage user & roles</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content position-relative">
+            <!-- Smart Wizard -->
+            <div class="position-absolute exchangebtn">
+              <button class="btn btn-blue btn-s" (click)="ChangeLabel()">
+                <i class="fa fa-exchange"></i>
+                {{ExchangeButtonLabel}}
+              </button>
+            </div>
+            <div class="col-md-12 mt-4">
+              <div id="existingrole" style="display: none;">
+                <div class="form-group row">
+                  <label class="col-sm-3 text-right" for="first-name">
+                    Manage Role <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6">
+                    <select name="ExistingRole" class="form-control" (change)="BindRole()" [(ngModel)]="AccessLevelUid">
+                      <option value="">Select Role</option>
+                      <option *ngFor="let item of AccessRoles" [value]="item.AccessLevelId">{{item.Roles}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-3 text-right" for="role-desc">
+                    Role Description
+                  </label>
+                  <div class="col-md-6">
+                    <textarea name="RoleDesc" [(ngModel)]="RoleDesc" class="form-control" rows="3"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div id="newrole">
+                <div class="form-group row">
+                  <label class="col-sm-3 text-right" for="first-name">
+                    Role Name <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6">
+                    <input type="text" name="RoleName" [(ngModel)]="RoleName" class="form-control"
+                      placeholder="Enter Role Name">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-3 text-right" for="role-desc">
+                    Role Description
+                  </label>
+                  <div class="col-md-6">
+                    <textarea name="RoleDesc" [(ngModel)]="RoleDesc" class="form-control" rows="3"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 mt-4">
+                <div *ngIf="IsReady">
+                  <form [formGroup]="MenuAndRoles">
+                    <div class="x_content">
+                      <div class="col-md-12 pl-0 pr-0" formArrayName="MenuAndRolesData">
+                        <table class="table table-striped projects">
+                          <thead>
+                            <tr>
+                              <th>Index No.#</th>
+                              <th>Menu Name</th>
+                              <th>Action</th>
+                              <th>Permission Level</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <ng-container *ngFor="let a of MenuAndRolesData.controls; let i = index"
+                              [formGroupName]="i">
+                              <tr *ngIf="a.get('Link').value !== 'NA' && a.get('Link').value !== ''">
+                                <td>{{ i + 1 }}</td>
+                                <td>
+                                  <a>{{ a.get("MenuName").value }}</a>
+                                </td>
+                                <td>
+                                  <div class="flip-box" (click)="ToggleItem(a.get('MenuName').value)">
+                                    <div class="flip-box__slider on" [ngClass]="{'off': !a.get('IsActive').value}"
+                                      name="slider">
+                                      <a class="flip-box__left"><i class="fas fa-check-double"></i> Active </a>
+                                      <a class="flip-box__right"><i class="fas fa-times"></i> Inactive </a>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td>
+                                  <select name="PermissionLevel" class="form-control"
+                                    (change)="ChangePermission(a.get('MenuName').value)"
+                                    formControlName="PermissionLevel">
+                                    <option value="1">Read</option>
+                                    <option value="2">Read/Write</option>
+                                  </select>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="col-12 p-0 mt-4">
+                      <button (click)="SaveAndUpdateChanges()" class="btn btn-green btn-s">
+                        <i class="fa fa-save pr-2"></i>
+                        Save Changes
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

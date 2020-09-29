@@ -1,0 +1,101 @@
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Progress Report Page By Class</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="col-md-12 p-0">
+          <div class="col-12 p-0">
+            <div class="row mt-4">
+              <div class="col-md-8">
+                <div class="p-0 form-group col-12 mb-0 d-inline-block">
+                  <div class="form-row">
+                    <div class="form-group col ibox">
+                      <select class="form-control" (change)="EnableSection()" [(ngModel)]="SelecteClass" name="Class">
+                        <option value="">Choose Class</option>
+                        <option *ngFor="let item of Classes" value="{{ item }}">{{ item }}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col ibox">
+                      <select class="form-control" name="ClassDetailUid" [(ngModel)]="ClassDetailUid">
+                        <option value="">Choose Section</option>
+                        <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">
+                          {{ sec.Section }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group col">
+                      <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob" ngbDatepicker
+                          #d="ngbDatepicker" [(ngModel)]="dateModel" />
+                        <div class="inbox">
+                          <button class="btn btn-outline-secondary calendar btn-s" (click)="d.toggle()" type="button">
+                            <i class="far fa-calendar-alt"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 d-inline-block text-right no-padding">
+                <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1">
+                  <i class="fas fa-sync"></i>&ensp;Reset
+                </button>
+                <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success">
+                  <i class="fa fa-filter"></i>&ensp;Advance Search
+                </button>
+              </div>
+            </div>
+          </div>
+          <form *ngIf="IsReady" [formGroup]="attendanceData">
+            <div class="x_content">
+              <div class="col-md-12 pl-0 pr-0" formArrayName="AttendaceDetail">
+                <table class="table table-striped projects">
+                  <thead>
+                    <tr>
+                      <th style="width: 8%">Roll No.#</th>
+                      <th style="width: 20%">Student Name</th>
+                      <th style="width: 10%">Class/Sec</th>
+                      <th>Registration No.#</th>
+                      <th>Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let a of AttendaceDetail.controls; let i = index" [formGroupName]="i">
+                      <tr>
+                        <td>{{ a.get("RollNo").value }}</td>
+                        <td>
+                          <a>{{ a.get("StudentName").value }}</a>
+                        </td>
+                        <td>
+                          {{ a.get("Class").value }}
+                          {{ a.get("Section").value }}
+                        </td>
+                        <td class="project_progress position-relative">
+                          <p class="p-0 m-0">Will come soon.</p>
+                        </td>
+                        <td>
+                          <a class="btn-xs btn btn-blue" (click)="
+                              ViewCurrentStudentResult(
+                                a.get('StudentUid').value
+                              )
+                            "><i class="fa fa-folder"></i> View
+                          </a>
+                          <a class="btn-xs btn btn-sky"><i class="fa fa-pencil"></i> Edit
+                          </a>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

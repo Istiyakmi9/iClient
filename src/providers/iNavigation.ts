@@ -5,14 +5,26 @@ import { CommonService } from "./common-service/common.service";
 const NAVPARAMNAME = "navigation_parameter";
 @Injectable()
 export class iNavigation {
-  constructor(private route: Router, private common: CommonService) {}
+  Role: string;
+  constructor(private route: Router, private common: CommonService) {
+    this.GetRoleName();
+  }
+
+  SetRole(RoleRoute: string) {
+    this.Role = RoleRoute;
+  }
+
+  GetRoleName(): string {
+    this.SetRole("admin");
+    return this.Role;
+  }
 
   public navigate(Path: string, Parameter: any) {
     if (Path !== null && Path !== "") {
       if (Parameter !== null && Parameter !== "") {
         localStorage.setItem(NAVPARAMNAME, JSON.stringify(Parameter));
       }
-      this.route.navigate([Path]);
+      this.route.navigate([this.Role + "/" + Path]);
     } else {
       this.common.ShowToast("Invalid component path passed.");
     }

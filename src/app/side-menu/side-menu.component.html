@@ -6,11 +6,16 @@
     <div class="sidebar-content">
       <div class="sidebar-header">
         <div class="user-pic">
-          <img class="img-responsive img-rounded" [src]="UserImage" alt="User picture" />
+          <img
+            class="img-responsive img-rounded"
+            [src]="UserImage"
+            alt="User picture"
+          />
         </div>
         <div class="user-info">
-          <span class="user-name">{{CurrentUser.FirstName}}
-            <strong>{{CurrentUser.LastName}}</strong>
+          <span class="user-name"
+            >{{ CurrentUser.FirstName }}
+            <strong>{{ CurrentUser.LastName }}</strong>
           </span>
           <span class="user-role">Administrator</span>
           <span class="user-status">
@@ -23,7 +28,11 @@
       <div class="sidebar-search">
         <div>
           <div class="input-group">
-            <input type="text" class="form-control search-menu" placeholder="Search..." />
+            <input
+              type="text"
+              class="form-control search-menu"
+              placeholder="Search..."
+            />
             <div class="input-group-append">
               <span class="input-group-text">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -35,23 +44,44 @@
       <!-- sidebar-search  -->
       <div class="sidebar-menu" id="menu">
         <ul>
-          <div *ngFor="let catagory of MenuList; index as index;">
+          <div *ngFor="let catagory of MenuList; index as index">
             <li class="header-menu">
-              <span>{{catagory.Catagory}}</span>
+              <span>{{ catagory.Catagory }}</span>
             </li>
-            <li class="sidebar-dropdown" name="item-header"
-              *ngFor="let subcatagory of catagory.SubCatagory; index as outerIndex;">
-              <a name="/{{subcatagory.Link}}">
-                <i class="{{subcatagory.Icon}}"></i>
-                <span class="active-bar">{{subcatagory.Catagory}}</span>
-                <span *ngIf="subcatagory.Badge != null" class="badge badge-pill badge-warning">New</span>
+            <li
+              class="sidebar-dropdown"
+              name="item-header"
+              *ngFor="
+                let subcatagory of catagory.SubCatagory;
+                index as outerIndex
+              "
+            >
+              <a name="/{{ subcatagory.Link }}">
+                <i class="{{ subcatagory.Icon }}"></i>
+                <span class="active-bar">{{ subcatagory.Catagory }}</span>
+                <span
+                  *ngIf="subcatagory.Badge != null"
+                  class="badge badge-pill badge-warning"
+                  >New</span
+                >
               </a>
               <div class="sidebar-submenu" name="submenues">
                 <ul>
-                  <li type="action" *ngFor="let record of subcatagory.SubCatagory; index as innerIndex;">
-                    <a (click)="CleanUpCache()" name="/{{record.Link}}" type="link" [routerLink]="['/' + record.Link]">
-                      <i class="{{record.Icon}}"></i>
-                      <span>{{record.Catagory}}</span>
+                  <li
+                    type="action"
+                    *ngFor="
+                      let record of subcatagory.SubCatagory;
+                      index as innerIndex
+                    "
+                  >
+                    <a
+                      (click)="CleanUpCache()"
+                      name="/{{ record.Link }}"
+                      type="link"
+                      [routerLink]="['/' + RoleName + record.Link]"
+                    >
+                      <i class="{{ record.Icon }}"></i>
+                      <span>{{ record.Catagory }}</span>
                     </a>
                   </li>
                 </ul>

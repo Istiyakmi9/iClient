@@ -3,13 +3,13 @@ import {
   HttpClient,
   HttpHeaders,
   HttpResponse,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from "@angular/common/http";
 import {
   CommonService,
   IsValidResponse,
   IResponse,
-  IsValidType
+  IsValidType,
 } from "./common-service/common.service";
 import { iNavigation } from "./iNavigation";
 import { Observable } from "rxjs";
@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    //this.baseUrl = "http://localhost:34946/api/";
-    this.baseUrl = "http://www.bottomhalfinfo.com/EdServerCore/api/";
+    //this.baseUrl = "http://localhost:5000/api/";
+    this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
   }
 
   public GetImageBasePath() {
@@ -43,7 +43,7 @@ export class AjaxService {
     const headers = new HttpHeaders({
       "Content-Type": "application/json; charset=utf-8",
       Accept: "application/json",
-      "x-request-token": this.getToken()
+      "x-request-token": this.getToken(),
     });
     return headers;
   }
@@ -52,14 +52,14 @@ export class AjaxService {
     const headers = new HttpHeaders({
       "Content-Type": "application/json; charset=ISO-8859-1",
       Accept: "application/json",
-      "x-request-token": this.getToken()
+      "x-request-token": this.getToken(),
     });
     return headers;
   }
 
   UploadRequestHeader(): any {
     const headers = new HttpHeaders({
-      "x-request-token": this.getToken()
+      "x-request-token": this.getToken(),
     });
     return headers;
   }
@@ -80,7 +80,7 @@ export class AjaxService {
           );
         }
       },
-      error => {
+      (error) => {
         let Error = JSON.parse("Get request with header fire exception.");
         this.commonService.HideLoaderByAjax();
         return Error;
@@ -88,7 +88,11 @@ export class AjaxService {
     );
   }
 
-  get(Url: string, IsLoaderRequired: boolean = true): Promise<any> {
+  delete(
+    Url: string,
+    Param: string,
+    IsLoaderRequired: boolean = true
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let _header = null;
       if (typeof IsLoaderRequired !== undefined) {
@@ -102,9 +106,12 @@ export class AjaxService {
       }
       _header = this.RequestHeader();
       this.http
-        .get(this.baseUrl + Url, {
+        .delete(this.baseUrl + Url, {
           headers: _header,
-          observe: "response"
+          observe: "response",
+          params: {
+            data: Param,
+          },
         })
         .subscribe(
           (res: any) => {
@@ -129,17 +136,77 @@ export class AjaxService {
               );
               this.nav.navigate("/", "");
             } else if (error.status === 404) {
-              this.commonService.ShowToast(
-                "Unable to get data. Your session is expired."
-              );
+              this.commonService.ShowToast("Requested page not found.");
               reject(error);
-              this.nav.navigate("/", null);
+            } else if (error.status === 400) {
+              this.commonService.ShowToast(
+                "Bad request. Please check URL and Request type matching."
+              );
+              reject(false);
             } else {
               this.commonService.ShowToast(
-                "Unable to get data. Your session is expired."
+                "Server error. Please contact to admin."
               );
               reject(error);
-              this.nav.navigate("/", null);
+            }
+          }
+        );
+    });
+  }
+
+  get(Url: string, IsLoaderRequired: boolean = true): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let _header = null;
+      if (typeof IsLoaderRequired !== undefined) {
+        if (IsLoaderRequired) {
+          this.commonService.ShowLoaderByAjax();
+        } else {
+          _header = this.RequestPlainHeader();
+        }
+      } else {
+        this.commonService.ShowLoaderByAjax();
+      }
+      _header = this.RequestHeader();
+      this.http
+        .get(this.baseUrl + Url, {
+          headers: _header,
+          observe: "response",
+        })
+        .subscribe(
+          (res: any) => {
+            let Token = res.headers.get(TokenName);
+            if (IsValidType(Token)) {
+              if (IsValidResponse(res)) {
+                let response: IResponse = res.body;
+                this.commonService.HideLoaderByAjax();
+                resolve(response);
+              }
+            } else {
+              this.commonService.HideLoaderByAjax();
+              resolve([]);
+            }
+          },
+          (error: HttpErrorResponse) => {
+            this.commonService.HideLoaderByAjax();
+            if (error.status === 401) {
+              reject(false);
+              this.commonService.ShowToast(
+                "Your session expired. Please login again."
+              );
+              this.nav.navigate("/", "");
+            } else if (error.status === 404) {
+              this.commonService.ShowToast("Requested page not found.");
+              reject(error);
+            } else if (error.status === 400) {
+              this.commonService.ShowToast(
+                "Bad request. Please check URL and Request type matching."
+              );
+              reject(false);
+            } else {
+              this.commonService.ShowToast(
+                "Server error. Please contact to admin."
+              );
+              reject(error);
             }
           }
         );
@@ -154,7 +221,7 @@ export class AjaxService {
         this.http
           .post(this.baseUrl + Url, Param, {
             headers: _header,
-            observe: "response"
+            observe: "response",
           })
           .subscribe(
             (res: HttpResponse<any>) => {
@@ -195,7 +262,7 @@ export class AjaxService {
                   resolve(Data);
                 } else {
                   reject(null);
-                  this.nav.navigate("/", "");
+                  //this.nav.navigate("/", "");
                   this.commonService.ShowToast(
                     "Unauthorized access is denied. Please login again."
                   );
@@ -205,16 +272,31 @@ export class AjaxService {
               }
               this.commonService.HideLoaderByAjax();
             },
-            error => {
+            (error) => {
               this.commonService.HideLoaderByAjax();
-              if (error.status === 401) {
-                reject(false);
-                this.commonService.ShowToast(
-                  "Your session expired. Please login again."
-                );
-                this.nav.navigate("/", "");
-              } else {
-                reject(error);
+              switch (error.status) {
+                case 401:
+                  reject(false);
+                  this.commonService.ShowToast(
+                    "Your session expired. Please login again."
+                  );
+                  this.nav.navigate("/", "");
+                  break;
+
+                case 500:
+                  reject(false);
+
+                case 400:
+                  this.commonService.ShowToast(
+                    "Bad request. Please check URL and Request type matching."
+                  );
+                  reject(false);
+
+                default:
+                  this.commonService.ShowToast(
+                    "Invalid or Token not found. Please login or contact to admin."
+                  );
+                  this.nav.navigate("/", "");
               }
             }
           );
@@ -229,7 +311,7 @@ export class AjaxService {
       this.http
         .post(this.baseUrl + Url, Param, {
           headers: _header,
-          observe: "response"
+          observe: "response",
         })
         .subscribe(
           (res: HttpResponse<any>) => {
@@ -261,7 +343,7 @@ export class AjaxService {
             }
             this.commonService.HideLoaderByAjax();
           },
-          error => {
+          (error) => {
             this.commonService.HideLoaderByAjax();
             if (error.status === 401) {
               reject(false);

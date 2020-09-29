@@ -1,0 +1,24 @@
+.nav>li>a {
+  color: #6d7580;
+}
+
+.right-item {
+  text-align: right;
+  position: relative;
+  top: 10px;
+}
+
+.w-12 {
+  width: 12%;
+}
+
+.save-action {
+  text-align: center;
+  font-size: 18px;
+  padding: 6px 15px 0px 0px;
+
+  i:hover {
+    font-size: 20px;
+    box-shadow: 1px 6px 8px -4px #444;
+  }
+}

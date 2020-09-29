@@ -1,0 +1,20 @@
+.noitem-msg {
+  min-height: 200px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: #fafbfb;
+  position: relative;
+  text-align: center;
+
+  &__text {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 34%;
+    bottom: 0px;
+    margin: auto;
+    font-size: 25px;
+    width: 50%;
+    font-weight: 500;
+  }
+}

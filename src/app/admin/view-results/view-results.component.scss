@@ -1,0 +1,96 @@
+.cell {
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.progress.progress_sm {
+  border-radius: 0;
+  margin-bottom: 18px;
+  height: 10px !important;
+}
+
+.progress.progress_sm .progress-bar {
+  height: 10px !important;
+}
+
+.page-title .title_right .pull-right {
+  margin: 10px 0;
+}
+
+.btn-s {
+  height: 35px !important;
+  border-color: #c2b7b7 !important;
+}
+
+.inbox button,
+a {
+  border-radius: 0px 4px 4px 0px;
+  border-left: none;
+}
+
+.project_progress small {
+  position: absolute;
+  top: 2rem;
+}
+
+.table td,
+.table th {
+  padding: 6px 10px !important;
+}
+
+.para-s {
+  p {
+    margin-bottom: 1px !important;
+  }
+}
+
+.progress-img {
+  width: 120px;
+  height: 120px;
+}
+
+span.u-title {
+  width: 40%;
+  display: inline-block;
+}
+
+.subject-table {
+  width: 100%;
+
+  tr td,
+  th {
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    text-align: center;
+  }
+
+  tr td:last-child,
+  th:last-child {
+    border-right: 0px !important;
+  }
+}
+
+.grade-table {
+  width: 100%;
+
+  tr td,
+  th {
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    text-align: center;
+  }
+}
+
+.fixed-chart {
+  position: absolute;
+  bottom: 0px;
+}
+
+.remark-sec {
+  resize: none;
+}
+
+.official {
+  height: 100px;
+  text-align: center;
+}

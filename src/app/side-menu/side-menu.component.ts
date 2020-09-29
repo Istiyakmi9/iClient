@@ -11,7 +11,7 @@ import { DefaultUserImage } from "src/providers/constants";
 @Component({
   selector: "app-side-menu",
   templateUrl: "./side-menu.component.html",
-  styleUrls: ["./side-menu.component.scss"]
+  styleUrls: ["./side-menu.component.scss"],
 })
 export class SideMenuComponent implements OnInit {
   CompanyName: string = "Sana Computers";
@@ -19,6 +19,7 @@ export class SideMenuComponent implements OnInit {
   IsActionBindingDone: boolean = false;
   CurrentUser: any = null;
   UserImage: string;
+  RoleName: string;
   constructor(
     private commonService: CommonService,
     private ajax: AjaxService,
@@ -28,6 +29,7 @@ export class SideMenuComponent implements OnInit {
     private nav: iNavigation
   ) {
     this.UserImage = DefaultUserImage;
+    this.RoleName = this.nav.GetRoleName() + "/";
     //this.LoadMenu();
   }
 
@@ -39,9 +41,9 @@ export class SideMenuComponent implements OnInit {
   BuildMenu(Catagory: string, MenuItems: Array<ISideMenu>): Array<ISideMenu> {
     let Items: Array<ISideMenu> = null;
     if (Catagory === null) {
-      Items = MenuItems.filter(x => x.Childs === null);
+      Items = MenuItems.filter((x) => x.Childs === null);
     } else {
-      Items = MenuItems.filter(x => x.Childs === Catagory);
+      Items = MenuItems.filter((x) => x.Childs === Catagory);
     }
 
     let FilteredItem: Array<ISideMenu>;
@@ -72,8 +74,8 @@ export class SideMenuComponent implements OnInit {
     let Data = this.commonService.GetApplicationMenu();
     let MenuItem: Array<ISideMenu>;
     if (Data !== undefined && Data !== null) {
-      this.MenuList = Data.filter(x => x.Childs === null);
-      let ChildMenu = Data.filter(x => x.Childs !== null);
+      this.MenuList = Data.filter((x) => x.Childs === null);
+      let ChildMenu = Data.filter((x) => x.Childs !== null);
       this.MenuList = this.BuildMenu(null, Data);
       if (!this.BindUser()) {
         this.local.clear();
@@ -117,40 +119,29 @@ export class SideMenuComponent implements OnInit {
   }
 
   HandleMenu() {
-    $(".sidebar-dropdown > a").click(function() {
+    $(".sidebar-dropdown > a").click(function () {
       $(".sidebar-submenu").slideUp(200);
-      if (
-        $(this)
-          .parent()
-          .hasClass("active")
-      ) {
+      if ($(this).parent().hasClass("active")) {
         $(".sidebar-dropdown").removeClass("active");
-        $(this)
-          .parent()
-          .removeClass("active");
+        $(this).parent().removeClass("active");
       } else {
         $(".sidebar-dropdown").removeClass("active");
         // $(".sidebar-dropdown li").removeClass("active active-list");
         $(".sidebar-dropdown a").removeClass("active");
-        $(this)
-          .next(".sidebar-submenu")
-          .slideDown(200);
-        $(this)
-          .addClass("active")
-          .parent()
-          .addClass("active");
+        $(this).next(".sidebar-submenu").slideDown(200);
+        $(this).addClass("active").parent().addClass("active");
       }
     });
 
-    $('li[type="action"]').click(function() {
+    $('li[type="action"]').click(function () {
       $('li[type="action"]').removeClass("active active-list");
       $(this).addClass("active active-list");
     });
 
-    $("#close-sidebar").click(function() {
+    $("#close-sidebar").click(function () {
       $(".page-wrapper").removeClass("toggled");
     });
-    $("#show-sidebar").click(function() {
+    $("#show-sidebar").click(function () {
       $(".page-wrapper").addClass("toggled");
     });
   }

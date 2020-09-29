@@ -1,0 +1,293 @@
+<div class="col-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <p>
+        <a href="#/examresult" class="">
+          <u>View Result</u>
+        </a>
+      </p>
+      <div class="x_title">
+        <h2>Progress Report Page By Class</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="col-md-12 p-0">
+        <div class="border">
+          <div class="col-12 mb-4">
+            <div class="col-12 form-row border-bottom pt-2 pb-2">
+              <div class="col-8 col">
+                <div>Progress report</div>
+              </div>
+              <div class="col col-4 text-right">
+                <button class="d-inline text-dark btn btn-outline-light btn-s">
+                  <i class="fas fa-print"></i>
+                  Print
+                </button>
+              </div>
+            </div>
+            <div class="form-row col-md-12 p-0 mt-2">
+              <div class="col col-md-4 text-center">
+                <img class="progress-img" src="assets/defaultuser.jpg" alt="Candidate Image" />
+              </div>
+              <div class="col col-md-4 text-center">
+                <address class="para-s">
+                  <p>To</p>
+                  <p><b>Jone Steave</b></p>
+                  <p>789 Freedom Ave, Suite 600</p>
+                  <p>New York CA, 94107</p>
+                  <p><b>Phone: </b>+91-88787676567</p>
+                  <p><b>Email Id: </b>Jone1290@gmail.com</p>
+                </address>
+              </div>
+              <div class="col col-md-4 text-center">
+                <img class="progress-img" src="assets/defaultuser.jpg" alt="Candidate Image" />
+              </div>
+            </div>
+
+            <div class="form-row border col-md-12 mt-2 p-0 pt-1 pb-1">
+              <div class="col form-row col-md-10">
+                <div class="text-center w-100 pt-2">
+                  <h5><b>STUDENT'S PROFILE</b></h5>
+                </div>
+                <div class="col col-md-6 pl-3 pr-4">
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Name of Student:</span> Jone
+                      Steave
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Father's Name:</span> Smith
+                      Steave
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Mother's Name:</span> Rine
+                      Steave
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Contact Number:</span>
+                      +91-8878765434
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-6">
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Class and Section:</span> 9-C
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Roll No.#:</span> 29
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">Bill No.#:</span> 13-0460
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <span class="u-title pr-4">DOB:</span> June, 10 2005
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-2 text-right">
+                <img class="progress-img" src="assets/defaultuser.jpg" alt="Candidate Image" />
+              </div>
+            </div>
+
+            <div class="form-row border col-12 mt-1">
+              <h5 class="text-center m-0 p-1 w-100">SCHOLASTIC AREAS</h5>
+            </div>
+
+            <div class="form-row border col-12 p-0">
+              <table class="subject-table" width="100%">
+                <thead>
+                  <tr>
+                    <th rowspan="2" style="width: 15%;">
+                      <div>SUBJECTS</div>
+                    </th>
+                    <th colspan="4">
+                      <div>FINAL TERM</div>
+                    </th>
+                    <th rowspan="2">
+                      <div>MARKED OBTAINER</div>
+                    </th>
+                    <th rowspan="2">
+                      <div>GRADE</div>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>
+                      <div>Periodic Test(10)</div>
+                    </th>
+                    <th>
+                      <div>Notebook(5)</div>
+                    </th>
+                    <th>
+                      <div>Subject Enrichment(5)</div>
+                    </th>
+                    <th>
+                      <div>Annual Exam(80)</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of SubjectReport">
+                    <td>
+                      <div>{{ item.SubjectName }}</div>
+                    </td>
+                    <td>
+                      <div>{{ item.PeriodicTest }}</div>
+                    </td>
+                    <td>
+                      <div>{{ item.Notebook }}</div>
+                    </td>
+                    <td>
+                      <div>{{ item.SubjectEnrichment }}</div>
+                    </td>
+                    <td>
+                      <div>{{ item.AnnualExam }}</div>
+                    </td>
+                    <td>
+                      <div>{{ item.MarkedObtain }}</div>
+                    </td>
+                    <td>
+                      <div>{{ item.Grade }}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td rowspan="2" class="p-2">
+                      <div><b>Scholastic area of grading scales</b></div>
+                    </td>
+                    <td colspan="6" rowspan="2">
+                      <div>
+                        <span>A1: 91-100, </span>
+                        <span>A2: 81-90, </span>
+                        <span>B1: 71-80, </span>
+                        <span>B2: 61-70, </span>
+                        <span>C1: 51-60, </span>
+                        <span>C2: 41-50, </span>
+                        <span>D: 33-40, </span>
+                        <span>E: 0-32 (Fail) </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="form-row col-md-12 mt-1 p-0 border">
+              <div class="col-md-3 p-0">
+                <div class="col-12 p-0">
+                  <table class="grade-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 75%;">
+                          <div>CO-SCHOLISTIC AREAS</div>
+                        </th>
+                        <th>
+                          <div>GRADE (A-E)</div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of CoScholasticData">
+                        <td>
+                          <div>{{ item.Name }}</div>
+                        </td>
+                        <td>
+                          <div>{{ item.Grade }}</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="mt-1 col-12 p-0 border-top">
+                  <table class="grade-table">
+                    <thead>
+                      <tr>
+                        <th colspan="2" class="p-2">
+                          <div>ATTENDANCE</div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="width: 75%;">
+                          <div>Total Attendance</div>
+                        </td>
+                        <td>
+                          <div>
+                            {{ StudentAttendanceData.TotalAttendance }}
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 75%;">
+                          <div>Total Present</div>
+                        </td>
+                        <td>
+                          <div>{{ StudentAttendanceData.TotalPresent }}</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 75%;">
+                          <div>Attedance %</div>
+                        </td>
+                        <td>
+                          <div>
+                            {{ StudentAttendanceData.AttendancePercent }}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-9 pl-1 p-0 position-relative">
+                <div class="col-12 border-left fixed-chart">
+                  <div class="col">
+                    <div class="col-md-12">
+                      <div class="chart-container" style="position: relative;">
+                        <canvas id="sales-bar" width="100%" height="37%">{{
+                          chartBar
+                        }}</canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row col-md-12 mt-1 border">
+              <b class="text-center p-2 w-100">Remarks</b>
+            </div>
+
+            <div class="form-row col-md-12 mt-1 border">
+              <textarea name="remark" class="w-100 p-2 border-0 remark-sec" rows="4"></textarea>
+            </div>
+
+            <div class="form-row col-md-12 mt-1 p-0">
+              <div class="col col-md-4 border official">
+                <p>Class Teacher Signature</p>
+              </div>
+              <div class="col col-md-4 border official">
+                <p>School Stamp</p>
+              </div>
+              <div class="col col-md-4 border official">
+                <p>Principle Signature</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
