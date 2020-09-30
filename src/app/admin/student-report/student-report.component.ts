@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import * as $ from "jquery";
-import { StudentsColumn, StudentRegistration } from "src/providers/constants";
+import {
+  StudentsColumn,
+  StudentRegistration,
+  Paging,
+} from "src/providers/constants";
 import { IColumns } from "src/providers/Generic/Interface/IColumns";
 import {
   CommonService,
@@ -9,6 +13,8 @@ import {
 import { ITable } from "src/providers/Generic/Interface/ITable";
 import { AjaxService } from "src/providers/ajax.service";
 import { iNavigation } from "src/providers/iNavigation";
+import { ClassDetail } from "src/app/app.component";
+import { ApplicationStorage } from "src/providers/ApplicationStorage";
 
 @Component({
   selector: "app-student-report",
@@ -22,13 +28,24 @@ export class StudentReportComponent implements OnInit {
   Headers: Array<string>;
   GridData: ITable;
   SearchQuery: SearchModal;
+  ClassDetail: Array<ClassDetail>;
+  Classes: Array<string>;
+  Sections: Array<ClassDetail>;
+  ClassDetailUid: string;
+  Class: string;
+
   constructor(
     private http: AjaxService,
     private commonService: CommonService,
-    private nav: iNavigation
-  ) {}
+    private nav: iNavigation,
+    private storage: ApplicationStorage
+  ) {
+    this.Class = "";
+    this.ClassDetailUid = "";
+  }
 
   ngOnInit() {
+    this.ClassDetail = this.storage.GetClassDetail();
     this.InitQuery();
     this.LoadData();
   }
@@ -44,11 +61,22 @@ export class StudentReportComponent implements OnInit {
 
   OnDelete(Data: string) {}
 
-  NextPage(Data: string) {}
+  NextPage(param: any) {
+    let PageData: Paging = JSON.parse(param);
+    if (PageData !== undefined && PageData !== null) {
+      this.SearchQuery.PageIndex = PageData.PageIndex;
+      this.LoadData();
+    }
+  }
 
-  PreviousPage(Data: string) {}
+  PreviousPage(param: any) {
+    let PageData: Paging = JSON.parse(param);
+    alert(JSON.stringify(PageData));
+  }
 
   InitQuery() {
+    this.ClassDetailUid = "";
+    this.Classes = this.storage.GetClasses();
     this.SearchQuery = {
       SearchString: " 1=1 ",
       SortBy: "",
@@ -57,12 +85,22 @@ export class StudentReportComponent implements OnInit {
     };
   }
 
-  LoadData() {
-    this.SearchQuery.SearchString = " 1=1 ";
-    this.SearchQuery.SortBy = "";
-    this.SearchQuery.PageIndex = 1;
-    this.SearchQuery.PageSize = 15;
+  EnableSection() {
+    this.Sections = [];
+    let Class = $(event.currentTarget).val();
+    this.BindSections(Class);
+  }
 
+  BindSections(Class) {
+    if (IsValidType(Class)) {
+      this.Sections = this.ClassDetail.filter((x) => x.Class === Class);
+      if (this.Sections.length === 0) {
+        this.commonService.ShowToast("Unable to load class detail.");
+      }
+    }
+  }
+
+  LoadData() {
     this.http
       .post("Reports/StudentReports", this.SearchQuery)
       .then((response) => {
@@ -93,6 +131,9 @@ export class StudentReportComponent implements OnInit {
             "Server error. Please contact to admin."
           );
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 

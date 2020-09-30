@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { AjaxService } from "src/providers/ajax.service";
+import { AjaxService, resetCookies } from "src/providers/ajax.service";
 import { CommonService } from "src/providers/common-service/common.service";
 import { iNavigation } from "src/providers/iNavigation";
 import { ApplicationStorage } from "src/providers/ApplicationStorage";
@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    resetCookies();
     this.LoginForm = this.fb.group({
       MobileNo: this.fb.control(""),
       Email: this.fb.control(""),

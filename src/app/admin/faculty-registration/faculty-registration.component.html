@@ -1,42 +1,76 @@
 <div class="col-md-12 col-sm-12 icard" name="grid">
-  <form [formGroup]="FacultyForm" method="post" (submit)="RegisterFaculty()" *ngIf="IsReady"
-    (keydown.enter)="$event.preventDefault()">
+  <form
+    [formGroup]="FacultyForm"
+    method="post"
+    (submit)="RegisterFaculty()"
+    *ngIf="IsReady"
+    (keydown.enter)="$event.preventDefault()"
+  >
     <div class="x_panel">
       <div class="x_title">
-        <h2>{{Title}} <small>{{TitleDetail}}</small></h2>
+        <h2>
+          {{ Title }} <small>{{ TitleDetail }}</small>
+        </h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-        <div class="modal fade" id="facultyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
+        <div
+          class="modal fade"
+          id="facultyModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Modal Alert</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body" id="facultyModalMsg">
-              </div>
+              <div class="modal-body" id="facultyModalMsg"></div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                  ng-click="redirectOperation()">Ok</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Ok
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Smart Wizard -->
-        <p>Use this page for only teaching & non-teaching staff registration. It will take all necessary information.
+        <p>
+          Use this page for only teaching & non-teaching staff registration. It
+          will take all necessary information.
         </p>
         <div class="col-12 row p-0">
           <div class="col-md-3 pl-2 col-sm-12">
             <div class="profile-dv">
-              <img class="card-img-top" [src]="FacultyImage" alt="user">
+              <img class="card-img-top" [src]="FacultyImage" alt="user" />
               <div class="mt-3">
-                <button class="btn btn-outline-danger btn-block" (click)="GetImage()">Browse File</button>
-                <input type="file" id="browsfile" class="d-none" (change)="GetFile($event)" />
+                <button
+                  class="btn btn-outline-danger btn-block"
+                  (click)="GetImage()"
+                >
+                  Browse File
+                </button>
+                <input
+                  type="file"
+                  id="browsfile"
+                  class="d-none"
+                  (change)="GetFile($event)"
+                />
               </div>
             </div>
           </div>
@@ -47,17 +81,27 @@
                   First Name <span class="required">*</span>
                 </label>
                 <div class="col-sm-8">
-                  <input type="text" id="FirstName" name="FirstName" formControlName="FirstName" class="form-control"
-                    placeholder="First Name">
+                  <input
+                    type="text"
+                    id="FirstName"
+                    name="FirstName"
+                    formControlName="FirstName"
+                    class="form-control"
+                    placeholder="First Name"
+                  />
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-sm-3 col-form-label">
-                  Last Name
-                </label>
+                <label class="col-sm-3 col-form-label"> Last Name </label>
                 <div class="col-sm-8">
-                  <input type="text" id="LastName" name="LastName" formControlName="LastName" class="form-control"
-                    placeholder="Last Name">
+                  <input
+                    type="text"
+                    id="LastName"
+                    name="LastName"
+                    formControlName="LastName"
+                    class="form-control"
+                    placeholder="Last Name"
+                  />
                 </div>
               </div>
               <div class="form-group row">
@@ -65,12 +109,23 @@
                 <div class="col-md-8 chk-dv p-0">
                   <label>
                     Male:
-                    <input type="checkbox" id="male" class="chkbox mr-2 ml-2" value="male" checked="checked" />
+                    <input
+                      type="checkbox"
+                      id="male"
+                      class="chkbox mr-2 ml-2"
+                      value="male"
+                      checked="checked"
+                    />
                   </label>
 
                   <label>
                     Female:
-                    <input type="checkbox" id="female" value="female" class="chkbox ml-2" />
+                    <input
+                      type="checkbox"
+                      id="female"
+                      value="female"
+                      class="chkbox ml-2"
+                    />
                   </label>
                 </div>
               </div>
@@ -80,10 +135,22 @@
                 </label>
                 <div class="col-sm-8">
                   <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob" formControlName="Dob"
-                      ngbDatepicker #d="ngbDatepicker" [(ngModel)]="dateModel">
+                    <input
+                      class="form-control"
+                      placeholder="yyyy-mm-dd"
+                      id="Dob"
+                      name="Dob"
+                      formControlName="Dob"
+                      ngbDatepicker
+                      #d="ngbDatepicker"
+                      [(ngModel)]="dateModel"
+                    />
                     <div class="input-group-append">
-                      <button class="btn btn-outline-secondary calendar btn-s" (click)="d.toggle()" type="button">
+                      <button
+                        class="btn btn-outline-secondary calendar btn-s"
+                        (click)="d.toggle()"
+                        type="button"
+                      >
                         <i class="far fa-calendar-alt"></i>
                       </button>
                     </div>
@@ -92,36 +159,59 @@
               </div>
               <div class="form-group" *ngIf="IsFaculty">
                 <div class="col-md-12 col-sm-12 row">
-                  <label class="col-sm-3 col-form-label">
-                    Class
-                  </label>
+                  <label class="col-sm-3 col-form-label"> Class </label>
                   <div class="col-md-8 d-flex p-0">
                     <div class="col-md-5 pr-0">
-                      <select class="form-control" (change)="EnableSection()" formControlName="Class" id="Class"
-                        name="Class">
+                      <select
+                        class="form-control"
+                        (change)="EnableSection()"
+                        formControlName="Class"
+                        id="Class"
+                        name="Class"
+                      >
                         <option value="">Choose Class</option>
-                        <option *ngFor="let item of Classes" [value]="item">{{item}}</option>
+                        <option *ngFor="let item of Classes" [value]="item">
+                          {{ item }}
+                        </option>
                       </select>
                     </div>
                     <label class="col-sm-3 col-form-label">Section</label>
                     <div class="col-md-5">
-                      <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailUid"
-                        id="section" name="ClassDetailUid">
+                      <select
+                        class="form-control"
+                        [disabled]="IsEnableSection"
+                        formControlName="ClassDetailUid"
+                        id="section"
+                        name="ClassDetailUid"
+                      >
                         <option value="">Section</option>
-                        <option *ngFor="let item of Sections" [value]="item.ClassDetailUid">{{item.Section}}</option>
+                        <option
+                          *ngFor="let item of Sections"
+                          [value]="item.ClassDetailUid"
+                        >
+                          {{ item.Section }}
+                        </option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row" *ngIf="!IsFaculty">
-                <label class="col-sm-3 col-form-label">
-                  Staff Role Name
-                </label>
+                <label class="col-sm-3 col-form-label"> Staff Role Name </label>
                 <div class="col-md-8">
-                  <select class="form-control" formControlName="Designation" name="Designation" id="Designation">
+                  <select
+                    class="form-control"
+                    formControlName="Designation"
+                    name="Designation"
+                    id="Designation"
+                  >
                     <option value="">Choose Staff Role</option>
-                    <option *ngFor="let item of FacultyRoles" [value]="item.RoleName">{{item.RoleName}}</option>
+                    <option
+                      *ngFor="let item of FacultyRoles"
+                      [value]="item.RoleName"
+                    >
+                      {{ item.RoleName }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -134,7 +224,9 @@
       <div class="col-md-6 col-xs-12 p-0 pr-1">
         <div class="x_panel pb-0">
           <div class="x_title">
-            <h2 class="StepTitle">Contact information<small>Personal information.</small></h2>
+            <h2 class="StepTitle">
+              Contact information<small>Personal information.</small>
+            </h2>
             <div class="clearfix"></div>
           </div>
           <div class="section-card">
@@ -143,26 +235,40 @@
                 Mobile no. <span class="required">*</span>
               </label>
               <div class="col-sm-8 col ibox">
-                <input mobile class="form-control" formControlName="MobileNumber" name="MobileNumber" id="MobileNumber"
-                  placeholder="Mobile No.#">
+                <input
+                  mobile
+                  class="form-control"
+                  formControlName="MobileNumber"
+                  name="MobileNumber"
+                  id="MobileNumber"
+                  placeholder="Mobile No.#"
+                />
                 <i class="fa fa-user"></i>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">
-                Alternet no.
-              </label>
+              <label class="col-sm-3 col-form-label"> Alternet no. </label>
               <div class="col-sm-8">
-                <input type="text" id="AlternetNumber" formControlName="AlternetNumber" name="AlternetNumber"
-                  placeholder="Alternet No.#" class="form-control">
+                <input
+                  type="text"
+                  id="AlternetNumber"
+                  formControlName="AlternetNumber"
+                  name="AlternetNumber"
+                  placeholder="Alternet No.#"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">
-                Email Id
-              </label>
+              <label class="col-sm-3 col-form-label"> Email Id </label>
               <div class="col-sm-8">
-                <input id="Email" class="form-control" formControlName="Email" name="Email" placeholder="Email Id">
+                <input
+                  id="Email"
+                  class="form-control"
+                  formControlName="Email"
+                  name="Email"
+                  placeholder="Email Id"
+                />
               </div>
             </div>
             <div class="form-group row">
@@ -170,16 +276,27 @@
                 Full address <span class="required">*</span>
               </label>
               <div class="col-sm-8">
-                <textarea id="Address" rows="3" class="form-control muted" formControlName="Address" name="Address"
-                  placeholder="Full Address" type="text" style="resize: none;"></textarea>
+                <textarea
+                  id="Address"
+                  rows="3"
+                  class="form-control muted"
+                  formControlName="Address"
+                  name="Address"
+                  placeholder="Full Address"
+                  type="text"
+                  style="resize: none"
+                ></textarea>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">
-                State
-              </label>
+              <label class="col-sm-3 col-form-label"> State </label>
               <div class="col-sm-8">
-                <select id="State" class="form-control" name="State" formControlName="State">
+                <select
+                  id="State"
+                  class="form-control"
+                  name="State"
+                  formControlName="State"
+                >
                   <option selected="selected" value="">Select state</option>
                   <option value="Bihar">Bihar</option>
                   <option value="West Bangal">West Bangal</option>
@@ -190,11 +307,14 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="city" class="col-sm-3 col-form-label">
-                City
-              </label>
+              <label for="city" class="col-sm-3 col-form-label"> City </label>
               <div class="col-sm-8">
-                <select id="City" class="form-control" name="City" formControlName="City">
+                <select
+                  id="City"
+                  class="form-control"
+                  name="City"
+                  formControlName="City"
+                >
                   <option selected="selected" value="">Select city</option>
                   <option value="Bihar">Bihar</option>
                   <option value="West Bangal">West Bangal</option>
@@ -209,8 +329,14 @@
                 Pincode <span class="required">*</span>
               </label>
               <div class="col-sm-8">
-                <input number="6" placeholder="Pincode" class="form-control" formControlName="Pincode" name="Pincode"
-                  id="Pincode">
+                <input
+                  number="6"
+                  placeholder="Pincode"
+                  class="form-control"
+                  formControlName="Pincode"
+                  name="Pincode"
+                  id="Pincode"
+                />
               </div>
             </div>
           </div>
@@ -219,7 +345,9 @@
       <div class="col-md-6 col-xs-12 p-0 pl-1">
         <div class="x_panel pb-0">
           <div class="x_title">
-            <h2 class="StepTitle">Higest Qualification<small>Qualification information.</small></h2>
+            <h2 class="StepTitle">
+              Higest Qualification<small>Qualification information.</small>
+            </h2>
             <div class="clearfix"></div>
           </div>
           <div class="section-card">
@@ -228,26 +356,40 @@
                 University
               </label>
               <div class="col-sm-8">
-                <input type="text" formControlName="SchoolUniversityName" name="SchoolUniversityName"
-                  id="SchoolUniversityName" placeholder="University/School Name" class="form-control">
+                <input
+                  type="text"
+                  formControlName="SchoolUniversityName"
+                  name="SchoolUniversityName"
+                  id="SchoolUniversityName"
+                  placeholder="University/School Name"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">
-                Degree
-              </label>
+              <label class="col-sm-3 col-form-label"> Degree </label>
               <div class="col-sm-8">
-                <input type="text" id="DegreeName" formControlName="DegreeName" name="DegreeName" placeholder="Degree"
-                  ng-model="UserData.DegreeName" class="form-control">
+                <input
+                  type="text"
+                  id="DegreeName"
+                  formControlName="DegreeName"
+                  name="DegreeName"
+                  placeholder="Degree"
+                  ng-model="UserData.DegreeName"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="form-group row">
-              <label for="Grade" class="col-sm-3 col-form-label">
-                Grade
-              </label>
+              <label for="Grade" class="col-sm-3 col-form-label"> Grade </label>
               <div class="col-sm-8">
-                <input id="Grade" class="form-control" formControlName="Grade" name="Grade"
-                  placeholder="Grade (if any)">
+                <input
+                  id="Grade"
+                  class="form-control"
+                  formControlName="Grade"
+                  name="Grade"
+                  placeholder="Grade (if any)"
+                />
               </div>
             </div>
             <div class="form-group row">
@@ -255,18 +397,25 @@
                 Marks
               </label>
               <div class="col-sm-8">
-                <input id="MarksObtain" class="form-control" formControlName="MarksObtain" name="MarksObtain"
-                  placeholder="Marks in % (if any)">
+                <input
+                  id="MarksObtain"
+                  class="form-control"
+                  formControlName="MarksObtain"
+                  name="MarksObtain"
+                  placeholder="Marks in % (if any)"
+                />
               </div>
             </div>
             <div class="form-group row" *ngIf="IsFaculty">
-              <label class="col-sm-3 col-form-label">
-                Exprience
-              </label>
+              <label class="col-sm-3 col-form-label"> Exprience </label>
               <div class="col-sm-8 d-md-flex">
                 <div class="col-6 p-0 pr-1">
-                  <select class="form-control" formControlName="ExprienceInYear" id="ExprienceInYear"
-                    name="ExprienceInYear">
+                  <select
+                    class="form-control"
+                    formControlName="ExprienceInYear"
+                    id="ExprienceInYear"
+                    name="ExprienceInYear"
+                  >
                     <option selected="selected" value="">In Year</option>
                     <option value="0">0 Year</option>
                     <option value="1">1 Year</option>
@@ -282,8 +431,12 @@
                   </select>
                 </div>
                 <div class="col-6 p-0 pr-1">
-                  <select class="form-control" formControlName="ExperienceInMonth" id="ExperienceInMonth"
-                    name="ExperienceInMonth">
+                  <select
+                    class="form-control"
+                    formControlName="ExperienceInMonth"
+                    id="ExperienceInMonth"
+                    name="ExperienceInMonth"
+                  >
                     <option selected="selected" value="">In Month</option>
                     <option value="0">0 Month</option>
                     <option value="1">1 Month</option>
@@ -301,19 +454,20 @@
               </div>
             </div>
             <div class="form-group row" *ngIf="IsFaculty">
-              <label class="col-sm-3 col-form-label">
-                Subject
-              </label>
+              <label class="col-sm-3 col-form-label"> Subject </label>
               <div class="col-sm-8">
-                <app-iautocomplete id="Subject" [Data]="SubjectDetail" [Defaultvalue]="DefaultSubject"
-                  (OnSelect)="OnSubjectSelected($event)" [Placeholder]="'Subject'">
+                <app-iautocomplete
+                  id="Subject"
+                  [Data]="SubjectDetail"
+                  [Defaultvalue]="DefaultSubject"
+                  (OnSelect)="OnSubjectSelected($event)"
+                  [Placeholder]="'Subject'"
+                >
                 </app-iautocomplete>
               </div>
             </div>
             <div class="form-group row" *ngIf="IsFaculty">
-              <label class="col-sm-3 col-form-label">
-                Type
-              </label>
+              <label class="col-sm-3 col-form-label"> Type </label>
               <div class="col-sm-8">
                 <select id="type" class="form-control" name="type">
                   <option selected="selected" value="">Select Type</option>
@@ -369,12 +523,20 @@
     <div class="col-md-12 p-0">
       <div class="x_panel pb-0">
         <div class="x_title position-relative">
-          <h2 class="StepTitle">Document proof<small>Upload candidate proof of documents.</small></h2>
+          <h2 class="StepTitle">
+            Document proof<small>Upload candidate proof of documents.</small>
+          </h2>
           <a class="upload-btn" (click)="OpenBrowseOptions()">
             <i class="fas fa-plus-circle"></i>
             Upload Doc
           </a>
-          <input class="d-none" type="file" multiple (change)="GetDocumentFile($event)" id="document-btn">
+          <input
+            class="d-none"
+            type="file"
+            multiple
+            (change)="GetDocumentFile($event)"
+            id="document-btn"
+          />
           <div class="clearfix"></div>
         </div>
         <div class="section-card">
@@ -382,10 +544,20 @@
             <ng-container *ngFor="let img of DocumentImageObjects">
               <div class="img-dv">
                 <div class="">
-                  <img [src]="img.FilePath" (click)="EnlargeItem(img.ActualPath)" alt="Document Image" class="doc-img">
+                  <img
+                    [src]="img.FilePath"
+                    (click)="EnlargeItem(img.ActualPath)"
+                    alt="Document Image"
+                    class="doc-img"
+                  />
                 </div>
                 <div class="col-12 mt-2 text-dark">
-                  <a class="del-anc" [attr.fileOn]="img.FileOn" (click)="RemoveItem(img.FileUid)" [attr.uid]="img.FileUid">
+                  <a
+                    class="del-anc"
+                    [attr.fileOn]="img.FileOn"
+                    (click)="RemoveItem(img.FileUid)"
+                    [attr.uid]="img.FileUid"
+                  >
                     <i class="fas fa-trash-alt pr-1"></i>
                     Delete
                   </a>

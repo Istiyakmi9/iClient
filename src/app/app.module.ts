@@ -18,10 +18,11 @@ import { NumberDirective } from "src/providers/directives/Number";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { UpperAndLowerCaseDirective } from "src/providers/directives/Upper";
 import { CalanderFormatter } from "src/providers/CalanderFormatter";
-import { AdminModule } from "./admin/admin.module";
+// import { AdminModule } from "./admin/admin.module";
 import { LoginComponent } from "./login/login.component";
 import { LayoutComponent } from "./layout/layout.component";
 import { SharedModule } from "./shared/shared.module";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -40,11 +41,11 @@ import { SharedModule } from "./shared/shared.module";
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-    AdminModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
