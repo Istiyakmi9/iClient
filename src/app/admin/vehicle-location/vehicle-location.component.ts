@@ -4,7 +4,7 @@ import { MapInfoWindow, MapMarker, GoogleMap } from "@angular/google-maps";
 @Component({
   selector: "app-vehicle-location",
   templateUrl: "./vehicle-location.component.html",
-  styleUrls: ["./vehicle-location.component.sass"],
+  styleUrls: ["./vehicle-location.component.scss"],
 })
 export class VehicleLocationComponent implements OnInit {
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
@@ -21,6 +21,7 @@ export class VehicleLocationComponent implements OnInit {
     minZoom: 8,
   };
   markers = [];
+  currLoc: google.maps.LatLngLiteral;
   infoContent = "";
 
   ngOnInit() {
@@ -29,6 +30,22 @@ export class VehicleLocationComponent implements OnInit {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
+      this.currLoc = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      this.markers.push({
+        position: {
+          lat: this.center.lat,
+          lng: this.center.lng,
+        },
+        label: {
+          color: "white",
+          text: "Your Location",
+        },
+        title: "Current Location ",
+        info: "Current Location",
+      });
     });
   }
 
@@ -42,10 +59,25 @@ export class VehicleLocationComponent implements OnInit {
 
   click(event: google.maps.MouseEvent) {
     console.log(event);
+    this.markers.push({
+      position: {
+        lat: event.latLng.toJSON().lat,
+        lng: event.latLng.toJSON().lng,
+      },
+      label: {
+        color: "white",
+        text: "Marker label " + this.markers.length,
+      },
+      title: "Marker title " + this.markers.length,
+      options: {
+        animation: google.maps.Animation.BOUNCE,
+      },
+    });
   }
 
   logCenter() {
-    console.log(JSON.stringify(this.map.getCenter()));
+    console.log(this.map.getCenter().toJSON());
+    this.map.panTo(this.currLoc);
   }
 
   addMarker() {
@@ -55,7 +87,7 @@ export class VehicleLocationComponent implements OnInit {
         lng: this.center.lng + ((Math.random() - 0.5) * 2) / 10,
       },
       label: {
-        color: "red",
+        color: "white",
         text: "Marker label " + (this.markers.length + 1),
       },
       title: "Marker title " + (this.markers.length + 1),

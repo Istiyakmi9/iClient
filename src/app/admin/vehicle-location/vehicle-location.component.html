@@ -1,26 +1,14 @@
-<google-map
-  height="500px"
-  width="100%"
-  [zoom]="zoom"
-  [center]="center"
-  [options]="options"
-  (mapClick)="click($event)"
->
-  <map-marker
-    #markerElem
-    *ngFor="let marker of markers"
-    [position]="marker.position"
-    [label]="marker.label"
-    [title]="marker.title"
-    [options]="marker.options"
-    (mapClick)="openInfo(markerElem, marker.info)"
-  >
-  </map-marker>
-
-  <map-info-window>{{ infoContent }}</map-info-window>
-</google-map>
-
-<button (click)="zoomIn()">Zoom in</button>
-<button (click)="zoomOut()">Zoom out</button>
-<button (click)="logCenter()">Log center</button>
-<button (click)="addMarker()">Add marker</button>
+<div>
+  <google-map height="89vh" width="100%" [zoom]="zoom" [center]="center" [options]="options" (mapClick)="click($event)">
+    <map-marker #markerElem *ngFor="let marker of markers" [position]="marker.position" [label]="marker.label"
+      [title]="marker.title" [options]="marker.options" (mapClick)="openInfo(markerElem, marker.info)">
+    </map-marker>
+    <map-info-window>{{ infoContent }}</map-info-window>
+  </google-map>
+  <div class="buttons">
+    <button><i class="fas fa-plus" (click)="zoomIn()"></i></button>
+    <button><i class="fas fa-minus" (click)="zoomOut()"></i></button>
+    <button><i class="fas fa-map-marker-alt" (click)="logCenter()"></i></button>
+    <button><i class="fas fa-map-pin" (click)="addMarker()"></i></button>
+  </div>
+</div>
