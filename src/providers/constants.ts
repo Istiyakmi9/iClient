@@ -33,6 +33,7 @@ export const ManageUser = "manageuser";
 export const Settings = "settings";
 export const AttendanceReport = "attendencereport";
 export const Login = "login";
+export const Syllabus = "syllabus";
 
 export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";

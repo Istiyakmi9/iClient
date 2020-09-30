@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { GoogleMapsModule } from "@angular/google-maps";
 import { CommonModule } from "@angular/common";
 import { AdminRoutingModule } from "./admin.routing.module";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -35,6 +36,10 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CalendarComponent } from "../shared/calendar/calendar.component";
 import { SharedModule } from "../shared/shared.module";
 import { NumberSufix } from "src/providers/filters/NumberSufix";
+import { SyllabusComponent } from "./syllabus/syllabus.component";
+import { AssignmentComponent } from "./assignment/assignment.component";
+import { CalendarModule, DateAdapter } from "angular-calendar";
+import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
 
 @NgModule({
   declarations: [
@@ -70,6 +75,8 @@ import { NumberSufix } from "src/providers/filters/NumberSufix";
     ManageexamdetailComponent,
     ViewResultsComponent,
     NumberSufix,
+    SyllabusComponent,
+    AssignmentComponent,
   ],
   imports: [
     CommonModule,
@@ -78,6 +85,11 @@ import { NumberSufix } from "src/providers/filters/NumberSufix";
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    GoogleMapsModule,
   ],
 })
 export class AdminModule {}

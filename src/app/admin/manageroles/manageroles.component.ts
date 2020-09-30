@@ -187,6 +187,12 @@ export class ManagerolesComponent implements OnInit {
   }
 
   ToggleItem(MenuName: string) {
+    let RolesAndMenu = this.MenuAndRoles.get("MenuAndRolesData").value;
+    let CurrentItem = RolesAndMenu.filter((x) => x.MenuName === MenuName);
+    if (CurrentItem.length > 0) {
+      CurrentItem[ZerothIndex].IsActive = !CurrentItem[ZerothIndex].IsActive;
+    }
+
     let Flag = false;
     let $e = $(event.currentTarget).find('div[name="slider"]');
     if ($e.hasClass("off")) {
@@ -195,16 +201,17 @@ export class ManagerolesComponent implements OnInit {
     } else {
       $e.addClass("off");
     }
-    if (this.ActiveMenus.filter((x) => x.Name === MenuName).length > 0) {
-      if (!Flag) {
-        this.ActiveMenus = this.ActiveMenus.filter((x) => x.Name !== MenuName);
-      }
-    } else {
-      this.ActiveMenus.push({
-        Name: MenuName,
-        PermissionLevel: 1,
-      });
-    }
+
+    // if (this.ActiveMenus.filter((x) => x.Name === MenuName).length > 0) {
+    //   if (!Flag) {
+    //     this.ActiveMenus = this.ActiveMenus.filter((x) => x.Name !== MenuName);
+    //   }
+    // } else {
+    //   this.ActiveMenus.push({
+    //     Name: MenuName,
+    //     PermissionLevel: 1,
+    //   });
+    // }
   }
 
   ChangePermission(MenuName: string) {
@@ -237,52 +244,54 @@ export class ManagerolesComponent implements OnInit {
     if (this.IsNew) {
       if (this.RoleName === null || this.RoleName === "") {
         this.commonService.ShowToast("Role name is mandatory.");
+        return;
       }
     } else if (!IsValidString(this.AccessLevelUid)) {
       this.commonService.ShowToast("Please select and modify any role.");
+      return;
     }
-    if (this.ActiveMenus.length > 0) {
-      let MenuControls = this.MenuAndRoles.get("MenuAndRolesData") as FormArray;
-      let MenuControlItem = [];
-      let Item: FormControl = null;
-      let index = 0;
-      while (index < this.ActiveMenus.length) {
-        MenuControlItem = MenuControls.controls.filter(
-          (x) => x.value.MenuName === this.ActiveMenus[index].Name
-        );
-        if (MenuControlItem.length > 0) {
-          Item = MenuControlItem[ZerothIndex];
-          Item.get("PermissionLevel").setValue(
-            this.ActiveMenus[index].PermissionLevel
-          );
-          Item.get("IsActive").setValue(true);
-        }
-        index++;
-      }
+    // if (this.ActiveMenus.length > 0) {
+    // let MenuControls = this.MenuAndRoles.get("MenuAndRolesData") as FormArray;
+    // let MenuControlItem = [];
+    // let Item: FormControl = null;
+    // let index = 0;
+    // while (index < this.ActiveMenus.length) {
+    //   MenuControlItem = MenuControls.controls.filter(
+    //     (x) => x.value.MenuName === this.ActiveMenus[index].Name
+    //   );
+    //   if (MenuControlItem.length > 0) {
+    //     Item = MenuControlItem[ZerothIndex];
+    //     Item.get("PermissionLevel").setValue(
+    //       this.ActiveMenus[index].PermissionLevel
+    //     );
+    //     Item.get("IsActive").setValue(true);
+    //   }
+    //   index++;
+    // }
 
-      let ServerObject: MenuAndRoles = {
-        AccessLevelUid: this.AccessLevelUid,
-        AccessCode: 0,
-        RoleName: this.RoleName,
-        RoleDescription: this.RoleDesc,
-        MenuAndRolesModal: this.MenuAndRoles.get("MenuAndRolesData").value,
-      };
+    let ServerObject: MenuAndRoles = {
+      AccessLevelUid: this.AccessLevelUid,
+      AccessCode: 0,
+      RoleName: this.RoleName,
+      RoleDescription: this.RoleDesc,
+      MenuAndRolesModal: this.MenuAndRoles.get("MenuAndRolesData").value,
+    };
 
-      this.http
-        .post("AdminMaster/AddUpdateRoles", ServerObject)
-        .then((result) => {
-          if (IsValidType(result)) {
-            this.commonService.ShowToast(SuccessMessage);
-          } else {
-            this.commonService.ShowToast(ServerError);
-          }
-        })
-        .catch((err) => {
+    this.http
+      .post("AdminMaster/AddUpdateRoles", ServerObject)
+      .then((result) => {
+        if (IsValidType(result)) {
+          this.commonService.ShowToast(SuccessMessage);
+        } else {
           this.commonService.ShowToast(ServerError);
-        });
-    } else {
-      this.commonService.ShowToast("No menu item selected.");
-    }
+        }
+      })
+      .catch((err) => {
+        this.commonService.ShowToast(ServerError);
+      });
+    // } else {
+    //   this.commonService.ShowToast("No menu item selected.");
+    // }
   }
 }
 

@@ -1,4 +1,4 @@
-.login_form {
+/*.login_form {
   z-index: 22;
 }
 
@@ -104,4 +104,153 @@
   background-color: #fff;
   border: 1px solid #a878af;
   outline: none;
+}
+*/
+
+//Custom Variable
+$my-orange: rgb(255, 100, 0);
+
+//Page Styling
+.page {
+  display: block;
+  width: 100%;
+}
+
+.wrap-left,
+.wrap-right {
+  position: relative;
+  justify-content: center;
+}
+
+.wrap-left {
+  top: 26%;
+}
+
+.wrap-right {
+  top: 18%;
+}
+
+//Individual Column Styling
+.row {
+  height: 100vh;
+}
+
+.logo-title {
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+  border-left: 14px solid #444;
+  display: inline;
+  padding-left: 10px;
+}
+
+.decoration {
+  text-decoration: none;
+}
+
+.logo-title > span {
+  color: #444;
+}
+
+.left {
+  background: rgba(255, 175, 75, 1);
+  background: -moz-linear-gradient(
+    top,
+    rgba(255, 175, 75, 1) 0%,
+    rgba(168, 108, 36, 1) 100%
+  );
+  background: -webkit-gradient(
+    left top,
+    left bottom,
+    color-stop(0%, rgba(255, 175, 75, 1)),
+    color-stop(100%, rgba(168, 108, 36, 1))
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(255, 175, 75, 1) 0%,
+    rgba(168, 108, 36, 1) 100%
+  );
+  background: -o-linear-gradient(
+    top,
+    rgba(255, 175, 75, 1) 0%,
+    rgba(168, 108, 36, 1) 100%
+  );
+  background: -ms-linear-gradient(
+    top,
+    rgba(255, 175, 75, 1) 0%,
+    rgba(168, 108, 36, 1) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 175, 75, 1) 0%,
+    rgba(168, 108, 36, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#a86c24', GradientType=0 );
+}
+
+.right {
+  background: #101010;
+}
+
+//Header and text Styling
+.header-left {
+  font-weight: 600;
+  font-size: xxx-large;
+}
+
+.header-right {
+  font-weight: 600;
+  font-size: xxx-large;
+  color: $my-orange;
+}
+
+//Button Styling
+.btn {
+  width: 200px;
+  height: 53px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: inherit;
+  background: $my-orange;
+}
+
+.btn-left {
+  border: white 2px solid;
+  margin-top: 2rem;
+}
+
+//Images
+//BottomHalf Logo
+img {
+  width: 150px;
+}
+
+.bh-logo {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  color: white;
+}
+
+//Icons
+i {
+  color: #bbb;
+}
+
+.icons {
+  width: 20%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+// BottomHalf Signature
+.footer {
+  position: absolute;
+  bottom: 0px;
+  right: 25px;
+  color: darkcyan;
+  text-decoration: underline;
+  cursor: pointer;
 }

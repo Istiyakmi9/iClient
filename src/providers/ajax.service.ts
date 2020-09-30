@@ -14,7 +14,7 @@ import {
 import { iNavigation } from "./iNavigation";
 import { Observable } from "rxjs";
 
-const TokenName = "x-request-token";
+const TokenName = "Authorization";
 @Injectable()
 export class AjaxService {
   baseUrl: string = "";
@@ -29,7 +29,7 @@ export class AjaxService {
   }
 
   public GetImageBasePath() {
-    let ImageBaseUrl = this.baseUrl.replace("api", "UploadedFiles");
+    let ImageBaseUrl = this.baseUrl.replace("api", "Files");
     return ImageBaseUrl;
   }
 
@@ -43,7 +43,7 @@ export class AjaxService {
     const headers = new HttpHeaders({
       "Content-Type": "application/json; charset=utf-8",
       Accept: "application/json",
-      "x-request-token": this.getToken(),
+      Authorization: this.getToken(),
     });
     return headers;
   }
@@ -52,14 +52,14 @@ export class AjaxService {
     const headers = new HttpHeaders({
       "Content-Type": "application/json; charset=ISO-8859-1",
       Accept: "application/json",
-      "x-request-token": this.getToken(),
+      Authorization: this.getToken(),
     });
     return headers;
   }
 
   UploadRequestHeader(): any {
     const headers = new HttpHeaders({
-      "x-request-token": this.getToken(),
+      Authorization: this.getToken(),
     });
     return headers;
   }
@@ -193,7 +193,7 @@ export class AjaxService {
               this.commonService.ShowToast(
                 "Your session expired. Please login again."
               );
-              this.nav.navigate("/", "");
+              this.nav.navigate("/login", "");
             } else if (error.status === 404) {
               this.commonService.ShowToast("Requested page not found.");
               reject(error);
@@ -272,7 +272,7 @@ export class AjaxService {
               }
               this.commonService.HideLoaderByAjax();
             },
-            (error) => {
+            (error: HttpResponse<any>) => {
               this.commonService.HideLoaderByAjax();
               switch (error.status) {
                 case 401:
@@ -280,7 +280,7 @@ export class AjaxService {
                   this.commonService.ShowToast(
                     "Your session expired. Please login again."
                   );
-                  this.nav.navigate("/", "");
+                  this.nav.navigate("/login", "");
                   break;
 
                 case 500:
@@ -294,9 +294,9 @@ export class AjaxService {
 
                 default:
                   this.commonService.ShowToast(
-                    "Invalid or Token not found. Please login or contact to admin."
+                    "Got internal error. Please contact to admin."
                   );
-                  this.nav.navigate("/", "");
+                  this.nav.navigate("/login", "");
               }
             }
           );
@@ -371,7 +371,7 @@ export class AjaxService {
           if (cookieData[index].indexOf(TokenName) != -1) {
             TokenKey = cookieData[index];
             if (TokenKey.split("=").length > 0) {
-              Token = TokenKey.split("=")[1];
+              Token = "Bearer " + TokenKey.split("=")[1];
               break;
             }
           }
@@ -385,10 +385,15 @@ export class AjaxService {
   setCookies(token: string) {
     if (token !== null && token !== "") {
       var now = new Date();
-      var expirymin = 0.5 * 60 * 1000;
+      var expirymin = 20 * 60 * 1000;
       now.setTime(now.getTime() + expirymin);
       document.cookie = TokenName + "=" + token + ";";
       document.cookie = "expires=" + now.toUTCString() + ";";
     }
   }
+}
+
+export function resetCookies() {
+  let token: string = "";
+  document.cookie = TokenName + "=" + token + ";";
 }

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/css/all.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 :root {
   --input-color: #bbb;
@@ -109,6 +110,12 @@ button {
 }
 
 .btn-s {
+  height: 34px !important;
+  line-height: 1 !important;
+}
+
+.btn,
+input[type="text"] {
   height: 34px !important;
   line-height: 1 !important;
 }

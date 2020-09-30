@@ -46,7 +46,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
     private storage: ApplicationStorage,
     private nav: iNavigation
   ) {
-    this.ImagePath = `${this.http.GetImageBasePath()}Students`;
+    this.ImagePath = `${this.http.GetImageBasePath()}`;
     this.ClassDetail = this.storage.GetClassDetail();
     this.StudentImage = DefaultUserImage;
   }
@@ -100,12 +100,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
 
   BindData(ResponseStudentData: StudentModal) {
     this.Classes = this.storage.GetClasses();
-    this.StudentImage =
-      this.ImagePath +
-      "/" +
-      ResponseStudentData.FatherMobileno +
-      "/" +
-      ResponseStudentData.ImageUrl;
+    this.StudentImage = `${this.ImagePath}${ResponseStudentData.FilePath}/${ResponseStudentData.ImageUrl}`;
     this.StudentForm = this.fb.group({
       studentUid: new FormControl(ResponseStudentData.StudentUid),
       schooltenentId: new FormControl(),
@@ -187,13 +182,17 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
       ParentRecordExist: new FormControl(
         IsValidBoolean(ResponseStudentData.ParentRecordExist)
       ),
-      ClassDetailUid: new FormControl(ResponseStudentData.ClassDetailUid),
+      ClassDetailUid: new FormControl(ResponseStudentData.ClassDetailId),
       MobileNumbers: new FormControl(ResponseStudentData.MobileNumbers),
       EmailIds: new FormControl(ResponseStudentData.EmailIds),
       IsQuickRegistration: new FormControl(
         IsValidBoolean(ResponseStudentData.IsQuickRegistration)
       ),
       ProfileImageName: new FormControl(ResponseStudentData.ProfileImageName),
+      FileUid: new FormControl(ResponseStudentData.FileUid),
+      FilePath: new FormControl(ResponseStudentData.FilePath),
+      FileName: new FormControl(ResponseStudentData.FileName),
+      FileExtension: new FormControl(ResponseStudentData.FileExtension),
     });
     this.BindSections(ResponseStudentData.Class);
     this.IsReady = true;
@@ -264,6 +263,10 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
       EmailIds: new FormControl(""),
       IsQuickRegistration: new FormControl(false),
       ProfileImageName: new FormControl(""),
+      FileUid: new FormControl(""),
+      FilePath: new FormControl(""),
+      FileName: new FormControl(""),
+      FileExtension: new FormControl(""),
     });
     this.IsReady = true;
     this.ScrollTop();
@@ -412,7 +415,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         this.commonService.ShowToast("Please fill all red marked fields.");
       } else {
         let formData = new FormData();
-        formData.append("image", this.StudentImageType);
+        formData.append("profile", this.StudentImageType);
         let StudentObject = this.StudentForm.value;
         formData.append("studentObject", JSON.stringify(StudentObject));
 
@@ -568,9 +571,13 @@ class StudentModal {
   ExistingNumber: string = "";
   CreatedBy: string = "";
   ParentRecordExist: boolean = false;
-  ClassDetailUid: string = "";
+  ClassDetailId: string = "";
   MobileNumbers: string = "";
   EmailIds: string = "";
   IsQuickRegistration: boolean = false;
   ProfileImageName: string = "";
+  FileUid: string = "";
+  FilePath: string = "";
+  FileName: string = "";
+  FileExtension: string = "";
 }

@@ -1,106 +1,148 @@
-<div class="col-md-12">
-  <a class="hiddenanchor" id="signup"></a>
-  <a class="hiddenanchor" id="signin"></a>
-  <form class="login_wrapper" (submit)="UserLogin()" [formGroup]="LoginForm">
-    <div class="animate form login_form">
-      <section class="login_content">
-        <div>
-          <h1>Login Form</h1>
-          <span
-            style="color: red; display: none; margin-bottom: 10px"
-            id="errorMsg"
-            >Invalid username or password</span
-          >
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Email id or Modile no."
-              id="userid"
-              formControlName="UserId"
-            />
-            <input
-              type="password"
-              class="form-control mt-2"
-              placeholder="Password"
-              id="passwd"
-              formControlName="Password"
-            />
-          </div>
-          <div class="mt-4">
-            <button class="btn btn-outline-dark mr-2" type="submit">
-              Log in
-            </button>
-            <a class="reset_pass" href="#">Lost your password?</a>
-          </div>
-          <div class="clearfix"></div>
-          <div class="separator">
-            <p class="change_link">
-              New to site?
-              <a href="#signup" class="to_register"> Create Account </a>
-            </p>
-            <div class="clearfix"></div>
-            <br />
-            <div>
-              <h1><i class="fa fa-paw"></i> {{ schoolName }}</h1>
-              <p>
-                ©2016 All Rights Reserved. {{ schoolName }} is a Bootstrap 3
-                template. Privacy and Terms
-              </p>
-            </div>
-          </div>
+<div>
+  <div class="page">
+    <div class="row m-0">
+      <div class="left col-sm-6 text-center">
+        <div class="wrap-left">
+          <a href="http://www.bottomhalf.in" target="_blank" class="decoration">
+            <div class="logo-title">Bottom <span>Half</span></div>
+          </a>
+
+          <h1 class="text-white header-left">Welcome Back!</h1>
+          <p class="text-white p-left">
+            To keep connected with us please<br />
+            login with your personal info
+          </p>
+          <button class="btn btn-left text-white">SIGN IN</button>
         </div>
-      </section>
-    </div>
-    <div id="register" class="animate form registration_form">
-      <section class="login_content d-none">
-        <form>
-          <h1>Create Account</h1>
-          <div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Username"
-              required=""
-            />
+      </div>
+      <div class="right col-sm-6 text-center">
+        <div class="wrap-right">
+          <h1 class="header-right">Create Account</h1>
+          <div class="icons">
+            <a href="#">
+              <i class="fab fa-facebook fa-2x"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-google-plus fa-2x"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-circle fa-linkedin fa-2x"></i>
+            </a>
           </div>
-          <div>
-            <input
-              type="email"
-              class="form-control"
-              placeholder="Email"
-              required=""
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              required=""
-            />
-          </div>
-          <div>
-            <a class="btn btn-default submit">Submit</a>
-          </div>
-          <div class="clearfix"></div>
-          <div class="separator">
-            <p class="change_link">
-              Already a member ?
-              <a href="#signin" class="to_register"> Log in </a>
-            </p>
-            <div class="clearfix"></div>
-            <br />
-            <div>
-              <h1><i class="fa fa-paw"></i> {{ schoolName }}</h1>
-              <p>
-                ©2016 All Rights Reserved. {{ schoolName }} is a Bootstrap 3
-                template. Privacy and Terms
-              </p>
+          <br />
+          <p class="text-white">or use your email for registration</p>
+          <br />
+          <form
+            class="login_wrapper"
+            (submit)="UserLogin()"
+            [formGroup]="LoginForm"
+          >
+            <div class="animate form login_form text-center">
+              <section class="login_content">
+                <div class="w-60 d-inline-block">
+                  <h1>Login Form</h1>
+                  <span
+                    style="color: red; display: none; margin-bottom: 10px"
+                    id="errorMsg"
+                    >Invalid username or password</span
+                  >
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Email id or Modile no."
+                      id="userid"
+                      formControlName="UserId"
+                    />
+                    <input
+                      type="password"
+                      class="form-control mt-2"
+                      placeholder="Password"
+                      id="passwd"
+                      formControlName="Password"
+                    />
+                  </div>
+                  <div class="mt-4">
+                    <button class="btn btn-outline-dark mr-2" type="submit">
+                      Log in
+                    </button>
+                    <a class="reset_pass" href="#">Lost your password?</a>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="separator">
+                    <p class="change_link mt-4 mb-0">
+                      New to site?
+                      <a href="#signup" class="to_register"> Create Account </a>
+                    </p>
+                    <div class="clearfix"></div>
+                    <div>
+                      <h1><i class="fa fa-paw"></i> {{ schoolName }}</h1>
+                      <p>
+                        ©2020 All Rights Reserved. {{ schoolName }} is a
+                        Bootstrap 3 template. Privacy and Terms
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
-          </div>
-        </form>
-      </section>
+            <div id="register" class="animate form registration_form">
+              <section class="login_content d-none">
+                <form>
+                  <h1>Create Account</h1>
+                  <div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Username"
+                      required=""
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email"
+                      required=""
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      required=""
+                    />
+                  </div>
+                  <div>
+                    <a class="btn btn-default submit">Submit</a>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="separator">
+                    <p class="change_link">
+                      Already a member ?
+                      <a href="#signin" class="to_register"> Log in </a>
+                    </p>
+                    <div class="clearfix"></div>
+                    <br />
+                    <div>
+                      <h1><i class="fa fa-paw"></i> {{ schoolName }}</h1>
+                      <p>
+                        ©2020 All Rights Reserved. {{ schoolName }} is a
+                        Bootstrap 3 template. Privacy and Terms
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              </section>
+            </div>
+          </form>
+          <button class="btn text-white">SIGN UP</button>
+        </div>
+        <a href="http://www.bottomhalf.in" target="_blank" class="footer"
+          >Powered by BottomHalf</a
+        >
+      </div>
     </div>
-  </form>
+  </div>
 </div>
