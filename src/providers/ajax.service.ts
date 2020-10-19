@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    //this.baseUrl = "http://localhost:5000/api/";
-    this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
+    this.baseUrl = "http://localhost:5000/api/";
+    //this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
   }
 
   public GetImageBasePath() {
@@ -90,7 +90,7 @@ export class AjaxService {
 
   delete(
     Url: string,
-    Param: string,
+    Param: any,
     IsLoaderRequired: boolean = true
   ): Promise<any> {
     return new Promise((resolve, reject) => {

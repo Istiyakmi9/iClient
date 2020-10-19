@@ -6,7 +6,7 @@
   width: 8px;
 }
 
-.dyn-body-item>div:last-child {
+.dyn-body-item > div:last-child {
   width: calc(100% - 45px);
 }
 
@@ -23,7 +23,6 @@
 .odd {
   background-color: #f9f9f9 !important;
 }
-
 
 //---------------------------- New default looking table ----------------------------------
 
@@ -50,7 +49,6 @@
     border: 1px solid #d9d9d9;
   }
 }
-
 
 .w-10 {
   width: 10% !important;
@@ -97,4 +95,11 @@ a.pagearrow.disable-btn {
   pointer-events: none;
   cursor: none;
   color: #d2c3c3;
+}
+
+.inline-content {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+  width: 100px !important;
 }

@@ -2,7 +2,7 @@
   <div class="x_panel">
     <div class="x_title">
       <p>
-        <a href="#/examresult" class="">
+        <a href="#/admin/examresult" class="">
           <u>View Result</u>
         </a>
       </p>
@@ -10,7 +10,7 @@
         <h2>Progress Report Page By Class</h2>
         <div class="clearfix"></div>
       </div>
-      <div class="col-md-12 p-0">
+      <div class="col-md-12 p-0" id="resultTable" #resultTable>
         <div class="border">
           <div class="col-12 mb-4">
             <div class="col-12 form-row border-bottom pt-2 pb-2">
@@ -18,7 +18,7 @@
                 <div>Progress report</div>
               </div>
               <div class="col col-4 text-right">
-                <button class="d-inline text-dark btn btn-outline-light btn-s">
+                <button class="d-inline text-dark btn btn-outline-light btn-s" (click)="convertToPdf()">
                   <i class="fas fa-print"></i>
                   Print
                 </button>

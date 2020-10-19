@@ -5,6 +5,7 @@ import { SearchModal } from "../student-report/student-report.component";
 import { AjaxService } from "src/providers/ajax.service";
 import {
   CommonService,
+  IsValidResponse,
   IsValidType,
 } from "src/providers/common-service/common.service";
 import { iNavigation } from "src/providers/iNavigation";
@@ -34,6 +35,8 @@ export class ViewClassesComponent implements OnInit {
   RoomNos: Array<IAutoCompleteModal>;
   ClassdetailView: Array<ClassdetailModal>;
   OriginalRoomNos: Array<IAutoCompleteModal>;
+  currentItem: ClassdetailModal;
+
   constructor(
     private http: AjaxService,
     private commonService: CommonService,
@@ -96,45 +99,49 @@ export class ViewClassesComponent implements OnInit {
       .post("AdminMaster/GetClassDetail", this.SearchQuery)
       .then((response) => {
         if (IsValidType(response.ResponseBody)) {
-          let Data = JSON.parse(response.ResponseBody);
-          if (IsValidType(Data["Table"]) && IsValidType(Data["Table1"])) {
-            if (IsValidType(Data["Table2"])) {
-              this.OriginalRoomNos = [];
-              let DataSet = Data["Table2"];
-              let index = 0;
-              while (index < DataSet.length) {
-                this.OriginalRoomNos.push({
-                  text:
-                    DataSet[index].RoomNo +
-                    "   [" +
-                    DataSet[index].RoomType +
-                    "]",
-                  value: DataSet[index].RoomUid,
-                });
-                index++;
-              }
-            }
-
-            this.RoomNos = this.OriginalRoomNos;
-
-            let TotalCount = Data["Table1"][ZerothIndex]["Total"];
-            this.GridData = {
-              rows: Data["Table"],
-              headers: ClassDetailColumn,
-              pageIndex: this.SearchQuery.PageIndex,
-              pageSize: this.SearchQuery.PageSize,
-              totalCount: TotalCount,
-            };
-            this.IsReady = true;
-          } else {
-            this.commonService.ShowToast(InvalidData);
-          }
+          this.BuildPage(response);
         } else {
           this.commonService.ShowToast(
             "Server error. Please contact to admin."
           );
         }
       });
+  }
+
+  BuildPage(response: any) {
+    let Data = JSON.parse(response.ResponseBody);
+    if (IsValidType(Data["Table"]) && IsValidType(Data["Table1"])) {
+      if (IsValidType(Data["Table2"])) {
+        this.OriginalRoomNos = [];
+        let DataSet = Data["Table2"];
+        let index = 0;
+        while (index < DataSet.length) {
+          this.OriginalRoomNos.push({
+            text:
+              DataSet[index].RoomNo +
+              "   [" +
+              DataSet[index].RoomType +
+              "]",
+            value: DataSet[index].RoomUid,
+          });
+          index++;
+        }
+      }
+
+      this.RoomNos = this.OriginalRoomNos;
+
+      let TotalCount = Data["Table1"][ZerothIndex]["Total"];
+      this.GridData = {
+        rows: Data["Table"],
+        headers: ClassDetailColumn,
+        pageIndex: this.SearchQuery.PageIndex,
+        pageSize: this.SearchQuery.PageSize,
+        totalCount: TotalCount,
+      };
+      this.IsReady = true;
+    } else {
+      this.commonService.ShowToast(InvalidData);
+    }
   }
 
   AddClassSection() {
@@ -219,7 +226,19 @@ export class ViewClassesComponent implements OnInit {
     }
   }
 
-  OnDelete($e: any) {}
+  OnDelete($e: any) {
+    this.currentItem = JSON.parse($e);
+    if(IsValidType(this.currentItem)) {
+      this.http.delete("AdminMaster/DeleteClassDetail", this.currentItem).then(response => {
+        if(IsValidResponse(response.ResponseBody)) {
+          this.BuildPage(response);
+          this.commonService.ShowToast("Deleted successfully");
+        } else {
+          this.commonService.ShowToast("Unable to delete. Please contact to admin.");
+        }
+      })
+    }
+  }
 
   NextPage($e: any) {}
 

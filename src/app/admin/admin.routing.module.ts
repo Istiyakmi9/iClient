@@ -34,6 +34,8 @@ import {
   ManageExamDetail,
   ExamResult,
   Syllabus,
+  ManageMenu,
+  Grades,
 } from "src/providers/constants";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AttendanceComponent } from "./attendance/attendance.component";
@@ -66,6 +68,8 @@ import { ManageexamdetailComponent } from "./manageexamdetail/manageexamdetail.c
 import { ViewResultsComponent } from "./view-results/view-results.component";
 import { CalendarComponent } from "../shared/calendar/calendar.component";
 import { SyllabusComponent } from "./syllabus/syllabus.component";
+import { ManagemenuComponent } from './managemenu/managemenu.component';
+import { GradesComponent } from './grades/grades.component';
 
 const adminRoutes: Routes = [
   {
@@ -106,6 +110,8 @@ const adminRoutes: Routes = [
   { path: ManageExamDetail, component: ManageexamdetailComponent },
   { path: ExamResult, component: ViewResultsComponent },
   { path: Syllabus, component: SyllabusComponent },
+  { path: ManageMenu, component: ManagemenuComponent },
+  { path: Grades, component: GradesComponent },
 ];
 
 @NgModule({

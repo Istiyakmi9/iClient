@@ -27,10 +27,14 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "date-fns": "^2.16.1",
+    "file-saver": "^2.0.2",
+    "html2canvas": "^1.0.0-rc.7",
     "jquery": "^3.4.1",
+    "jspdf": "^2.1.1",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "xlsx": "^0.16.8",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

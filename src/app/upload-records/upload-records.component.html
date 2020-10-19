@@ -1,3 +1,205 @@
-<p>
-  upload-records works!
-</p>
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Upload Records</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="" role="tabpanel" data-example-id="togglable-tabs" class="mt-5">
+          <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+            <li role="presentation" class="">
+              <a href="#tab_content1" role="tab" id="content1-tab" class="active" data-toggle="tab"
+                (click)="SelectSection('Student')" aria-selected="true">Student</a>
+            </li>
+            <li role="presentation">
+              <a href="#tab_content2" id="content2-tab" role="tab" data-toggle="tab" aria-expanded="false" class=""
+                (click)="SelectSection('Faculty')" aria-selected="false">Faculty</a>
+            </li>
+            <li role="presentation">
+              <a href="#tab_content3" id="content3-tab" role="tab" data-toggle="tab" aria-selected="false"
+                (click)="SelectSection('Staff')">Staff</a>
+            </li>
+            <li role="presentation" class="">
+              <a href="#tab_content4" role="tab" id="content4-tab" data-toggle="tab" aria-selected="false"
+                (click)="SelectSection('ClassSection')">Class & Sec</a>
+            </li>
+            <li role="presentation" class="">
+              <a href="#tab_content5" role="tab" id="content5-tab" data-toggle="tab" aria-selected="false"
+                (click)="SelectSection('Vehicle')">Vehicle</a>
+            </li>
+            <li role="presentation" class="">
+              <a href="#tab_content6" role="tab" id="content6-tab" data-toggle="tab" aria-selected="false"
+                (click)="SelectSection('ClassRoom')">Class Room</a>
+            </li>
+          </ul>
+          <div class="tab-equipment">
+            <div role="tabpanel" class="tab-pane fade in active show" *ngIf="curentSection === 'Student'" id="tab_content1" aria-labelledby="content1-tab">
+              <div class="x_title position-relative mt-4 mb-2">
+                <h2>Upload student detail</h2>
+                <a [href]="excelPath" class="text-dark download-excel-link">
+                  <i class="far fa-file-excel"></i>
+                  <span class="pl-2">Sample</span>
+                </a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+  
+            <div role="tabpanel" class="tab-pane fade active in" *ngIf="curentSection === 'Faculty'" id="tab_content2" aria-labelledby="content2-tab">
+              <div class="x_title position-relative mt-4 mb-2">
+                <h2>Upload faculty detail</h2>
+                <a [href]="excelPath" class="text-dark download-excel-link">
+                  <i class="far fa-file-excel"></i>
+                  <span class="pl-2">Sample</span>
+                </a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+  
+            <div role="tabpanel" class="tab-pane fade" *ngIf="curentSection === 'Staff'" id="tab_content3" aria-labelledby="content3-tab">
+              <div class="x_title position-relative mt-4 mb-2">
+                <h2>Upload non-teaching staff detail</h2>
+                <a [href]="excelPath" class="text-dark download-excel-link">
+                  <i class="far fa-file-excel"></i>
+                  <span class="pl-2">Sample</span>
+                </a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+  
+            <div role="tabpanel" class="tab-pane fade" *ngIf="curentSection === 'ClassSection'" id="tab_content4" aria-labelledby="content4-tab">
+              <div class="x_title position-relative mt-4 mb-2">
+                <h2>Upload class & section detail</h2>
+                <a [href]="excelPath" class="text-dark download-excel-link">
+                  <i class="far fa-file-excel"></i>
+                  <span class="pl-2">Sample</span>
+                </a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" *ngIf="curentSection === 'Vehicle'" id="tab_content5" aria-labelledby="content5-tab">
+              <div class="x_title position-relative mt-4 mb-2">
+                <h2>Upload vehicle detail</h2>
+                <a [href]="excelPath" class="text-dark download-excel-link">
+                  <i class="far fa-file-excel"></i>
+                  <span class="pl-2">Sample</span>
+                </a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+  
+            <div role="tabpanel" class="tab-pane fade" *ngIf="curentSection === 'ClassRoom'" id="tab_content6" aria-labelledby="content6-tab">
+              <div class="x_title position-relative mt-4 mb-2">
+                <h2>Upload class room detail</h2>
+                <a [href]="excelPath" class="text-dark download-excel-link">
+                  <i class="far fa-file-excel"></i>
+                  <span class="pl-2">Sample</span>
+                </a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+            <div class="x_content fade show" id="upload-container">
+              <div class="">
+                <input type="file" id="uploadexcel" (change)="readExcelData($event)" class="d-none" />
+                  <div class="page-card pb-4">            
+                    <div class="card">
+                      <div class="col-md-12 p-0">
+                        <div class="table-responsive">
+                          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                              <div role="tabpanel" class="active in mt-4" id="tab_content1" aria-labelledby="home-tab">
+                                <div id="classmasterdata" class="col-md-12 col-sm-12 col-xs-12">
+                                  <div name="imgdv" class="show-case-dv">
+                                    <img src="assets/img/Stocks.png" class="show-case" />
+                                  </div>
+                                  <div name="ifilezone" class="ifilezone mb-4" (click)="fireBrowserFile()">
+                                    <div *ngIf="!isFileReady">
+                                      <span style="color: darkgray;margin-top: 30px;display: block;">
+                                        Drop files here.
+                                      </span>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 solid-bg" *ngIf="isFileReady" name="uploading">
+                                      <img src="assets/img/ExcelFile.png" />
+                                      <div class="filetitle">
+                                        File:
+                                        <div name="filename" style="display: inline-block !important;">
+                                          {{ fileName }}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <div>
+                                          File size: &nbsp;
+                                          <div name="filesize" style="display: inline-block !important;">
+                                            {{ fileSize }}
+                                          </div>
+                                          KB
+                                        </div>
+                                        <div>
+                                          No. of record(s): &nbsp;
+                                          <div name="noofrecords" style="display: inline-block !important;">
+                                            {{ noOfRecords }}
+                                          </div>
+                                        </div>
+                                        <div>
+                                          File name: &nbsp;
+                                          <div name="uploadingdatetime" style="display: inline-block !important;">
+                                            {{ fileName }}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="mt-4">
+                                        <button type="button" class="btn btn-primary mr-2" (click)="uploadExcelSheet()">
+                                          <i class="fas fa-upload pr-2"></i> Upload selected
+                                          excel data
+                                        </button>
+                                        <button type="button" class="btn btn-outline-info" (click)="cleanFileHandler()">
+                                          <i class="fas fa-eraser pr-2"></i> Cancel
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 p-0">
+              <div class="x_content">
+                <div class="x_title">
+                  <h2>Uploaded Records</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div id='calendar'>
+                  <div class="card mt-4">
+                    <div class="card-body">        
+                      <ng-container *ngIf="ExcelTableHeader.length > 0">
+                        <app-dynamic-grid
+                          [Data]="GridData"
+                          (Edit)="OnEdit($event)"
+                          (Delete)="OnDelete($event)"
+                          (Next)="NextPage($event)"
+                          (Previous)="PreviousPage($event)"
+                        ></app-dynamic-grid>
+                      </ng-container>
+                      <ng-container *ngIf="ExcelTableHeader.length === 0">
+                        <div>
+                          No data uploaded.
+                        </div>
+                      </ng-container>         
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

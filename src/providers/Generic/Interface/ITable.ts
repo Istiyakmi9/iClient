@@ -7,4 +7,5 @@ export interface ITable {
   pageSize: number;
   pageIndex: number;
   url?: string;
+  inlineContent?: boolean;
 }

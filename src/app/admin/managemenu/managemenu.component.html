@@ -1,0 +1,143 @@
+<div class="popover d-none" id="menu-dv">
+  <div class="card">
+    <div class="card-header">
+      Move menu
+      <a class="anc-popover-close" (click)="closePopover()" href="javascript:void(0)">
+        <i class="fas fa-times"></i>
+      </a>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Category</label>
+        <select name="targetCatagory" [(ngModel)]="targetCatagory" class="form-control" (change)="ChangedSection($event)">
+          <option value="">Category</option>
+          <ng-container *ngFor="let item of dropdownCatagories;let index = index;">
+            <option [value]="item.key">{{item.key}}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sub Category</label>
+        <select name="targetSubCatagory" [(ngModel)]="targetSubCatagory" class="form-control">
+          <option value="">Sub Category</option>
+          <ng-container *ngFor="let item of dropdownSubCatagories;">
+            <option [value]="item.key">{{item.key}}</option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button type="button" class="btn btn-block btn-outline-dark" (click)="moveToAnotherSection()">Move</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12 col-sm-12 icard">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>
+          Manage Timetable
+          <small>Add or modify user roles and responsibility.</small>
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <div class="" role="tabpanel" data-example-id="togglable-tabs" class="mt-5">
+          <ul id="catagory-menu" class="nav nav-tabs bar_tabs" role="tablist">
+              <ng-container *ngFor="let item of subCatagoryItems;let index=index">
+                <li role="presentation" class="">
+                    <a href="#tab_content{{index + 1}}" role="tab" id="content{{index + 1}}-tab" 
+                      [ngClass]="{active: index === categoryIndex}" data-toggle="tab"
+                      (click)="SelectSection(index)" aria-selected="true">{{item.key}}</a>
+                  </li>      
+              </ng-container>
+          </ul>
+          <div class="tab-equipment">
+            <div role="tabpanel" class="tab-pane fade in active show" id="tab_content1" aria-labelledby="content1-tab">
+              <ng-container *ngFor="let sub of bindingItems">
+                <div class="col-md-6 col-sm-6 col-xs-12 d-inline-block align-top">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>{{sub.key}} <small>General</small></h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+          
+                      <div class="">
+                        <ul class="to_do ul-item">
+                          <li *ngFor="let items of sub.value" class="li-item">
+                            <p class="position-relative item-para m-0">
+                              <input type="checkbox" class="flat"> <span class="item-content">{{items.Catagory}}</span> 
+                              <a href="javascript:void()" (click)="getActionPopover($event, items.Catagory, sub.key)">
+                                <i class="fas fa-ellipsis-v"></i>
+                              </a>
+                            </p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+  
+            <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="content2-tab">
+              <ng-container *ngFor="let sub of bindingItems">
+                <div class="col-md-6 col-sm-6 col-xs-12 d-inline-block align-top">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>{{sub.key}} <small>General</small></h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+          
+                      <div class="">
+                        <ul class="to_do ul-item">
+                          <li *ngFor="let items of sub.value" class="li-item">
+                            <p class="position-relative item-para m-0">
+                              <input type="checkbox" class="flat"> <span class="item-content"> {{items.Catagory}}</span> 
+                            </p>
+                            <a href="javascript:void()" (click)="getActionPopover($event, items.Catagory, sub.key)">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>                
+            </div>
+  
+            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="content3-tab">
+              <ng-container *ngFor="let sub of bindingItems">
+                <div class="col-md-6 col-sm-6 col-xs-12 d-inline-block align-top">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>{{sub.key}} <small>General</small></h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+          
+                      <div class="">
+                        <ul class="to_do ul-item">
+                          <li *ngFor="let items of sub.value" class="li-item">
+                            <p class="position-relative item-para m-0">
+                              <input type="checkbox" class="flat"> <span class="item-content">{{items.Catagory}}</span> 
+                            </p>
+                            <a href="javascript:void()" (click)="getActionPopover($event, items.Catagory, sub.key)">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

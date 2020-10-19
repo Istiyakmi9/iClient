@@ -34,6 +34,8 @@ export const Settings = "settings";
 export const AttendanceReport = "attendencereport";
 export const Login = "login";
 export const Syllabus = "syllabus";
+export const ManageMenu = "managemenu";
+export const Grades = "grades";
 
 export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";
@@ -105,6 +107,13 @@ export const ClassDetailColumn: Array<IColumns> = [
   { column: "GirlSeats", header: "Girl Seats" },
   { column: "BoySeats", header: "Boy Seats" },
   { column: "RoomNo", header: "Room No.#" },
+];
+
+export const GradeDetailColumn: Array<IColumns> = [
+  { column: "GradeUid", type: "hidden" },
+  { column: "Grade", header: "Grade" },
+  { column: "Description", header: "Description" },
+  { column: "MarksRange", header: "Marks Range" },
 ];
 
 export const Rooms: Array<IColumns> = [

@@ -485,3 +485,10 @@ h2 {
     margin-right: -6px;
   }
 }
+
+.popover {
+  min-width: 100px;
+  min-height: 100px;
+  background: red;
+  position: absolute;
+}

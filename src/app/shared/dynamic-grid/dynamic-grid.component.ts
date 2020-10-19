@@ -23,6 +23,7 @@ export class DynamicGridComponent implements OnInit {
   TotalPageCount: number = 0;
   DisableNext: boolean;
   DisablePrev: boolean;
+  isInlineContextClassUsed: boolean = false;
   @Output() Edit = new EventEmitter();
   @Output() Delete = new EventEmitter();
   @Output() Next = new EventEmitter();
@@ -32,6 +33,8 @@ export class DynamicGridComponent implements OnInit {
   @Input()
   set Data(Data: ITable) {
     if (IsValidType(Data)) {
+      if(Data.inlineContent)
+        this.isInlineContextClassUsed = true;
       let cols = Object.keys(Data);
       if (cols.indexOf("headers") === -1 || cols.indexOf("rows") === -1) {
         this.commonService.ShowToast(
@@ -91,7 +94,15 @@ export class DynamicGridComponent implements OnInit {
     }
   }
 
-  DeleteCurrent() {}
+  DeleteCurrent() {
+    let JsonData = $(event.currentTarget)
+      .closest("tr")
+      .find('input[name="currentObject"]')
+      .val();
+    if (IsValidType(JsonData)) {
+      this.Delete.emit(JsonData);
+    }
+  }
 
   MangePaging() {
     this.DisableNext = false;

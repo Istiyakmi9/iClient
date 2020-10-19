@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Chart } from "chart.js";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: "app-progressreport",
@@ -13,8 +15,21 @@ export class ProgressreportComponent implements OnInit {
   SubjectReport: Array<ProgressResultModal>;
   IsReady: boolean;
 
+  @ViewChild('resultTable') progressResult: ElementRef;
+
   constructor() {
     this.IsReady = false;
+  }
+
+  convertToPdf() {
+   let element = document.getElementById('resultTable');
+   html2canvas(element).then((canvas) => {
+    var imgData = canvas.toDataURL('image/png');
+    let doc = new jsPDF();
+    var imgHeight = canvas.height * 208 / canvas.width;
+    doc.addImage(imgData, 0, 0, 208, imgHeight);
+    doc.save('result.pdf');
+   });
   }
 
   ngOnInit(): void {

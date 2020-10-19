@@ -103,13 +103,19 @@ export class ManagerolesComponent implements OnInit {
   ManageExistingMenu() {
     if (IsValidType(this.MenuList)) {
       let MenuItem = null;
+
+      let index = 0;
+      while(index < this.CompleteMenuList.length) {
+        this.CompleteMenuList[index].IsActive = false;
+        index++;
+      }
+
       this.MenuList.map((item, index) => {
         MenuItem = this.CompleteMenuList.filter(
           (x) => x.Catagory === item.Catagory
         );
-        if (MenuItem.length > 0) {
+        if (MenuItem.length > 0)
           MenuItem[ZerothIndex].IsActive = true;
-        }
       });
     }
     this.MenuList = this.CompleteMenuList;

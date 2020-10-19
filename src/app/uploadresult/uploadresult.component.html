@@ -8,12 +8,90 @@
         </div>
         <div class="x_content">
           <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                Upload result
+            <input type="file" id="uploadexcel" (change)="readExcelData($event)" class="d-none" />
+              <div class="page-card pb-4">            
+                <div class="card">
+                  <div class="col-md-12 p-0">
+                    <div class="table-responsive">
+                      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                          <div role="tabpanel" class="active in mt-4" id="tab_content1" aria-labelledby="home-tab">
+                            <div id="classmasterdata" class="col-md-12 col-sm-12 col-xs-12">
+                              <div name="imgdv" class="show-case-dv">
+                                <img src="assets/img/Stocks.png" class="show-case" />
+                              </div>
+                              <div name="ifilezone" class="ifilezone mb-4" (click)="fireBrowserFile()">
+                                <div *ngIf="!isFileReady">
+                                  <span style="color: darkgray;margin-top: 30px;display: block;">
+                                    Drop files here.
+                                  </span>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 solid-bg" *ngIf="isFileReady" name="uploading">
+                                  <img src="assets/img/ExcelFile.png" />
+                                  <div class="filetitle">
+                                    File:
+                                    <div name="filename" style="display: inline-block !important;">
+                                      {{ fileName }}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div>
+                                      File size: &nbsp;
+                                      <div name="filesize" style="display: inline-block !important;">
+                                        {{ fileSize }}
+                                      </div>
+                                      KB
+                                    </div>
+                                    <div>
+                                      No. of record(s): &nbsp;
+                                      <div name="noofrecords" style="display: inline-block !important;">
+                                        {{ noOfRecords }}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      File name: &nbsp;
+                                      <div name="uploadingdatetime" style="display: inline-block !important;">
+                                        {{ fileName }}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="mt-4">
+                                    <button type="button" class="btn btn-primary mr-2" (click)="uploadExcelSheet()">
+                                      <i class="fas fa-upload pr-2"></i> Upload selected
+                                      excel data
+                                    </button>
+                                    <button type="button" class="btn btn-outline-info" (click)="cleanFileHandler()">
+                                      <i class="fas fa-eraser pr-2"></i> Cancel
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="card mt-4">
+                  <div class="card-body">        
+                    <ng-container *ngIf="ExcelTableHeader.length > 0">
+                      <app-dynamic-grid
+                        [Data]="GridData"
+                        (Edit)="OnEdit($event)"
+                        (Delete)="OnDelete($event)"
+                        (Next)="NextPage($event)"
+                        (Previous)="PreviousPage($event)"
+                      ></app-dynamic-grid>
+                    </ng-container>
+                    <ng-container *ngIf="ExcelTableHeader.length === 0">
+                      <div>
+                        Table is empty
+                      </div>
+                    </ng-container>         
+                  </div>
+                </div>
               </div>
-            </div>
-
+              
             <div class="clearfix"></div>
 
             <div class="row">

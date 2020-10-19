@@ -40,6 +40,8 @@ import { SyllabusComponent } from "./syllabus/syllabus.component";
 import { AssignmentComponent } from "./assignment/assignment.component";
 import { CalendarModule, DateAdapter } from "angular-calendar";
 import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
+import { ManagemenuComponent } from './managemenu/managemenu.component';
+import { GradesComponent } from './grades/grades.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,8 @@ import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
     NumberSufix,
     SyllabusComponent,
     AssignmentComponent,
+    ManagemenuComponent,
+    GradesComponent
   ],
   imports: [
     CommonModule,
