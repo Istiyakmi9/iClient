@@ -148,5 +148,5 @@ export class SearchModal {
   SearchString: string = " 1=1 ";
   SortBy: string = "";
   PageIndex: number = 1;
-  PageSize: number = 20;
+  PageSize: number = 15;
 }

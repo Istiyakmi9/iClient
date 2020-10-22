@@ -36,6 +36,7 @@ import {
   Syllabus,
   ManageMenu,
   Grades,
+  Assignment,
 } from "src/providers/constants";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AttendanceComponent } from "./attendance/attendance.component";
@@ -70,6 +71,7 @@ import { CalendarComponent } from "../shared/calendar/calendar.component";
 import { SyllabusComponent } from "./syllabus/syllabus.component";
 import { ManagemenuComponent } from './managemenu/managemenu.component';
 import { GradesComponent } from './grades/grades.component';
+import { AssignmentComponent } from './assignment/assignment.component';
 
 const adminRoutes: Routes = [
   {
@@ -112,6 +114,7 @@ const adminRoutes: Routes = [
   { path: Syllabus, component: SyllabusComponent },
   { path: ManageMenu, component: ManagemenuComponent },
   { path: Grades, component: GradesComponent },
+  { path: Assignment, component: AssignmentComponent }
 ];
 
 @NgModule({

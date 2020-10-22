@@ -1,1 +1,86 @@
-<p>assignment works!</p>
+<div class="right_col">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel full-card">
+        <div class="x_title">
+          <h2>Assignment(s) <small>Student assignment(s)</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content col-12 p-0 row m-0 mt-4">
+          <form (keydown.enter)="$event.preventDefault()" id="class-form"
+            class="col-md-4 col-sm-12 p-0">
+            <div class="border creator">
+              <div class="x_title action-box-header">
+                <h2>Assignment <small>Add/edit assignment</small></h2>
+                <div class="clearfix"></div>
+              </div>
+              <div name="tab_examdesc" class="action-box" role="definition">
+                <div class="form-group">
+                    <label for="class">Class &nbsp;<span style="color: red;">*</span></label>
+                    <select class="form-control" name="class" (change)=EnableSection()>
+                        <option value="">Class</option>
+                        <option *ngFor="let class of Classes" [value]="class">{{class}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="section">Section &nbsp;<span style="color: red;">*</span></label>
+                    <select class="form-control" name="section">
+                        <option value="">Section</option>
+                        <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">{{sec.Section}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Title &nbsp;<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" name="title" placeholder="Assignment title">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description &nbsp;<span style="color: red;">*</span></label>
+                    <textarea name="description" class="form-control" rows="4" placeholder="Assignment descriptin in brief"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="submittionDate">Submittion Date &nbsp;<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" name="submittionDate" placeholder="Assignment submittion date">
+                </div>
+              
+                <div class="form-group">
+                  <label for="subjectcredit">Room no.# &nbsp;<span style="color: red;">*</span></label>
+                  <app-iautocomplete [Data]="faculties" [Placeholder]="'Faculty name'"
+                    (OnSelect)="OnFacultySelected($event)">
+                  </app-iautocomplete>
+                </div>
+
+                <div class="action-dv mt-4">
+                  <button class="btn btn-block btn-warning">Publish Assignment</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="col-md-8 pr-0">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
+                  <input id="ShopFilter" placeholder="Global search" class="form-control" (keyup)="FilterLocaldata()"
+                    required="required" type="text">
+                </div>
+              </div>
+              <div class="col-md-6 d-inline-block text-right no-padding">
+                <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1"><i
+                    class="fas fa-sync"></i>&ensp;Reset</button>
+                <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success"><i
+                    class="fa fa-filter"></i>&ensp;Advance Search</button>
+              </div>
+            </div>
+            <ng-container *ngIf="IsReady">
+                <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" (Delete)="OnDelete($event)"
+                (Next)="NextPage($event)" (Previous)="PreviousPage($event)"></app-dynamic-grid>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -116,20 +116,6 @@ $my-orange: rgb(255, 100, 0);
   width: 100%;
 }
 
-.wrap-left,
-.wrap-right {
-  position: relative;
-  justify-content: center;
-}
-
-.wrap-left {
-  top: 26%;
-}
-
-.wrap-right {
-  top: 18%;
-}
-
 //Individual Column Styling
 .row {
   height: 100vh;
@@ -188,8 +174,48 @@ $my-orange: rgb(255, 100, 0);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#a86c24', GradientType=0 );
 }
 
-.right {
+.left-pan {
   background: #101010;
+}
+
+.logo-dv {
+  background-image: url("../../assets/sim-logo.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff !important;
+  width: 100px;
+  height: 100px;
+  right: 0px;
+  left: 0px;
+  margin: auto;
+  position: absolute;
+  top: 20px;
+  z-index: 9999;
+}
+
+.right {
+  color: #444 !important;
+}
+
+.wrap-left,
+.wrap-right {
+  position: relative;
+  justify-content: center;
+}
+
+.wrap-left {
+  top: 40%;
+}
+
+.wrap-right {
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  margin: auto;
+  height: 100%;
+  padding-top: 20%;
 }
 
 //Header and text Styling
@@ -201,7 +227,6 @@ $my-orange: rgb(255, 100, 0);
 .header-right {
   font-weight: 600;
   font-size: xxx-large;
-  color: $my-orange;
 }
 
 //Button Styling
@@ -211,7 +236,6 @@ $my-orange: rgb(255, 100, 0);
   border-radius: 6px;
   font-weight: 500;
   font-size: inherit;
-  background: $my-orange;
 }
 
 .btn-left {

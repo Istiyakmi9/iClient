@@ -36,6 +36,7 @@ export const Login = "login";
 export const Syllabus = "syllabus";
 export const ManageMenu = "managemenu";
 export const Grades = "grades";
+export const Assignment = "assignment";
 
 export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";
@@ -122,6 +123,15 @@ export const Rooms: Array<IColumns> = [
   { column: "RoomType", header: "Used By" },
   { column: "RoomNo", header: "Room No.#" },
   { column: "RoomUid", type: "hidden" },
+];
+
+export const AssignmentColumn: Array<IColumns> = [
+  { column: "Index", header: "S.No #" },
+  { column: "title", header: "Title" },
+  { column: "taskDescription", header: "Description" },
+  { column: "assignmentUid", type: "hidden" },
+  { column: "classDetailUid", type: "hidden" },
+  { column: "lastSubmissionDate", header: "Submission Date" },
 ];
 
 export interface IAutoCompleteModal {
