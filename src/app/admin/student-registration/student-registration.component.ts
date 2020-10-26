@@ -3,7 +3,12 @@ import { FormControl } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { DefaultUserImage, ZerothIndex } from "src/providers/constants";
+import { DefaultUserImage, ZerothIndex,   Zip,
+  Doc,
+  Pdf,
+  Txt,
+  File,
+  Excel } from "src/providers/constants";
 import * as $ from "jquery";
 import {
   IsValidType,
@@ -30,7 +35,8 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   IsExistingParent: boolean = false;
   IsUpdating: boolean = true;
   IsReady: boolean = false;
-
+  DocFiles: Array<any> = [];
+  ProfileImageName: string = "profile.";
   StudentData: StudentModal;
   StudentForm: FormGroup;
   StudentImage: any;
@@ -39,6 +45,10 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   Classes: Array<string>;
   Sections: Array<ClassDetail>;
   ImagePath: string = "";
+  DocumentImages: Array<any> = [];
+
+  DocumentImageObjects: Array<any> = [];
+
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -59,13 +69,18 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         .get(`Registration/GetStudentByUid?Uid=${EditData.studentUid}`)
         .then((result) => {
           if (IsValidType(result.ResponseBody)) {
-            let ResponseStudentData = JSON.parse(result.ResponseBody).Table;
+            let Tables = JSON.parse(result.ResponseBody);
+            let ResponseStudentData = Tables['Table'];
             if (IsValidType(ResponseStudentData)) {
               this.BindData(ResponseStudentData[ZerothIndex]);
             } else {
               this.commonService.ShowToast(
                 "Invalid response. Please contact to admin."
               );
+            }
+
+            if (IsValidType(Tables["Table1"])) {
+              this.BuildImagesArray(Tables["Table1"]);
             }
           } else {
             this.commonService.ShowToast(
@@ -80,6 +95,126 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         });
     } else {
       this.InitStudentForm();
+    }
+  }
+
+  BuildImagesArray(DocImages: any) {
+    if (IsValidType(DocImages)) {
+      this.DocFiles = DocImages;
+      let ProfileImageDetail = DocImages.filter(
+        (x) => x.FileName.indexOf(this.ProfileImageName) !== -1
+      );
+      if (ProfileImageDetail.length) {
+        ProfileImageDetail = ProfileImageDetail[ZerothIndex];
+        this.StudentImage = `${this.http.GetImageBasePath()}${
+          ProfileImageDetail.FilePath
+        }/${ProfileImageDetail.FileName}`;
+      }
+      let DocumentDetail = DocImages.filter(
+        (x) => x.FileName.indexOf(this.ProfileImageName) === -1
+      );
+      if (DocumentDetail.length > 0) {
+        let index = 0;
+        let ActualPath = "";
+        let LocalFilePath = "";
+        while (index < DocumentDetail.length) {
+          LocalFilePath = this.GetOtherFilePath(
+            DocumentDetail[index].FileExtension
+          );
+          if (LocalFilePath === "") {
+            LocalFilePath = `${this.http.GetImageBasePath()}${
+              DocumentDetail[index].FilePath
+            }/${DocumentDetail[index].FileName}`;
+          }
+
+          ActualPath = `${this.http.GetImageBasePath()}${
+            DocumentDetail[index].FilePath
+          }/${DocumentDetail[index].FileName}`;
+
+          this.DocumentImageObjects.push({
+            FileUid: DocumentDetail[index].FileUid,
+            FileOn: "local",
+            FilePath: LocalFilePath,
+            ActualPath: ActualPath,
+          });
+          index++;
+        }
+      }
+    }
+  }
+
+  RemoveItem(FileUid: string) {
+    if (FileUid !== null && FileUid !== "") {
+      this.http.delete("Registration/DeleteImage", FileUid).then((response) => {
+        if (this.commonService.IsValidResponse(response)) {
+          alert(response);
+          this.commonService.ShowToast("Deleted successfully.");
+        } else {
+          this.commonService.ShowToast("Fail to delete.");
+        }
+      });
+    }
+  }
+
+  GetOtherFilePath(FileExtension: string) {
+    let OtherFilePath = "";
+    if (FileExtension === "pdf") OtherFilePath = Pdf;
+    else if (FileExtension === "doc") OtherFilePath = Doc;
+    else if (FileExtension === "txt") OtherFilePath = Txt;
+    else if (FileExtension === "zip") OtherFilePath = Zip;
+    else if (FileExtension === "xls") OtherFilePath = Excel;
+    else if (FileExtension == "") OtherFilePath = File;
+    return OtherFilePath;
+  }
+
+  GetDocumentFile(fileInput: any) {
+    this.DocumentImages = [];
+    this.DocumentImages = [];
+    let Files = fileInput.target.files;
+    if (Files.length > 0) {
+      let index = 0;
+      let file = null;
+      let extension = "";
+      let IsImageFile = false;
+      let OtherFilePath = "";
+      while (index < Files.length) {
+        IsImageFile = true;
+        OtherFilePath = "";
+        file = <File>Files[index];
+        this.DocumentImages.push(file);
+        let mimeType = file.type;
+        if (mimeType.match(/image\/*/) == null) {
+          extension = file.name.slice(file.name.lastIndexOf(".") + 1);
+          if (extension === "pdf") OtherFilePath = Pdf;
+          else if (extension === "doc") OtherFilePath = Doc;
+          else if (extension === "txt") OtherFilePath = Txt;
+          else if (extension === "zip") OtherFilePath = Zip;
+          else OtherFilePath = File;
+
+          IsImageFile = false;
+          this.DocumentImageObjects.push({
+            FileUid: index,
+            FileOn: "server",
+            FilePath: OtherFilePath,
+          });
+        }
+
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (fileEvent) => {
+          this.DocumentImages.push(reader.result);
+          if (IsImageFile) {
+            this.DocumentImageObjects.push({
+              FileUid: index,
+              FileOn: "server",
+              FilePath: reader.result,
+            });
+          }
+        };
+        index++;
+      }
+    } else {
+      this.commonService.ShowToast("No file selected");
     }
   }
 
@@ -416,6 +551,13 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
       } else {
         let formData = new FormData();
         formData.append("profile", this.StudentImageType);
+        if (this.DocumentImages.length > 0) {
+          let index = 0;
+          while (index < this.DocumentImages.length) {
+            formData.append("file_" + index, this.DocumentImages[index]);
+            index++;
+          }
+        }
         let StudentObject = this.StudentForm.value;
         formData.append("studentObject", JSON.stringify(StudentObject));
 
@@ -512,6 +654,15 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   }
 
   ManageSection() {}
+
+  EnlargeItem(Url: string) {
+    alert(Url);
+  }
+
+  OpenBrowseOptions() {
+    event.preventDefault();
+    $("#document-btn").click();
+  }
 }
 
 interface ParentDetail {

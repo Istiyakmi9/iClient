@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/css/all.css";
-@import "../node_modules/angular-calendar/css/angular-calendar.css";
+//@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 :root {
   --input-color: #bbb;
@@ -181,7 +181,6 @@ body {
   border: 1px solid #e6e9ed;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
-  column-break-inside: avoid;
   opacity: 1;
   transition: all 0.2s ease;
 }

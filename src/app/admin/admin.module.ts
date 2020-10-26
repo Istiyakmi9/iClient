@@ -37,11 +37,20 @@ import { CalendarComponent } from "../shared/calendar/calendar.component";
 import { SharedModule } from "../shared/shared.module";
 import { NumberSufix } from "src/providers/filters/NumberSufix";
 import { SyllabusComponent } from "./syllabus/syllabus.component";
-import { CalendarModule, DateAdapter } from "angular-calendar";
-import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
+// import { CalendarModule, DateAdapter } from "angular-calendar";
+// import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
 import { ManagemenuComponent } from './managemenu/managemenu.component';
 import { GradesComponent } from './grades/grades.component';
 import { AssignmentComponent } from './assignment/assignment.component';
+import { FullCalendarModule } from '@fullcalendar/angular'
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 
 @NgModule({
   declarations: [
@@ -89,11 +98,12 @@ import { AssignmentComponent } from './assignment/assignment.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
+    // CalendarModule.forRoot({
+    //   provide: DateAdapter,
+    //   useFactory: adapterFactory,
+    // }),
     GoogleMapsModule,
+    FullCalendarModule,
   ],
 })
 export class AdminModule {}

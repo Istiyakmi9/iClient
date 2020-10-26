@@ -25,3 +25,86 @@ select {
   height: 35px !important;
   border-color: #c2b7b7 !important;
 }
+
+.upload-btn {
+  position: absolute;
+  right: 0px;
+  margin-top: 12px;
+  cursor: pointer !important;
+}
+
+.upload-btn:hover {
+  font-size: 15px;
+}
+
+.upload-document {
+  position: fixed;
+  background: rgba(237, 237, 237, 0.32);
+  bottom: 0px;
+  z-index: 99999;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  margin: auto;
+}
+
+.night-bg {
+  background: rgba(0, 0, 0, 0.82) !important;
+}
+
+.night-bg .card-header,
+.card-footer {
+  background: rgb(93, 93, 93) !important;
+}
+
+.upload-document-dv {
+  position: fixed;
+  bottom: 0px;
+  z-index: 9999999;
+  right: 0px;
+  left: 0px;
+  top: 10%;
+  color: #eee !important;
+  width: 70%;
+  margin: auto;
+  border-radius: 4px;
+}
+
+.upload-body {
+  min-height: 200px;
+  top: 10%;
+}
+
+img.doc-img {
+  width: 6rem;
+  height: 4rem;
+}
+
+img.doc-img:hover {
+  cursor: pointer;
+  width: 7rem;
+  height: 5rem;
+}
+
+.img-dv {
+  min-width: 7rem;
+  text-align: center;
+  margin-right: 4px;
+  padding: 5px;
+  padding-bottom: 12px;
+  background: #eee;
+  padding-top: 10px;
+  margin-top: 6px;
+}
+
+.del-anc {
+  cursor: pointer;
+}
+
+.del-anc:hover {
+  font-size: 15px;
+}
+
+.btn-s {
+  border-color: #cac9c9 !important;
+}

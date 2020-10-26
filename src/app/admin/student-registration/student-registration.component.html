@@ -337,6 +337,56 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-12 p-0">
+        <div class="x_panel pb-0">
+          <div class="x_title position-relative">
+            <h2 class="StepTitle">
+              Document proof<small>Upload candidate proof of documents.</small>
+            </h2>
+            <a class="upload-btn" (click)="OpenBrowseOptions()">
+              <i class="fas fa-plus-circle"></i>
+              Upload Doc
+            </a>
+            <input
+              class="d-none"
+              type="file"
+              multiple
+              (change)="GetDocumentFile($event)"
+              id="document-btn"
+            />
+            <div class="clearfix"></div>
+          </div>
+          <div class="section-card">
+            <div class="form-group row ml-1">
+              <ng-container *ngFor="let img of DocumentImageObjects">
+                <div class="img-dv">
+                  <div class="">
+                    <img
+                      [src]="img.FilePath"
+                      (click)="EnlargeItem(img.ActualPath)"
+                      alt="Document Image"
+                      class="doc-img"
+                    />
+                  </div>
+                  <div class="col-12 mt-2 text-dark">
+                    <a
+                      class="del-anc"
+                      [attr.fileOn]="img.FileOn"
+                      (click)="RemoveItem(img.FileUid)"
+                      [attr.uid]="img.FileUid"
+                    >
+                      <i class="fas fa-trash-alt pr-1"></i>
+                      Delete
+                    </a>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="form-group text-right mr-5">
         <button id="nextbtn" (click)="Resetall()" class="btn btn-outline-danger mr-2">
           <i class="fas fa-undo mr-1"></i>

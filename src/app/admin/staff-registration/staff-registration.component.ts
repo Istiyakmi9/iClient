@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
+import * as $ from 'jquery';
 
 @Component({
   selector: "app-staff-registration",
@@ -10,11 +11,15 @@ export class StaffRegistrationComponent implements OnInit {
   UserData: any = {};
   StaffReg: StaffRegModal;
   StaffRegForm: FormGroup;
+  DocumentImageObjects: Array<any> = [];
+
   constructor(private fb: FormBuilder) {
     this.InitForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.DocumentImageObjects = [];
+  }
 
   RegisterNow() {}
 
@@ -52,6 +57,15 @@ export class StaffRegistrationComponent implements OnInit {
       ExistingDocumentFileName: new FormControl(),
       IsQuickRegistration: new FormControl()
     });
+  }
+
+  EnlargeItem(Url: string) {
+    alert(Url);
+  }
+
+  OpenBrowseOptions() {
+    event.preventDefault();
+    $("#document-btn").click();
   }
 }
 
