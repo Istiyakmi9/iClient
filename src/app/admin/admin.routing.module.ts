@@ -86,7 +86,7 @@ const adminRoutes: Routes = [
   },
   { path: FacultyRegistration, component: FacultyRegistrationComponent },
   { path: QuickRegistration, component: QuickRegistrationComponent },
-  { path: StaffRegistration, component: StaffRegistrationComponent },
+  { path: StaffRegistration, component: FacultyRegistrationComponent },
   { path: StudentRegistration, component: StudentRegistrationComponent },
   { path: StudentReports, component: StudentReportComponent },
   { path: Subjects, component: SubjectsComponent },

@@ -6,7 +6,7 @@
           <div class="clearfix"></div>
         </div>
         <div class="x_content col-12 p-0 row m-0 mt-4">
-          <form (keydown.enter)="$event.preventDefault()" id="class-form"
+          <form [formGroup]="AssigmentForm" (keydown.enter)="$event.preventDefault()" id="class-form"
             class="col-md-4 col-sm-12 p-0">
             <div class="border creator">
               <div class="x_title action-box-header">
@@ -15,45 +15,45 @@
               </div>
               <div name="tab_examdesc" class="action-box" role="definition">
                 <div class="form-group">
-                    <label for="class">Class &nbsp;<span style="color: red;">*</span></label>
-                    <select class="form-control" name="class" (change)=EnableSection()>
+                    <label for="Class">Class &nbsp;<span style="color: red;">*</span></label>
+                    <select class="form-control" formControlName="Class" name="Class" (change)=EnableSection()>
                         <option value="">Class</option>
                         <option *ngFor="let class of Classes" [value]="class">{{class}}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="section">Section &nbsp;<span style="color: red;">*</span></label>
-                    <select class="form-control" name="section">
+                    <label for="ClassDetailUid">Section &nbsp;<span style="color: red;">*</span></label>
+                    <select class="form-control" formControlName="ClassDetailUid" name="ClassDetailUid">
                         <option value="">Section</option>
                         <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">{{sec.Section}}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="title">Title &nbsp;<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" name="title" placeholder="Assignment title">
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Description &nbsp;<span style="color: red;">*</span></label>
-                    <textarea name="description" class="form-control" rows="4" placeholder="Assignment descriptin in brief"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="submittionDate">Submittion Date &nbsp;<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" name="submittionDate" placeholder="Assignment submittion date">
-                </div>
-              
-                <div class="form-group">
-                  <label for="subjectcredit">Room no.# &nbsp;<span style="color: red;">*</span></label>
+                  <label for="FacultyUid">Faculty &nbsp;<span style="color: red;">*</span></label>
                   <app-iautocomplete [Data]="faculties" [Placeholder]="'Faculty name'"
                     (OnSelect)="OnFacultySelected($event)">
                   </app-iautocomplete>
                 </div>
 
+                <div class="form-group">
+                    <label for="Title">Title &nbsp;<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control"  formControlName="Title" name="Title" placeholder="Assignment title">
+                </div>
+
+                <div class="form-group">
+                    <label for="Description">Description &nbsp;<span style="color: red;">*</span></label>
+                    <textarea name="Description" formControlName="Description" class="form-control" rows="4" placeholder="Assignment descriptin in brief"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="SubmissionDate">Submittion Date &nbsp;<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" formControlName="SubmissionDate" name="SubmissionDate" placeholder="Assignment submittion date">
+                </div>
+
                 <div class="action-dv mt-4">
-                  <button class="btn btn-block btn-warning">Publish Assignment</button>
+                  <button class="btn btn-block btn-warning" (click)="createAssignment()">Publish Assignment</button>
                 </div>
               </div>
             </div>
@@ -63,8 +63,10 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
-                  <input id="ShopFilter" placeholder="Global search" class="form-control" (keyup)="FilterLocaldata()"
+                  <form (submit)="GetFilteredData()">
+                  <input id="filter" placeholder="Global search" class="form-control"
                     required="required" type="text">
+                  </form>
                 </div>
               </div>
               <div class="col-md-6 d-inline-block text-right no-padding">

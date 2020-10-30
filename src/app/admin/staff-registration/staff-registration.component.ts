@@ -67,6 +67,12 @@ export class StaffRegistrationComponent implements OnInit {
     event.preventDefault();
     $("#document-btn").click();
   }
+
+  GetDocumentFile(elem: any){
+
+  }
+
+  RemoveItem(elem: any){}
 }
 
 export interface StaffRegModal {
