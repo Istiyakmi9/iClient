@@ -13,16 +13,14 @@ import { HomeComponent } from "./home/home.component";
 import { SideMenuComponent } from "./side-menu/side-menu.component";
 import { FloatOnlyDirective } from "src/providers/directives/FloatType";
 import { NumberOnlyDirective } from "src/providers/directives/NumberType";
-import { MobileNumber } from "src/providers/directives/MobileNumber";
-import { NumberDirective } from "src/providers/directives/Number";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { UpperAndLowerCaseDirective } from "src/providers/directives/Upper";
 import { CalanderFormatter } from "src/providers/CalanderFormatter";
 // import { AdminModule } from "./admin/admin.module";
 import { LoginComponent } from "./login/login.component";
 import { LayoutComponent } from "./layout/layout.component";
-import { SharedModule } from "./shared/shared.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HeaderComponent } from './shared/header/header.component';
 
 @NgModule({
   declarations: [
@@ -31,11 +29,10 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     SideMenuComponent,
     FloatOnlyDirective,
     NumberOnlyDirective,
-    MobileNumber,
-    NumberDirective,
-    UpperAndLowerCaseDirective,
     LoginComponent,
     LayoutComponent,
+    UpperAndLowerCaseDirective,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +42,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    SharedModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

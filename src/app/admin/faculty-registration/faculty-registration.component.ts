@@ -10,8 +10,7 @@ import {
   Doc,
   Pdf,
   Txt,
-  File,
-  Excel,
+  FlatFile,
 } from "src/providers/constants";
 import * as $ from "jquery";
 import {
@@ -56,6 +55,7 @@ export class FacultyRegistrationComponent implements OnInit {
   IsEnableSection: boolean = true;
   ProfileImageName: string = "profile.";
   ImagePath: string = "";
+
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -67,6 +67,7 @@ export class FacultyRegistrationComponent implements OnInit {
     this.ImagePath = `${this.http.GetImageBasePath()}Faculties`;
     this.MangePageInformation();
     this.ClassDetail = this.storage.GetClassDetail();
+    this.FacultyRoles = this.storage.get(null, 'Roles');
     this.InitPage();
     this.FacultyImage = DefaultUserImage;
   }
@@ -76,17 +77,6 @@ export class FacultyRegistrationComponent implements OnInit {
     let Data = this.nav.getValue();
     let EditData = JSON.parse(Data);
     this.LoadInitData(EditData);
-  }
-
-  GetOtherFilePath(FileExtension: string) {
-    let OtherFilePath = "";
-    if (FileExtension === "pdf") OtherFilePath = Pdf;
-    else if (FileExtension === "doc") OtherFilePath = Doc;
-    else if (FileExtension === "txt") OtherFilePath = Txt;
-    else if (FileExtension === "zip") OtherFilePath = Zip;
-    else if (FileExtension === "xls") OtherFilePath = Excel;
-    else if (FileExtension == "") OtherFilePath = File;
-    return OtherFilePath;
   }
 
   RemoveItem(FileUid: string) {
@@ -126,7 +116,7 @@ export class FacultyRegistrationComponent implements OnInit {
         let ActualPath = "";
         let LocalFilePath = "";
         while (index < DocumentDetail.length) {
-          LocalFilePath = this.GetOtherFilePath(
+          LocalFilePath = this.commonService.OtherFilePath(
             DocumentDetail[index].FileExtension
           );
           if (LocalFilePath === "") {
@@ -267,14 +257,6 @@ export class FacultyRegistrationComponent implements OnInit {
       this.TitleDetail = "Non-Teaching staff registration page.";
       this.Title = "Staff Registration";
       this.IsFaculty = false;
-      this.FacultyRoles.push(
-        {
-          RoleName: "Faculty",
-        },
-        {
-          RoleName: "Driver",
-        }
-      );
     }
   }
 
@@ -323,6 +305,7 @@ export class FacultyRegistrationComponent implements OnInit {
       QualificationId: new FormControl("", Validators.required),
       Title: new FormControl(""),
       SchoolUniversityName: new FormControl(""),
+      //RoleUid: new FormControl(""),
     });
 
     this.ScrollTop();
@@ -426,16 +409,7 @@ export class FacultyRegistrationComponent implements OnInit {
         }
       }
 
-      if (!this.IsFaculty) {
-        if (!IsValidType(this.FacultyForm.get("Designation").value)) {
-          ErrorFields.push("Designation");
-          this.commonService.ShowToast(
-            "Faculty roles is required. Please correct (*) marked fields."
-          );
-        }
-      } else {
-        this.FacultyForm.controls["Designation"].setValue("Faculty");
-      }
+      this.FacultyForm.controls["Designation"].setValue("Faculty");
 
       if (ErrorFields.length > 0) {
         ErrorFields.forEach((val, index) => {
@@ -564,7 +538,7 @@ export class FacultyRegistrationComponent implements OnInit {
           else if (extension === "doc") OtherFilePath = Doc;
           else if (extension === "txt") OtherFilePath = Txt;
           else if (extension === "zip") OtherFilePath = Zip;
-          else OtherFilePath = File;
+          else OtherFilePath = FlatFile;
 
           IsImageFile = false;
           this.DocumentImageObjects.push({

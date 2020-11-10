@@ -230,7 +230,6 @@ export class AppComponent {
           })
           .catch((err) => {
             this.common.ShowToast("Login error.");
-            alert(JSON.stringify(err));
           });
       } else {
         this.common.ShowToast(ErrorFields);

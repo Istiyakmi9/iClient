@@ -21,9 +21,10 @@ export const DefaultUserImage = "assets/defaultuser.jpg";
 export const Doc = "assets/doc.png";
 export const Pdf = "assets/pdf.png";
 export const Txt = "assets/txt.png";
-export const File = "assets/file.png";
+export const FlatFile = "assets/file.png";
 export const Zip = "assets/zip.png";
 export const Excel = "assets/excel.png";
+export const HolidayList = "holidaylist";
 
 export const StudentReports = "studentsreport";
 export const FacultyReports = "facultiesreport";

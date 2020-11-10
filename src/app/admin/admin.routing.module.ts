@@ -37,6 +37,7 @@ import {
   ManageMenu,
   Grades,
   Assignment,
+  HolidayList,
 } from "src/providers/constants";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AttendanceComponent } from "./attendance/attendance.component";

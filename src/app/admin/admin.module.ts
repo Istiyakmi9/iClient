@@ -45,6 +45,9 @@ import { AssignmentComponent } from './assignment/assignment.component';
 import { FullCalendarModule } from '@fullcalendar/angular'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { MobileNumber } from 'src/providers/directives/MobileNumber';
+import { NumberDirective } from 'src/providers/directives/Number';
+import { HeaderComponent } from '../shared/header/header.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -89,7 +92,9 @@ FullCalendarModule.registerPlugins([
     SyllabusComponent,
     ManagemenuComponent,
     GradesComponent,
-    AssignmentComponent
+    AssignmentComponent,
+    MobileNumber,
+    NumberDirective
   ],
   imports: [
     CommonModule,

@@ -12,12 +12,8 @@ export class NumberDirective {
       if (this.AllowedKeys.indexOf(e.which) !== -1) {
         return;
       } else {
-        if (
-          e.which >= 48 &&
-          e.which <= 57 &&
-          event.currentTarget.value.length < this.number
-        )
-          return;
+        let value = Number(e.key);
+        if (!isNaN(Number(e.key)) && value >= 0 && value < 9 && event.currentTarget.value.length < this.number) return;
         else e.preventDefault();
       }
     }

@@ -1,4 +1,4 @@
-import { ExamResult, ManageExamDetail, ManageExam } from "./../constants";
+import { ExamResult, ManageExamDetail, ManageExam, Pdf, Doc, Txt, Zip, Excel, FlatFile } from "./../constants";
 import { Injectable } from "@angular/core";
 import * as $ from "jquery";
 import { FormGroup } from "@angular/forms";
@@ -312,6 +312,17 @@ export class CommonService {
 
   public Scrollto(ToElement: any) {
     $("html, body").animate({ scrollTop: ToElement.position().top }, "slow");
+  }
+
+  OtherFilePath(FileExtension: string) {
+    let OtherFilePath = null;
+    if (FileExtension === "pdf") OtherFilePath = Pdf;
+    else if (FileExtension === "doc" || FileExtension === "docx") OtherFilePath = Doc;
+    else if (FileExtension === "txt") OtherFilePath = Txt;
+    else if (FileExtension === "zip") OtherFilePath = Zip;
+    else if (FileExtension === "xls" || FileExtension === "xlsx") OtherFilePath = Excel;
+    else if (FileExtension == "") OtherFilePath = FlatFile;
+    return OtherFilePath;
   }
 
   public AlphaNumericOnly(event: any) {}

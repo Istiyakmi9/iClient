@@ -7,7 +7,7 @@ import { DefaultUserImage, ZerothIndex,   Zip,
   Doc,
   Pdf,
   Txt,
-  File,
+  FlatFile,
   Excel } from "src/providers/constants";
 import * as $ from "jquery";
 import {
@@ -118,7 +118,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         let ActualPath = "";
         let LocalFilePath = "";
         while (index < DocumentDetail.length) {
-          LocalFilePath = this.GetOtherFilePath(
+          LocalFilePath = this.commonService.OtherFilePath(
             DocumentDetail[index].FileExtension
           );
           if (LocalFilePath === "") {
@@ -156,17 +156,6 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
     }
   }
 
-  GetOtherFilePath(FileExtension: string) {
-    let OtherFilePath = "";
-    if (FileExtension === "pdf") OtherFilePath = Pdf;
-    else if (FileExtension === "doc") OtherFilePath = Doc;
-    else if (FileExtension === "txt") OtherFilePath = Txt;
-    else if (FileExtension === "zip") OtherFilePath = Zip;
-    else if (FileExtension === "xls") OtherFilePath = Excel;
-    else if (FileExtension == "") OtherFilePath = File;
-    return OtherFilePath;
-  }
-
   GetDocumentFile(fileInput: any) {
     this.DocumentImages = [];
     this.DocumentImages = [];
@@ -189,7 +178,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
           else if (extension === "doc") OtherFilePath = Doc;
           else if (extension === "txt") OtherFilePath = Txt;
           else if (extension === "zip") OtherFilePath = Zip;
-          else OtherFilePath = File;
+          else OtherFilePath = FlatFile;
 
           IsImageFile = false;
           this.DocumentImageObjects.push({

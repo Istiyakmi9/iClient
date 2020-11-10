@@ -17,7 +17,8 @@ export class NumberOnlyDirective {
           if (textvalue.indexOf(".") !== -1) e.preventDefault();
           else return;
         } else {
-          if (e.which >= 48 && e.which <= 57) return;
+          let value = Number(e.key);
+          if (!isNaN(Number(e.key)) && value >= 0 && value < 9) return;
           else e.preventDefault();
         }
       }
