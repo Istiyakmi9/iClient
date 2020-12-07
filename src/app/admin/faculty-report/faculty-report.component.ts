@@ -1,14 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  FacultyColumn,
   Paging,
   FacultyRegistration,
 } from "src/providers/constants";
 import {
   IsValidType,
   CommonService,
-  GroupBy,
-  UniqueItem,
+  GetReportData,
 } from "src/providers/common-service/common.service";
 import { AjaxService } from "src/providers/ajax.service";
 import { ITable } from "src/providers/Generic/Interface/ITable";
@@ -55,23 +53,11 @@ export class FacultyReportComponent implements OnInit {
     this.http
       .post("Reports/FacultyReports", this.SearchQuery)
       .then((response) => {
-        if (
-          this.commonService.IsValidResponse(response) &&
-          IsValidType(response.ResponseBody)
-        ) {
+        if (this.commonService.IsValidResponse(response)) {
           let Data = JSON.parse(response.ResponseBody);
-          let Keys = Object.keys(Data);
-          if (Keys.indexOf("Table") !== -1 && Keys.indexOf("Table1") !== -1) {
-            this.GridRowData = Data["Table"];
-            let TotalCount = Data["Table1"][0].Total;
-            this.GridData = {
-              headers: FacultyColumn,
-              rows: this.GridRowData,
-              totalCount: TotalCount,
-              pageIndex: this.SearchQuery.PageIndex,
-              pageSize: this.SearchQuery.PageSize,
-              url: "",
-            };
+          let gridData = GetReportData(Data, this.SearchQuery);
+          if(gridData != null) {
+            this.GridData = gridData;
           } else {
             this.commonService.ShowToast(
               "Receive invalid data. Please contact to admin."

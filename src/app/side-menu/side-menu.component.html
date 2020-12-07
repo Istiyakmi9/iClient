@@ -48,32 +48,19 @@
             <li class="header-menu">
               <span>{{ catagory.Catagory }}</span>
             </li>
-            <li
-              class="sidebar-dropdown"
-              name="item-header"
-              *ngFor="
-                let subcatagory of catagory.SubCatagory;
-                index as outerIndex
-              "
-            >
+            <li class="sidebar-dropdown" name="item-header" *ngFor="let subcatagory of catagory.SubCatagory; index as outerIndex">
               <a name="/{{ subcatagory.Link }}">
                 <i class="{{ subcatagory.Icon }}"></i>
                 <span class="active-bar">{{ subcatagory.Catagory }}</span>
                 <span
                   *ngIf="subcatagory.Badge != null"
-                  class="badge badge-pill badge-warning"
-                  >New</span
-                >
+                  class="badge badge-pill badge-warning">New</span>
               </a>
               <div class="sidebar-submenu" name="submenues">
                 <ul>
                   <li
                     type="action"
-                    *ngFor="
-                      let record of subcatagory.SubCatagory;
-                      index as innerIndex
-                    "
-                  >
+                    *ngFor="let record of subcatagory.SubCatagory;index as innerIndex">
                     <a
                       (click)="CleanUpCache()"
                       name="/{{ record.Link }}"

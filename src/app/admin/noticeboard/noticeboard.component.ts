@@ -3,7 +3,6 @@ import { StaffMemberColumn } from "src/providers/constants";
 import {
   IsValidType,
   CommonService,
-  GetReportData,
   BuildGrid
 } from "src/providers/common-service/common.service";
 import { AjaxService } from "src/providers/ajax.service";
@@ -11,11 +10,11 @@ import { SearchModal } from "../student-report/student-report.component";
 import { ITable } from "src/providers/Generic/Interface/ITable";
 
 @Component({
-  selector: "app-staff-report",
-  templateUrl: "./staff-report.component.html",
-  styleUrls: ["./staff-report.component.sass"]
+  selector: 'app-noticeboard',
+  templateUrl: './noticeboard.component.html',
+  styleUrls: ['./noticeboard.component.scss']
 })
-export class StaffReportComponent implements OnInit {
+export class NoticeboardComponent implements OnInit {
   DynamicTableDetail: ITable;
   Pagination: [];
   CurrentPageIndex: any;
@@ -47,7 +46,7 @@ export class StaffReportComponent implements OnInit {
     this.SearchQuery.PageIndex = 1;
     this.SearchQuery.PageSize = 15;
 
-    this.http.post("Reports/StaffReport", this.SearchQuery).then(response => {
+    this.http.post("Notice/fetchnotice", this.SearchQuery).then(response => {
       this.GridData = BuildGrid(response, this.SearchQuery);
     });
   }

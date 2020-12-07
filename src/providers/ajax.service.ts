@@ -317,12 +317,13 @@ export class AjaxService {
           (res: HttpResponse<any>) => {
             let Token = res.headers.get(TokenName);
             if (this.commonService.IsValid(Token) || this.byPassToken) {
-              this.setCookies(Token);
               let Data = "";
               try {
                 if (res.body !== null && res.body !== "") {
                   this.commonService.HideLoaderByAjax();
-                  Data = JSON.parse(res.body);
+                  if (typeof res.body === "string")
+                    Data = JSON.parse(res.body);
+                  else Data = res.body;
                 } else {
                   this.commonService.HideLoaderByAjax();
                   this.commonService.ShowToast(

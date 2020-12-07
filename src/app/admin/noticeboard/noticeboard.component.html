@@ -1,0 +1,33 @@
+<div class="col-md-12 col-sm-12 p-0">
+    <div class="clearfix"></div>
+    <div class="col-md-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                <h2>Other StaffMembers Reports</h2>
+                <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                <app-page-bread-crum></app-page-bread-crum>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                    <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
+                        <input id="ShopFilter" placeholder="Global search" class="form-control" (keyup)="FilterLocaldata()"
+                        required="required" type="text">
+                    </div>
+                    </div>
+                    <div class="col-md-6 d-inline-block text-right no-padding">
+                    <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1"><i
+                        class="fas fa-sync"></i>&ensp;Reset</button>
+                    <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success"><i
+                        class="fa fa-filter"></i>&ensp;Advance Search</button>
+                    </div>
+                </div>
+                <app-dynamic-grid [Data]="GridData"></app-dynamic-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  

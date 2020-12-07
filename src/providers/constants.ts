@@ -24,7 +24,14 @@ export const Txt = "assets/txt.png";
 export const FlatFile = "assets/file.png";
 export const Zip = "assets/zip.png";
 export const Excel = "assets/excel.png";
+export const Ppt = "assets/ppt.png";
 export const HolidayList = "holidaylist";
+
+export const NoticeBoard = "noticeboard";
+export const ManageNotice = "managenotice";
+export const Announcement = "announcement";
+export const ManageAnnouncement = "manageannouncement";
+
 
 export const StudentReports = "studentsreport";
 export const FacultyReports = "facultiesreport";
@@ -38,6 +45,11 @@ export const Syllabus = "syllabus";
 export const ManageMenu = "managemenu";
 export const Grades = "grades";
 export const Assignment = "assignment";
+export const Guardian = "guardian";
+export const ManageGuardian = "manageguardian";
+export const Rows = "Rows";
+export const Total = "Total";
+export const Columns = "Column";
 
 export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";
@@ -50,8 +62,7 @@ export const UploadResults = "uploadresults";
 export const ManageResults = "manageresults";
 export const ManageExam = "manageexam";
 export const ManageExamDetail = "manageexamdetail";
-export const OperationFail =
-  "Fail to perform operation. Please contact to admin.";
+export const OperationFail = "Fail to perform operation. Please contact to admin.";
 
 export const PurchaseColumn: Array<IColumns> = [
   { column: "Name", header: "Product", width: 10 },

@@ -48,6 +48,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { MobileNumber } from 'src/providers/directives/MobileNumber';
 import { NumberDirective } from 'src/providers/directives/Number';
 import { HeaderComponent } from '../shared/header/header.component';
+import { GuardianComponent } from './guardian/guardian.component';
+import { ManageguardianComponent } from './manageguardian/manageguardian.component';
+import { NoticeboardComponent } from './noticeboard/noticeboard.component';
+import { ManagenoticeComponent } from './managenotice/managenotice.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import { ManageannouncementComponent } from './manageannouncement/manageannouncement.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -94,7 +100,13 @@ FullCalendarModule.registerPlugins([
     GradesComponent,
     AssignmentComponent,
     MobileNumber,
-    NumberDirective
+    NumberDirective,
+    GuardianComponent,
+    ManageguardianComponent,
+    NoticeboardComponent,
+    ManagenoticeComponent,
+    AnnouncementComponent,
+    ManageannouncementComponent
   ],
   imports: [
     CommonModule,

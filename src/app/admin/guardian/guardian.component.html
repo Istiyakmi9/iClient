@@ -2,46 +2,40 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel full-card">
         <div class="x_title">
-          <h2>Grade(s) <small>Add and update grades(s)</small></h2>
+          <h2>Subject(s) <small>Add and update subject(s)</small></h2>
           <div class="clearfix"></div>
         </div>
         <div class="x_content col-12 p-0 row m-0 mt-4">
-          <form [formGroup]="GradeDetail" (keydown.enter)="$event.preventDefault()" id="class-form"
+          <!-- <form [formGroup]="Classdetail" (keydown.enter)="$event.preventDefault()" id="class-form"
             class="col-md-4 col-sm-12 p-0">
             <div class="border creator">
               <div class="x_title action-box-header">
-                <h2>Grade & Marks <small>Add/edit grades & marks</small></h2>
+                <h2>Manage Parent detail</h2>
                 <div class="clearfix"></div>
               </div>
               <div name="tab_examdesc" class="action-box" role="definition">
                 <div class="form-group">
-                  <label for="subjectcredit">Grade &nbsp;<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control" formControlName="Grade"
-                    placeholder="Grade">
+                  <label for="subjectcredit">No. of seats &nbsp;<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" number="4" formControlName="TotalSeats"
+                    placeholder="Total no. of seats">
                 </div>
                 <div class="form-group">
-                  <label for="subjectcredit">Grade description &nbsp;</label>
-                  <textarea name="Description" rows="3" class="form-control" formControlName="Description"
-                    placeholder="Grade description"></textarea>
+                  <label for="subjectcredit">Seat for girls &nbsp;<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" number="3" formControlName="GirlSeats"
+                    placeholder="Seat for girls">
                 </div>
                 <div class="form-group">
-                  <label for="subjectcredit">Min marks &nbsp;<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control" number="3" formControlName="MinMarks"
-                    placeholder="Min marks">
-                </div>
-                <div class="form-group">
-                  <label for="subjectcredit">Max marks &nbsp;<span style="color: red;">*</span></label>
-                  <input type="text" class="form-control" number="3" formControlName="MaxMarks"
-                    placeholder="Max marks">
+                  <label for="subjectcredit">Seat for boys &nbsp;<span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" number="3" formControlName="BoySeats"
+                    placeholder="Seat for boys">
                 </div>
                 <div class="action-dv mt-4">
-                  <button class="btn btn-block btn-outline-dark" (click)="ClearForm()">Clear</button>
-                  <button class="btn btn-block btn-warning" (click)="AddClassSection()">{{butMessage}}</button>
+                  <button class="btn btn-block btn-warning" (click)="AddClassSection()">Add Subject</button>
                 </div>
               </div>
             </div>
-          </form>
-          <div class="col-md-8 pr-0" *ngIf="IsReady">
+          </form> -->
+          <div class="col-md-12 pr-0" *ngIf="IsReady">
             <div class="row">
               <div class="col-md-6">
                 <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">

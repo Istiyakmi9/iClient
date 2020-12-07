@@ -4,6 +4,7 @@ import { ITable } from "src/providers/Generic/Interface/ITable";
 import { AjaxService } from "src/providers/ajax.service";
 import {
   CommonService,
+  GetReportData,
   IsValidType,
 } from "src/providers/common-service/common.service";
 import { iNavigation } from "src/providers/iNavigation";
@@ -12,7 +13,9 @@ import {
   ZerothIndex,
   InvalidData,
   GradeDetailColumn,
+  ServerError,
 } from "src/providers/constants";
+import { SearchModal } from '../student-report/student-report.component';
 
 @Component({
   selector: 'app-grades',
@@ -27,6 +30,9 @@ export class GradesComponent implements OnInit {
   GridData: ITable;
   IsReady: boolean;
   GradeDetail: FormGroup;
+  SearchQuery: SearchModal;
+  isUpdate: boolean = false;
+  butMessage: string = "Insert Grade";
 
   constructor(
     private http: AjaxService,
@@ -36,6 +42,7 @@ export class GradesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.SearchQuery = new SearchModal();
     this.BuildForm(new GradeDetailModal())
     this.InitQuery();
     this.LoadData();
@@ -46,7 +53,8 @@ export class GradesComponent implements OnInit {
       GradeUid: new FormControl(ExistingGradeDetailModal.GradeUid),
       Grade: new FormControl(ExistingGradeDetailModal.Grade, Validators.required),
       Description: new FormControl(ExistingGradeDetailModal.Description),
-      MarksRange: new FormControl(ExistingGradeDetailModal.MarksRange),
+      MinMarks: new FormControl(ExistingGradeDetailModal.MinMarks),
+      MaxMarks: new FormControl(ExistingGradeDetailModal.MaxMarks),
     });
   }
 
@@ -58,27 +66,31 @@ export class GradesComponent implements OnInit {
     this.http
       .get("Grades/FetchGrade")
       .then((response) => {
-        if (IsValidType(response.ResponseBody)) {
-          let Data = JSON.parse(response.ResponseBody);
-          if (IsValidType(Data["Table"]) && IsValidType(Data["Table1"])) {
-            let TotalCount = Data["Table1"][ZerothIndex]["Total"];
-            this.GridData = {
-              rows: Data["Table"],
-              headers: GradeDetailColumn,
-              pageIndex: 1,
-              pageSize: 1,
-              totalCount: TotalCount,
-            };
-            this.IsReady = true;
-          } else {
-            this.commonService.ShowToast(InvalidData);
-          }
-        } else {
-          this.commonService.ShowToast(
-            "Server error. Please contact to admin."
-          );
+        try{
+          this.BuildGrid(response);
+        } catch(e) {
+          this.commonService.ShowToast(ServerError);
         }
       });
+  }
+
+  BuildGrid(response: any) {
+    if (IsValidType(response.ResponseBody)) {
+      let Data = JSON.parse(response.ResponseBody);
+      let gridData = GetReportData(Data, this.SearchQuery);
+      if(gridData != null) {
+        this.GridData = gridData;
+        this.IsReady = true;
+      } else {
+        this.commonService.ShowToast(
+          "Receive invalid data. Please contact to admin."
+        );
+      }
+    } else {
+      this.commonService.ShowToast(
+        "Server error. Please contact to admin."
+      );
+    }
   }
 
   AddClassSection() {
@@ -87,37 +99,44 @@ export class GradesComponent implements OnInit {
     if (Grade === "") {
       Error.push("Grade");
     }
-    let MarksRange = this.GradeDetail.get("MarksRange").value;
-    if (MarksRange === "") {
-      Error.push("MarksRange");
+
+    let MinMarks = this.GradeDetail.get("MinMarks").value;
+    if (MinMarks === "") {
+      Error.push("MinMarks");
+    } else {
+      let value = Number(this.GradeDetail.get("MinMarks").value);
+      if(isNaN(value)) {
+        Error.push("MinMarks");
+      } else 
+        this.GradeDetail.controls["MinMarks"].setValue(value)
     }
+
+    let MaxMarks = this.GradeDetail.get("MaxMarks").value;
+    if (MaxMarks === "") {
+      Error.push("MaxMarks");
+    } else {
+      let value = Number(this.GradeDetail.get("MaxMarks").value);
+      if(isNaN(value)) {
+        Error.push("MaxMarks");
+      } else 
+        this.GradeDetail.controls["MaxMarks"].setValue(value)
+    }
+
     if (Error.length > 0) {
       this.commonService.ShowToast("All fields are required.");
     } else {
       this.http
         .post("Grades/AddUpdateGrade", this.GradeDetail.value)
         .then((response) => {
-          if (IsValidType(response.ResponseBody)) {
-            let Data = JSON.parse(response.ResponseBody);
-            if (IsValidType(Data["Table"]) && IsValidType(Data["Table1"])) {
-              let TotalCount = Data["Table1"][ZerothIndex]["Total"];
-              this.GridData = {
-                rows: Data["Table"],
-                headers: GradeDetailColumn,
-                pageIndex: 1,
-                pageSize: 0,
-                totalCount: TotalCount,
-              };
-              this.IsReady = true;
-              this.commonService.ShowToast("Grade inserted successfully");
-              this.BuildForm(new GradeDetailModal());
-            } else {
-              this.commonService.ShowToast(InvalidData);
-            }
-          } else {
-            this.commonService.ShowToast(
-              "Server error. Please contact to admin."
-            );
+          this.ClearForm();
+          try{
+            this.BuildGrid(response);
+            if(this.isUpdate)
+              this.commonService.ShowToast('Record updated successfully');
+            else 
+              this.commonService.ShowToast('Record inserted successfully');
+          } catch(e) {
+            this.commonService.ShowToast(ServerError);
           }
         });
       }
@@ -125,12 +144,16 @@ export class GradesComponent implements OnInit {
 
   OnEdit($e: any) {
     if (IsValidType($e)) {
+      this.isUpdate = true;
+      this.butMessage = "Update Grade";
       let CurrentItem: GradeDetailModal = JSON.parse($e);
       this.BuildForm(CurrentItem);
     }
   }
 
   ClearForm(){
+    this.isUpdate = true;
+    this.butMessage = "Insert Grade";
     this.BuildForm(new GradeDetailModal());
   }
 
@@ -151,5 +174,6 @@ export class GradeDetailModal {
   GradeUid: number = -1;
   Grade: string = "";
   Description: string = "";
-  MarksRange: string = "";
+  MinMarks: number = null;
+  MaxMarks: number = null;
 }

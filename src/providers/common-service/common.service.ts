@@ -1,4 +1,4 @@
-import { ExamResult, ManageExamDetail, ManageExam, Pdf, Doc, Txt, Zip, Excel, FlatFile } from "./../constants";
+import { ExamResult, ManageExamDetail, ManageExam, Pdf, Doc, Txt, Zip, Excel, FlatFile, Total, Rows, Columns, ZerothIndex, Ppt } from "./../constants";
 import { Injectable } from "@angular/core";
 import * as $ from "jquery";
 import { FormGroup } from "@angular/forms";
@@ -62,16 +62,18 @@ export class CommonService {
 
   public IsValidResponse(Data: any) {
     let Flag = false;
-    let DataType = typeof Data;
-    let OriginalData = Data;
-    if (DataType === "string") {
-      OriginalData = JSON.parse(Data);
-    }
-    if (OriginalData !== null) {
-      let Keys = Object.keys(OriginalData);
-      if (Keys.length > 0 && Keys.indexOf("HttpStatusCode") !== -1) {
-        if (Data["HttpStatusCode"] === 200) {
-          Flag = true;
+    if(Data !== null) {
+      let DataType = typeof Data;
+      let OriginalData = Data;
+      if (DataType === "string") {
+        OriginalData = JSON.parse(Data);
+      }
+      if (OriginalData !== null) {
+        let Keys = Object.keys(OriginalData);
+        if (Keys.length > 0 && Keys.indexOf("HttpStatusCode") !== -1) {
+          if (Data["HttpStatusCode"] === 200) {
+            Flag = true;
+          }
         }
       }
     }
@@ -321,6 +323,7 @@ export class CommonService {
     else if (FileExtension === "txt") OtherFilePath = Txt;
     else if (FileExtension === "zip") OtherFilePath = Zip;
     else if (FileExtension === "xls" || FileExtension === "xlsx") OtherFilePath = Excel;
+    else if (FileExtension === "ppt" || FileExtension === "pptx") OtherFilePath = Ppt;
     else if (FileExtension == "") OtherFilePath = FlatFile;
     return OtherFilePath;
   }
@@ -656,6 +659,47 @@ export function UniqueItem(Items: Array<any>, Key: any): Array<any> {
     }
   }
   return UniqueItems;
+}
+
+export function GetReportData(data: any, searchQuery: any): any {
+  let GridData: any = null;
+  try{
+    let Keys = Object.keys(data);
+    if (Keys.indexOf(Total) !== -1 && Keys.indexOf(Rows) !== -1 && Keys.indexOf(Columns) !== -1){
+      let TotalCount = data[Total][ZerothIndex].Total;
+      GridData = {
+        headers: data[Columns],
+        rows: data[Rows],
+        totalCount: TotalCount,
+        pageIndex: searchQuery.PageIndex,
+        pageSize: searchQuery.PageSize,
+        url: "",
+      };
+    }
+  } catch(e) {
+    console.log('Error on trying to parse server returned data.');
+  }
+  return GridData;
+}
+
+export function BuildGrid(response: any, searchQuery: any): any {
+  let GridData = null;
+  if (IsValidType(response.ResponseBody)) {
+    let Data = JSON.parse(response.ResponseBody);
+    let gridData = GetReportData(Data, searchQuery);
+    if(gridData != null) {
+      GridData = gridData;
+    } else {
+      this.commonService.ShowToast(
+        "Receive invalid data. Please contact to admin."
+      );
+    }
+  } else {
+    this.commonService.ShowToast(
+      "Server error. Please contact to admin."
+    );
+  }
+  return GridData;
 }
 
 export function ActualOrDefault(data: any, modal: any): any {

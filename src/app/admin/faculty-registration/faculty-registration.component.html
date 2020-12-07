@@ -1,4 +1,7 @@
 <div class="col-md-12 col-sm-12 icard" name="grid">
+  <div id="framedv" class="d-none shop-doc" (click)="closeViewer()">
+    <iframe id="frame" class="doc" frameborder="0" src=""></iframe>
+  </div>
   <form
     [formGroup]="FacultyForm"
     method="post"
@@ -481,45 +484,6 @@
         </div>
       </div>
     </div>
-    <!-- 
-    <div class="col-md-12 p-0 d-none upload-document" id="document-dv">
-      <div class="upload-document-dv">
-        <div class="card night-bg">
-          <div class="card-header">
-            Header
-          </div>
-          <div class="card-body upload-body row">
-            <ng-container *ngFor="let img of DocumentImages">
-              <div class="img-dv">
-                <div class="">
-                  <img [src]="img" alt="Document Image" class="doc-img">
-                </div>
-                <div class="col-12 mt-2 text-dark">
-                  <a class="del-anc">
-                    <i class="fas fa-trash-alt pr-1"></i>
-                    Delete
-                  </a>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-          <div class="card-footer">
-            <div class="col-md-12">
-              <button class="btn btn-light mr-2" (click)="CloseUploadDoc()">
-                <i class="fas fa-times-circle"></i>
-                Close
-              </button>
-
-              <button class="btn btn-warning" (click)="OpenBrowseOptions()">
-                <i class="fas fa-upload"></i>
-                Browse
-              </button>
-              <input class="d-none" type="file" multiple (change)="GetDocumentFile($event)" id="document-btn">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <div class="col-md-12 p-0">
       <div class="x_panel pb-0">
@@ -544,14 +508,13 @@
           <div class="form-group row ml-1">
             <ng-container *ngFor="let img of DocumentImageObjects">
               <div class="img-dv">
-                <div class="">
+                <a (click)="EnlargeItem(img.ActualPath)" class="">
                   <img
                     [src]="img.FilePath"
-                    (click)="EnlargeItem(img.ActualPath)"
                     alt="Document Image"
                     class="doc-img"
                   />
-                </div>
+                </a>
                 <div class="col-12 mt-2 text-dark">
                   <a
                     class="del-anc"

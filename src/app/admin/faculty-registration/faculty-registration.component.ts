@@ -92,10 +92,6 @@ export class FacultyRegistrationComponent implements OnInit {
     }
   }
 
-  EnlargeItem(Url: string) {
-    alert(Url);
-  }
-
   BuildImagesArray(DocImages: any) {
     if (IsValidType(DocImages)) {
       this.DocFiles = DocImages;
@@ -119,7 +115,7 @@ export class FacultyRegistrationComponent implements OnInit {
           LocalFilePath = this.commonService.OtherFilePath(
             DocumentDetail[index].FileExtension
           );
-          if (LocalFilePath === "") {
+          if (LocalFilePath === null || LocalFilePath === "") {
             LocalFilePath = `${this.http.GetImageBasePath()}${
               DocumentDetail[index].FilePath
             }/${DocumentDetail[index].FileName}`;
@@ -435,14 +431,8 @@ export class FacultyRegistrationComponent implements OnInit {
         this.http.upload("Registration/Faculty", formData).then(
           (response) => {
             if (this.commonService.IsValidResponse(response)) {
-              if (response.ResponseBody === "Record updated successfully") {
-                this.commonService.ShowToast("Record updated successfully");
+              if (response.ResponseBody.indexOf("successfully") !== -1) {
                 this.ScrollTop();
-              } else if (
-                response.ResponseBody === "Registration done successfully"
-              ) {
-                this.InitPage();
-                //let Data = response.content.data;
                 this.commonService.ShowToast("Registration done successfully");
               } else {
                 this.commonService.ShowToast("Unable to save data.");
@@ -524,10 +514,8 @@ export class FacultyRegistrationComponent implements OnInit {
       let index = 0;
       let file = null;
       let extension = "";
-      let IsImageFile = false;
       let OtherFilePath = "";
       while (index < Files.length) {
-        IsImageFile = true;
         OtherFilePath = "";
         file = <File>Files[index];
         this.FacultyDocumentImages.push(file);
@@ -535,31 +523,30 @@ export class FacultyRegistrationComponent implements OnInit {
         if (mimeType.match(/image\/*/) == null) {
           extension = file.name.slice(file.name.lastIndexOf(".") + 1);
           if (extension === "pdf") OtherFilePath = Pdf;
-          else if (extension === "doc") OtherFilePath = Doc;
+          else if (extension === "doc" || extension === "docx") OtherFilePath = Doc;
           else if (extension === "txt") OtherFilePath = Txt;
           else if (extension === "zip") OtherFilePath = Zip;
+          else if (extension === "ppt" || extension === "pptx") OtherFilePath = Doc;
+          else if (extension === "xlsx" || extension === "xls") OtherFilePath = Doc;
           else OtherFilePath = FlatFile;
 
-          IsImageFile = false;
           this.DocumentImageObjects.push({
             FileUid: index,
             FileOn: "server",
             FilePath: OtherFilePath,
           });
+        } else {
+          let reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = (fileEvent) => {
+            this.DocumentImages.push(reader.result);
+              this.DocumentImageObjects.push({
+                FileUid: index,
+                FileOn: "server",
+                FilePath: reader.result,
+              });
+          };
         }
-
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (fileEvent) => {
-          this.DocumentImages.push(reader.result);
-          if (IsImageFile) {
-            this.DocumentImageObjects.push({
-              FileUid: index,
-              FileOn: "server",
-              FilePath: reader.result,
-            });
-          }
-        };
         index++;
       }
     } else {
@@ -579,6 +566,18 @@ export class FacultyRegistrationComponent implements OnInit {
   OpenBrowseOptions() {
     event.preventDefault();
     $("#document-btn").click();
+  }
+
+  EnlargeItem(Url: string) {
+    if(Url !== null && Url !== "") {
+      $('#frame').attr('src', `${Url}`);
+      $('#framedv').removeClass('d-none');
+    }
+  }
+
+  closeViewer() {
+    $('#frame').attr('src', '');
+    $('#framedv').addClass('d-none');
   }
 }
 

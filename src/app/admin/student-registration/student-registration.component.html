@@ -1,4 +1,7 @@
 <div class="col-md-12 col-sm-12 p-0">
+  <div *ngIf="isEnlarge" class="shop-doc">
+    <iframe class="doc" [attr.src]="viewUrl"></iframe>
+  </div>
   <div *ngIf="IsReady">
     <form id="studentRegistration" [formGroup]="StudentForm" (submit)="RegisterNow()"
       (keydown.enter)="$event.preventDefault()">
@@ -361,14 +364,13 @@
             <div class="form-group row ml-1">
               <ng-container *ngFor="let img of DocumentImageObjects">
                 <div class="img-dv">
-                  <div class="">
+                  <a (click)="EnlargeItem(img.ActualPath)" class="">
                     <img
                       [src]="img.FilePath"
-                      (click)="EnlargeItem(img.ActualPath)"
                       alt="Document Image"
                       class="doc-img"
                     />
-                  </div>
+                  </a>
                   <div class="col-12 mt-2 text-dark">
                     <a
                       class="del-anc"

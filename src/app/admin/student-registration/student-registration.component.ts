@@ -46,6 +46,8 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   Sections: Array<ClassDetail>;
   ImagePath: string = "";
   DocumentImages: Array<any> = [];
+  viewUrl: string = "";
+  isEnlarge: boolean = false;
 
   DocumentImageObjects: Array<any> = [];
 
@@ -175,9 +177,11 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         if (mimeType.match(/image\/*/) == null) {
           extension = file.name.slice(file.name.lastIndexOf(".") + 1);
           if (extension === "pdf") OtherFilePath = Pdf;
-          else if (extension === "doc") OtherFilePath = Doc;
+          else if (extension === "doc" || extension === "docx") OtherFilePath = Doc;
           else if (extension === "txt") OtherFilePath = Txt;
           else if (extension === "zip") OtherFilePath = Zip;
+          else if (extension === "ppt" || extension === "pptx") OtherFilePath = Doc;
+          else if (extension === "xlsx" || extension === "xls") OtherFilePath = Doc;
           else OtherFilePath = FlatFile;
 
           IsImageFile = false;
@@ -645,7 +649,10 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   ManageSection() {}
 
   EnlargeItem(Url: string) {
-    alert(Url);
+    if(Url !== null && Url !== "") {
+      this.viewUrl = Url;
+      this.isEnlarge = true;
+    }
   }
 
   OpenBrowseOptions() {

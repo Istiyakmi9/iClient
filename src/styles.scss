@@ -16,6 +16,70 @@ $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
   --wing-height: 60px;
 }
 
+/*----------------  mediaquery for side menu ------------------------------*/
+
+@media only screen and (min-width: 360px) and (max-width: 480px) {
+  .col-md-2-5 {
+    width: 5rem;
+    max-width: 15rem;
+  }
+
+  .col-md-7-5 {
+    width: calc(100% - 15rem);
+    max-width: calc(100% - 15rem);
+  }
+}
+
+@media only screen and (min-width: 481) and (max-width: 768px) {
+  .col-md-2-5 {
+    width: 5rem;
+    max-width: 15rem;
+  }
+
+  .col-md-7-5 {
+    width: calc(100% - 15rem);
+    max-width: calc(100% - 15rem);
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .col-md-2-5 {
+    width: 5rem;
+    max-width: 15rem;
+  }
+
+  .col-md-7-5 {
+    width: calc(100% - 5rem);
+    max-width: calc(100% - 5rem);
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+  .col-md-2-5 {
+    width: 15rem;
+    max-width: 15rem;
+  }
+
+  .col-md-7-5 {
+    width: calc(100% - 15rem);
+    max-width: calc(100% - 15rem);
+  }
+}
+
+@media only screen and (min-width: 1201px) {
+  .col-md-2-5 {
+    width: 15rem;
+    max-width: 15rem;
+  }
+
+  .col-md-7-5 {
+    width: calc(100% - 15rem);
+    max-width: calc(100% - 15rem);
+  }
+}
+
+/*------------------------- end -------------------------------------------*/
+
 .color-blue {
   color: var(--light-blue) !important;
 }
@@ -87,16 +151,6 @@ form:after {
   height: 0;
   clear: both;
   visibility: hidden;
-}
-
-.col-md-2-5 {
-  width: 15rem;
-  max-width: 15rem;
-}
-
-.col-md-7-5 {
-  width: calc(100% - 15rem);
-  max-width: calc(100% - 15rem);
 }
 
 input,
