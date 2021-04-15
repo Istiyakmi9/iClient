@@ -1,6 +1,15 @@
 <div class="col-md-12 col-sm-12 icard" name="grid">
-  <div id="framedv" class="d-none shop-doc" (click)="closeViewer()">
-    <iframe id="frame" class="doc" frameborder="0" src=""></iframe>
+  <div id="framedv" class="d-none shop-doc" (click)="closeViewer()">   
+    <ng-container *ngIf="!IsImage">
+      <div id="frame" class="doc">  
+        <iframe *ngIf="!IsImage" class="doc " frameborder="0" [attr.src]="ViewDocmentUrl"></iframe>
+      </div>
+    </ng-container> 
+    <ng-container *ngIf="IsImage">
+      <div class="img-pop-container">
+        <img id="img-container" class="popup-doc" src="" />
+      </div>
+    </ng-container>
   </div>
   <form
     [formGroup]="FacultyForm"
@@ -283,7 +292,7 @@
                 <textarea
                   id="Address"
                   rows="3"
-                  class="form-control muted"
+                  class="form-control muted default-height"
                   formControlName="Address"
                   name="Address"
                   placeholder="Full Address"
@@ -300,13 +309,10 @@
                   class="form-control"
                   name="State"
                   formControlName="State"
+                  (change)="BindCities($event)"
                 >
                   <option selected="selected" value="">Select state</option>
-                  <option value="Bihar">Bihar</option>
-                  <option value="West Bangal">West Bangal</option>
-                  <option value="Jharkhand">Jharkhand</option>
-                  <option value="UP">UP</option>
-                  <option value="Odisha">Odisha</option>
+                  <option *ngFor="let item of States" [value]="item">{{item}}</option>
                 </select>
               </div>
             </div>
@@ -318,13 +324,10 @@
                   class="form-control"
                   name="City"
                   formControlName="City"
+                  [ngClass]="{disabledField:isCityDataEmpty}"
                 >
                   <option selected="selected" value="">Select city</option>
-                  <option value="Bihar">Bihar</option>
-                  <option value="West Bangal">West Bangal</option>
-                  <option value="Jharkhand">Jharkhand</option>
-                  <option value="UP">UP</option>
-                  <option value="Odisha">Odisha</option>
+                  <option *ngFor="let item of cities" [value]="item.cityName">{{item.cityName}}</option>
                 </select>
               </div>
             </div>

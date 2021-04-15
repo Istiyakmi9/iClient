@@ -358,6 +358,11 @@ export class CommonService {
         $($li[index])
           .find("a")
           .removeClass("active");
+          
+        $($li[index])
+          .find('div[name="submenues"]')
+          .removeAttr('style');
+
         $($li[index])
           .find('li[type="action"]')
           .removeClass("active active-list");
@@ -372,23 +377,30 @@ export class CommonService {
       PageName = "/" + OptionalPageName;
       this.DisableActiveLinkes();
     } else {
-      PageName = location.hash.replace("#", "");
-      if (PageName === "/progressreport") PageName = "/" + ExamResult;
-      if (PageName === "/" + ManageExamDetail) PageName = "/" + ManageExam;
+      PageName = location.hash;
     }
-    $('div[name="submenues"]').css({ display: "none" });
-    let $elem = $('a[name="' + PageName + '"][type="link"]');
-    if ($elem != null) {
-      $elem.closest("li").addClass("active active-list");
-      $elem.closest('li[name="item-header"]').addClass("active");
-
-      $elem
-        .closest('li[name="item-header"]')
-        .children("a")
-        .addClass("active");
-
-      $elem.closest('div[name="submenues"]').css({ display: "block" });
+    let elem = document.getElementById('sidebar').querySelector(`a[href="${PageName}"]`);
+    if(elem != null) {
+      let tag: any = elem.closest('li[name="item-header"]');
+      tag.classList.add('active');
+      tag.querySelector('a[class="action-name"]').classList.add("active");
+      tag.querySelector('div[name="submenues"]').style.display = "block";
+      elem.closest('li[type="action"]').classList.add('active', 'active-list');
     }
+    
+    // $('div[name="submenues"]').css({ display: "none" });
+    // let $elem = $('a[name="' + PageName + '"][type="link"]');
+    // if ($elem != null) {
+    //   $elem.closest("li").addClass("active active-list");
+    //   $elem.closest('li[name="item-header"]').addClass("active");
+
+    //   $elem
+    //     .closest('li[name="item-header"]')
+    //     .children("a")
+    //     .addClass("active");
+
+    //   $elem.closest('div[name="submenues"]').css({ display: "block" });
+    // }
   }
 
   /* -------------------------------- End side menu -----------------------------------*/
@@ -519,6 +531,33 @@ export class CommonService {
     return Data;
   }
 
+  public GetStates(): Array<string> {
+    let states = Array<string>();
+    let JsonData = localStorage.getItem("master");
+    let Data = JSON.parse(JsonData);
+    if(IsValidType(Data)) {
+      let stateCityModel = Data["StatesAndCities"];
+      if(IsValidType(stateCityModel)) {
+        stateCityModel.map((item, index) =>{
+          if(states.indexOf(item.stateName) == -1)
+            states.push(item.stateName);
+        });
+      }
+    }
+    return states;
+  }
+
+  public GetCities(stateName: string): Array<string> {
+    let cities = Array<string>();
+    let JsonData = localStorage.getItem("master");
+    let Data = JSON.parse(JsonData);
+    if(IsValidType(Data)) {
+      let stateCityModel = Data["StatesAndCities"];
+      cities = stateCityModel.filter(x=>x.stateName === stateName);
+    }
+    return cities;
+  }
+
   SufixNumber(SufixStr: any): string {
     if (!isNaN(Number(SufixStr))) {
       let SufixNumber = parseInt(SufixStr);
@@ -599,6 +638,13 @@ export function IsValidResponse(res: any) {
       if (response.HttpStatusCode === 200) flag = true;
     }
   }
+  return flag;
+}
+
+export function IsSuccess(res: IResponse) {
+  let flag = false;
+    if (res.HttpStatusMessage === "success")
+      flag = true;
   return flag;
 }
 

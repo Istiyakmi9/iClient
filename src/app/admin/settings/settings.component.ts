@@ -44,6 +44,9 @@ export class SettingsComponent implements OnInit {
   SearchQuery: SearchModal;
   AssignedRoomNo: Array<any>;
   ManageRoomSettingForm: Array<ManageRoomsModal>;
+  SectionType: string = "Zone";
+  IsDisabled: boolean = true;
+
   constructor(
     private commonService: CommonService,
     private http: AjaxService,
@@ -71,10 +74,10 @@ export class SettingsComponent implements OnInit {
   }
 
   LoadZone() {
-    this.http.get("Setting/GetZone").then((result) => {
-      if (IsValidString(result.ResponseBody)) {
-        let Data = JSON.parse(result.ResponseBody).Table;
-        if (IsValidType(Data)) {
+    this.http.get("ApplicationSetting/GetZone").then((result) => {
+      if (IsValidString(result)) {
+        let Data = result.ResponseBody.Table;
+        if (Data !== null) {
           this.ZoneDetail = [];
           this.ZoneDetail = Data;
           this.BuildZone();
@@ -86,22 +89,44 @@ export class SettingsComponent implements OnInit {
         this.ZoneDetail.push(new Zone());
         this.BuildZone();
         this.IsZoneReady = true;
+        this.IsDisabled = false;
         this.commonService.ShowToast("No zone found.");
       }
     });
   }
 
+  ngAfterViewInit(){
+    this.CurrentSection = $("#zone");
+  }
+
   SelectSection(Type: string) {
     if (Type === "Zone") {
       this.CurrentSection = $("#zone");
+      this.SectionType = "Zone";
     } else if (Type === "Store") {
       this.CurrentSection = $("#store");
+      this.SectionType = "Store";
     } else if (Type === "ClassRoom") {
+      this.SectionType = "ClassRoom";
       this.CurrentSection = $("#classroom");
       this.SeachData = new SearchModal();
       this.LoadRoomDetail();
     } else if (Type === "Sports") {
+      this.SectionType = "Sports";
       this.CurrentSection = $("#sports");
+    }
+  }
+
+  AddNewItem() {
+    if (this.SectionType === "Zone") {
+      this.AddZone();
+      this.IsDisabled = false;
+    } else if (this.SectionType === "Store") {
+      
+    } else if (this.SectionType === "ClassRoom") {
+      this.AddRooms()
+    } else if (this.SectionType === "Sports") {
+      
     }
   }
 
@@ -148,7 +173,7 @@ export class SettingsComponent implements OnInit {
   }
 
   LoadRoomDetail() {
-    this.http.post("Setting/GetRoomDetail", this.SeachData).then((result) => {
+    this.http.post("ApplicationSetting/GetRoomDetail", this.SeachData).then((result) => {
       if (IsValidString(result.ResponseBody)) {
         let Data = JSON.parse(result.ResponseBody);
         if (
@@ -205,10 +230,10 @@ export class SettingsComponent implements OnInit {
 
   PreviousPage($e: any) {}
 
-  AddRows() {
+  AddRooms() {
     if (this.RoomCounts > 0) {
       this.http
-        .get(`Setting/CreateRooms?RoomsCount=${this.RoomCounts}`)
+        .get(`ApplicationSetting/CreateRooms/${this.RoomCounts}`)
         .then((result) => {
           if (IsValidString(result.ResponseBody)) {
             let Data = JSON.parse(result.ResponseBody).Table;
@@ -243,22 +268,29 @@ export class SettingsComponent implements OnInit {
   SaveZones() {
     let Data = this.ZoneForm.controls.Zones as FormArray;
     let index = 0;
+    let errorCount = 0;
+    this.CurrentSection = $('#zone');
     while (index < Data.length) {
       if (!Data.at(index).get("ZoneName").valid) {
         this.CurrentSection.find(`div[name="zone-${index}"] > input`).addClass(
           "error-field"
         );
+        errorCount++;
       }
       index++;
     }
 
-    this.http.post("Setting/CreateZone", Data.value).then((result) => {
-      if (IsValidString(result.ResponseBody)) {
-        this.commonService.ShowToast(SuccessMessage);
-      } else {
-        this.commonService.ShowToast(ServerError);
-      }
-    });
+    if(errorCount == 0) {
+      this.http.post("ApplicationSetting/CreateZone", Data.value).then((result) => {
+        if (IsValidString(result.ResponseBody)) {
+          this.commonService.ShowToast(SuccessMessage);
+        } else {
+          this.commonService.ShowToast(ServerError);
+        }
+      });
+    } else {
+      this.commonService.ShowToast("Field has some invalid input. Please correct it.")
+    }
   }
 
   SaveChanges() {
@@ -270,7 +302,7 @@ export class SettingsComponent implements OnInit {
       this.ModalObject.RoomNo = Number(this.ModalObject.RoomNo.toString());
       if (!isNaN(this.ModalObject.RoomNo)) {
         this.http
-          .post("Setting/UpdateCreateRoomData", this.ModalObject)
+          .post("ApplicationSetting/UpdateCreateRoomData", this.ModalObject)
           .then((result) => {
             if (IsValidString(result.ResponseBody)) {
               let Data = JSON.parse(result.ResponseBody);

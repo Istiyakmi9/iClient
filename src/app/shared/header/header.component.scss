@@ -34,3 +34,18 @@
 .navbar {
   height: 50px !important;
 }
+
+.icon {
+  font-size: 20px !important;
+}
+
+.header-menu-lbl {
+  font-size: 11px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+
+li.active {
+  background: greenyellow;
+}

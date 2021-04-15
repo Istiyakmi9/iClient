@@ -49,7 +49,7 @@
               <span>{{ catagory.Catagory }}</span>
             </li>
             <li class="sidebar-dropdown" name="item-header" *ngFor="let subcatagory of catagory.SubCatagory; index as outerIndex">
-              <a name="/{{ subcatagory.Link }}">
+              <a class="action-name" name="/{{ subcatagory.Link }}">
                 <i class="{{ subcatagory.Icon }}"></i>
                 <span class="active-bar">{{ subcatagory.Catagory }}</span>
                 <span

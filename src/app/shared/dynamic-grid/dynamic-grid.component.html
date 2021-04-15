@@ -4,7 +4,7 @@
       <thead>
         <tr class="headings">
           <ng-container *ngFor="let col of Headers">
-            <th *ngIf="col.type !== 'hidden'" class="column-title">{{col.header}}</th>
+            <th *ngIf="col.type !== 'hidden'" [ngStyle]="{width: col.width}" class="column-title">{{col.header}}</th>
           </ng-container>
           <th class="column-title text-center w-10 no-link last">
             <span class="nobr">Action</span>

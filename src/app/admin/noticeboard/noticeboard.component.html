@@ -4,7 +4,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                <h2>Other StaffMembers Reports</h2>
+                <h2>School Notice Board</h2>
                 <div class="clearfix"></div>
                 </div>
 
@@ -24,7 +24,7 @@
                         class="fa fa-filter"></i>&ensp;Advance Search</button>
                     </div>
                 </div>
-                <app-dynamic-grid [Data]="GridData"></app-dynamic-grid>
+                <app-dynamic-grid [Data]="GridData" (Edit)="onEdit($event)"></app-dynamic-grid>
                 </div>
             </div>
         </div>

@@ -545,3 +545,8 @@ h2 {
   background: red;
   position: absolute;
 }
+
+.disabledField {
+  pointer-events: none;
+  cursor: not-allowed;
+}

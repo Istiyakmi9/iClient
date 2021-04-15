@@ -1,7 +1,7 @@
 <div>
   <div class="page">
-    <div class="row m-0">
-      <div class="left-pan col-md-6 col-sm-12 text-center">
+    <div class="row m-0 h-100">
+      <div class="left-pan col-md-6 d-md-block d-none text-center">
         <div class="wrap-left">
           <a href="http://www.bottomhalf.in" target="_blank" class="decoration">
             <div class="logo-title">Bottom <span>Half</span></div>
@@ -15,8 +15,8 @@
         </div>
       </div>
       <div class="right col-md-6 col-sm-12 p-0 text-center position-relative">
-        <div class="logo-dv"></div>
         <div class="wrap-right">
+          <div class="logo-dv"></div>
           <h1 class="header-right text-dark">Create Account</h1>
           <div class="icons">
             <a href="javascript:void(0)">
@@ -29,18 +29,11 @@
               <i class="text-dark fab fa-circle fa-linkedin fa-2x"></i>
             </a>
           </div>
-          <br />
-          <p>or use your email for registration</p>
-          <br />
-          <form
-            class="login_wrapper"
-            (submit)="UserLogin()"
-            [formGroup]="LoginForm"
-          >
-            <div class="animate form login_form text-center">
+          <form class="login_wrapper" (submit)="UserLogin()" [formGroup]="LoginForm">
+            <div class="animate form login_form text-center" *ngIf="isSignIn">
               <section class="login_content">
-                <div class="w-60 d-inline-block">
-                  <h1 class="text-dark">Login Form</h1>
+                <div class="w-50 d-inline-block">
+                  <h4 class="text-dark mt-4">Login Form</h4>
                   <span
                     style="color: red; display: none; margin-bottom: 10px"
                     id="errorMsg"
@@ -72,70 +65,86 @@
                   <div class="separator">
                     <p class="change_link mt-4 mb-0">
                       New to site?
-                      <a href="#signup" class="to_register"> Create Account </a>
+                      <a href="#signup" (click)="flipSignInAdnUp()" class="to_register"> Create Account </a>
                     </p>
                     <div class="clearfix"></div>
                     <div>
                       <h5><i class="fa fa-paw"></i> School In Mind</h5>
-                      <p>©2020 All Rights Reserved. School In Mind.</p>
                     </div>
                   </div>
                 </div>
               </section>
+              <button class="btn btn-outline-dark mr-2" (click)="flipSignInAdnUp()">Sign Up</button>
             </div>
-            <div id="register" class="animate form registration_form">
-              <section class="login_content d-none">
-                <form>
-                  <h1>Create Account</h1>
-                  <div>
+
+            <div id="register" *ngIf="!isSignIn" class="animate login_form text-center form registration_form">
+              <section class="login_content">
+                <div class="w-50 d-inline-block">
+                  <h4 class="mt-4">Create Account</h4>
+                  <div class="form-group">
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="Username"
-                      required=""
+                      placeholder="School Name"
+                      required
+                      name="SchoolName"
+                      formControlName="SchoolName"
                     />
                   </div>
-                  <div>
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Full Name"
+                      required
+                      name="FullName"
+                      formControlName="FullName"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      mobile
+                      type="text"
+                      class="form-control"
+                      placeholder="Mobile No#"
+                      name="MobileNo"
+                      formControlName="MobileNo"
+                    />
+                  </div>
+                  <div class="form-group">
                     <input
                       type="email"
                       class="form-control"
-                      placeholder="Email"
-                      required=""
+                      placeholder="Short Address"
+                      required
+                      name="Address"
+                      formControlName="Address"
                     />
                   </div>
                   <div>
-                    <input
-                      type="password"
-                      class="form-control btn-s"
-                      placeholder="Password"
-                      required=""
-                    />
-                  </div>
-                  <div>
-                    <a class="btn btn-default submit">Submit</a>
+                    <button class="btn btn-success btn-lg btn-block">Submit</button>
                   </div>
                   <div class="clearfix"></div>
                   <div class="separator">
                     <p class="change_link">
                       Already a member ?
-                      <a href="#signin" class="to_register btn text-dark"> Log in </a>
+                      <a href="#signin" (click)="flipSignInAdnUp()" class="to_register btn text-dark">Log in</a>
                     </p>
-                    <div class="clearfix"></div>
-                    <br />
                     <div>
-                      <h1><i class="fa fa-paw"></i> School In Mind</h1>
-                      <p>©2020 All Rights Reserved. School In Mind.</p>
+                      <h5><i class="fa fa-paw"></i> School In Mind</h5>
                     </div>
                   </div>
-                </form>
+                </div>
               </section>
             </div>
           </form>
-          <button class="btn btn-outline-dark text-dark">SIGN UP</button>
         </div>
-        <a href="http://www.bottomhalf.in" target="_blank" class="footer"
-          >Powered by BottomHalf</a
-        >
+        <div class="footer col-12 row p-0 m-0">
+          <div class="col-6 text-left">All Rights Reserved.</div>
+          <div class="col-6 text-right">
+            <a href="http://www.bottomhalf.in" target="_blank">Powered by: BottomHalf</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

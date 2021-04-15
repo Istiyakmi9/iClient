@@ -32,6 +32,7 @@ import { ApplicationStorage } from "src/providers/ApplicationStorage";
 export class FacultyRegistrationComponent implements OnInit {
   UserData: any = {};
   steps: any = {};
+  cities: Array<any> = [];
   FacultyDocumentImages: Array<any> = [];
   DocumentImages: Array<any> = [];
   DocumentImageObjects: Array<any> = [];
@@ -53,8 +54,13 @@ export class FacultyRegistrationComponent implements OnInit {
   SubjectDetail: any;
   IsReady: boolean = false;
   IsEnableSection: boolean = true;
-  ProfileImageName: string = "profile.";
+  ProfileImageName: string = "profile";
   ImagePath: string = "";
+  IsImage: boolean = true;
+  DocmentUrl: string = "";
+  ViewDocmentUrl: string = "";
+  States: Array<any> = [];
+  isCityDataEmpty: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -77,6 +83,7 @@ export class FacultyRegistrationComponent implements OnInit {
     let Data = this.nav.getValue();
     let EditData = JSON.parse(Data);
     this.LoadInitData(EditData);
+    this.States = this.commonService.GetStates();
   }
 
   RemoveItem(FileUid: string) {
@@ -102,8 +109,9 @@ export class FacultyRegistrationComponent implements OnInit {
         ProfileImageDetail = ProfileImageDetail[ZerothIndex];
         this.FacultyImage = `${this.http.GetImageBasePath()}${
           ProfileImageDetail.FilePath
-        }/${ProfileImageDetail.FileName}`;
+        }/${ProfileImageDetail.FileName}.${ProfileImageDetail.FileExtension}`;
       }
+
       let DocumentDetail = DocImages.filter(
         (x) => x.FileName.indexOf(this.ProfileImageName) === -1
       );
@@ -118,12 +126,12 @@ export class FacultyRegistrationComponent implements OnInit {
           if (LocalFilePath === null || LocalFilePath === "") {
             LocalFilePath = `${this.http.GetImageBasePath()}${
               DocumentDetail[index].FilePath
-            }/${DocumentDetail[index].FileName}`;
+            }/${DocumentDetail[index].FileName}.${DocumentDetail[index].FileExtension}`;
           }
 
           ActualPath = `${this.http.GetImageBasePath()}${
             DocumentDetail[index].FilePath
-          }/${DocumentDetail[index].FileName}`;
+          }/${DocumentDetail[index].FileName}.${DocumentDetail[index].FileExtension}`;
 
           this.DocumentImageObjects.push({
             FileUid: DocumentDetail[index].FileUid,
@@ -142,6 +150,8 @@ export class FacultyRegistrationComponent implements OnInit {
       this.http
         .get(`Registration/GetStaffMemberByUid?Uid=${EditData.StaffMemberUid}`)
         .then((result) => {
+          this.commonService.DisableActiveLinkes();
+          this.commonService.HighlightNavMenu();
           if (IsValidType(result.ResponseBody)) {
             let Tables = JSON.parse(result.ResponseBody);
             if (IsValidType(Tables["Table"])) {
@@ -299,6 +309,7 @@ export class FacultyRegistrationComponent implements OnInit {
       ExprienceInYear: new FormControl("0", Validators.required),
       ExperienceInMonth: new FormControl("0", Validators.required),
       QualificationId: new FormControl("", Validators.required),
+      MarksObtain: new FormControl(0, Validators.required),
       Title: new FormControl(""),
       SchoolUniversityName: new FormControl(""),
       //RoleUid: new FormControl(""),
@@ -317,6 +328,12 @@ export class FacultyRegistrationComponent implements OnInit {
       Subjects += Data.value;
       this.FacultyForm.controls["Subjects"].setValue(Subjects);
     }
+  }
+
+  BindCities(e: any) {
+    this.cities = this.commonService.GetCities(e.target.value);
+    if(IsValidType(this.cities))
+      this.isCityDataEmpty = false;
   }
 
   RegisterFaculty() {
@@ -407,6 +424,7 @@ export class FacultyRegistrationComponent implements OnInit {
 
       this.FacultyForm.controls["Designation"].setValue("Faculty");
 
+      let files = Array<Files>();
       if (ErrorFields.length > 0) {
         ErrorFields.forEach((val, index) => {
           $("#" + val).addClass("error-field");
@@ -414,19 +432,23 @@ export class FacultyRegistrationComponent implements OnInit {
       } else {
         let formData = new FormData();
         if (
-          this.FacultyImageType !== undefined &&
+          typeof this.FacultyImageType !== 'undefined' &&
           this.FacultyImageType !== null
-        )
+        ){
           formData.append("profile", this.FacultyImageType);
+          this.BuildFilesModel(files, "profile", this.FacultyImageType);
+        }
         if (this.FacultyDocumentImages.length > 0) {
           let index = 0;
           while (index < this.FacultyDocumentImages.length) {
             formData.append("file_" + index, this.FacultyDocumentImages[index]);
+            this.BuildFilesModel(files, "file_" + index, this.FacultyDocumentImages[index]);
             index++;
           }
         }
         let FacultyObject = this.FacultyForm.value;
         formData.append("facultObject", JSON.stringify(FacultyObject));
+        formData.append("fileDetail", JSON.stringify(files));
 
         this.http.upload("Registration/Faculty", formData).then(
           (response) => {
@@ -451,6 +473,14 @@ export class FacultyRegistrationComponent implements OnInit {
     } catch (ex) {
       console.log("Got error");
     }
+  }
+
+  BuildFilesModel(filesModel: Array<Files>, uniqueKey: string, data: File) {
+    let file = new Files();
+    file.FileExtension = data.type;
+    file.FileName = uniqueKey;
+    file.FileUid = uniqueKey;
+    filesModel.push(file);
   }
 
   ScrollTop() {
@@ -508,7 +538,6 @@ export class FacultyRegistrationComponent implements OnInit {
 
   GetDocumentFile(fileInput: any) {
     this.DocumentImages = [];
-    this.FacultyDocumentImages = [];
     let Files = fileInput.target.files;
     if (Files.length > 0) {
       let index = 0;
@@ -568,10 +597,32 @@ export class FacultyRegistrationComponent implements OnInit {
     $("#document-btn").click();
   }
 
+  IsImageFile(FileName: string): boolean {
+    let flag = false;
+    if(IsValidType(FileName)) {
+      if(FileName.lastIndexOf(".") > 0) {
+        let ext = FileName.substr(FileName.lastIndexOf(".") + 1);
+        if(ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "gif")
+          flag = true;
+      }
+    }
+    return flag;
+  }
+
   EnlargeItem(Url: string) {
+    this.DocmentUrl = "";
     if(Url !== null && Url !== "") {
-      $('#frame').attr('src', `${Url}`);
-      $('#framedv').removeClass('d-none');
+      let isImageFile = this.IsImageFile(Url);
+      if(isImageFile) {
+        $('#img-container').attr('src', `${Url}`);
+        $('#framedv').removeClass('d-none');
+      } else {
+        this.DocmentUrl = "http://www.africau.edu/images/default/sample.pdf"; //`${Url}`;
+        $('#framedv').removeClass('d-none');
+      }
+
+      this.ViewDocmentUrl = `https://docs.google.com/gview?url=%${Url}%&embedded=true`;
+      this.IsImage = isImageFile;
     }
   }
 
@@ -615,4 +666,12 @@ export class FacultyModal {
   ExprienceInYear: number = 0;
   ExperienceInMonth: number = 0;
   Title: string = "";
+}
+
+class Files {
+  FileName: string = "";
+  FileExtension: string = "";
+  FilePath: string = "";
+  FileUid: string = "";
+  ProfileUid: string = "";
 }

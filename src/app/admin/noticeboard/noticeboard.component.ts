@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { StaffMemberColumn } from "src/providers/constants";
+import { ManageNotice, StaffMemberColumn } from "src/providers/constants";
 import {
   IsValidType,
   CommonService,
@@ -8,6 +8,7 @@ import {
 import { AjaxService } from "src/providers/ajax.service";
 import { SearchModal } from "../student-report/student-report.component";
 import { ITable } from "src/providers/Generic/Interface/ITable";
+import { iNavigation } from 'src/providers/iNavigation';
 
 @Component({
   selector: 'app-noticeboard',
@@ -23,7 +24,8 @@ export class NoticeboardComponent implements OnInit {
   SearchQuery: SearchModal;
   constructor(
     private http: AjaxService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private nav: iNavigation
   ) {}
 
   ngOnInit() {
@@ -56,4 +58,8 @@ export class NoticeboardComponent implements OnInit {
   FilterLocaldata() {}
 
   GetAdvanceFilter() {}
+
+  onEdit(elem: any) {
+    this.nav.navigate(ManageNotice, elem);
+  }
 }
