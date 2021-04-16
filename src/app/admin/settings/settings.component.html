@@ -1,4 +1,9 @@
 <div class="col-md-12 col-sm-12 icard">
+  <div class="col-12 text-right">
+    <button class="btn btn-blue btn-coin" (click)="AddNewItem()">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
   <div *ngIf="StorePopup" class="ipopup">
     <div class="ipopup__content pb-0">
       <div class="ipopup__header">
@@ -50,12 +55,12 @@
   <div class="x_panel">
     <div class="x_title">
       <h2>
-        Manage Timetable
-        <small>Add or modify user roles and responsibility.</small>
+        Application setting
+        <small>Add or modify new Zone or Activity Section</small>
       </h2>
       <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content d-none">
       <div class="" role="tabpanel" data-example-id="togglable-tabs" class="mt-5">
         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
           <li role="presentation" class="">
@@ -77,13 +82,8 @@
         </ul>
         <div class="tab-equipment">
           <div role="tabpanel" class="tab-pane fade in active show" id="tab_content1" aria-labelledby="content1-tab">
-            <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
+            <!-- <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
               <div formArrayName="Zones" id="zone">
-                <div class="col-12 text-right">
-                  <button class="btn btn-blue btn-coin" (click)="AddZone()">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div>
                 <div class="header-content">
                   <p class="title-label m-0">
                     If you have multiple zone's for goods and equpments in your
@@ -122,22 +122,7 @@
             </div>
             <div *ngIf="!IsZoneReady">
               <app-noitempage [Data]="'NO ZONE DETAIL FOUND'"></app-noitempage>
-            </div>
-          </div>
-
-          <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="content2-tab">
-            <div class="col-12 row p-0 mt-5" id="store">
-              <div class="col-md-3 col-sm-12 position-relative text-center"></div>
-              <div class="col-md-9 col-sm-12">
-                <div class="section-card mb-2">
-                  <div class="col-sm-3">
-                    <button class="btn btn-blue btn-coin" (click)="EnableStorePopup()">
-                      <i class="fa fa-plus"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </div> -->
           </div>
 
           <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="content3-tab">
@@ -154,7 +139,7 @@
                       placeholder="Total no# of rooms" />
                   </div>
                   <div class="col-sm-3">
-                    <button class="btn btn-blue btn-s" (click)="AddRows()">
+                    <button class="btn btn-blue btn-s" (click)="AddRooms()">
                       <i class="fa fa-plus pr-1"></i>
                       Add
                     </button>
@@ -211,6 +196,52 @@
               </p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="x_content">
+      <div role="tabpanel" class="mt-5 tab-pane fade in active show" id="tab_content1" aria-labelledby="content1-tab">
+        <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
+          <div formArrayName="Zones" id="zone">
+            <div class="header-content">
+              <p class="title-label m-0">
+                If you have multiple zone's for goods and equpments in your
+                organization like sports, library, hostel etc. Then use this
+                page to create different zone's, and you can store zone
+                specific goods in STORE tab.
+              </p>
+            </div>
+            <ng-container *ngFor="let item of GetZoneNames().controls; let i = index" [formGroupName]="i">
+              <div class="col-12 p-0 mt-4 border-bottom position-relative">
+                <a class="anc-close">
+                  <i class="fas fa-times"></i>
+                </a>
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label text-right">{{ i + 1 | sufix }} Zone Name</label>
+                  <div class="col-md-6" [attr.name]="'zone-' + i">
+                    <input class="form-control t" upper placeholder="First zone name" formControlName="ZoneName" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label text-right">Zone Description</label>
+                  <div class="col-md-6">
+                    <textarea class="form-control" name="ZoneDescription" rows="2" formControlName="ZoneDescription"
+                      placeholder="Enter zone or area description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="div-12 mt-3 p-0">
+              <button class="btn btn-blue btn-s" [ngClass]="{'disabledField': IsDisabled}" [disabled]="IsDisabled" (click)="SaveZones()">
+                <i class="fa fa-save pr-1"></i>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!IsZoneReady">
+          <app-noitempage [Data]="'NO ZONE DETAIL FOUND'"></app-noitempage>
         </div>
       </div>
     </div>

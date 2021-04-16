@@ -132,16 +132,54 @@ img.doc-img:hover {
   height: 100%;
   z-index: 999999;
   background: hsl(0deg 0% 0% / 63%);
+}
 
-  iframe {
-    z-index: 9999999999;
-    position: absolute;
-    left: 15%;
-    right: 15%;
-    bottom: 0px;
-    top: 0px;
-    height: 100%;
-    background: #fff;
-    width: 75%;
-  }
+.doc {
+  z-index: 9999999999;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 0px;
+  height: 100%;
+  background: #fff;
+  width: 75%;
+  margin: auto;
+}
+
+.img-pop-container {
+  z-index: 9999999999;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 0px;
+  height: 100%;
+  background: #fff;
+  width: 75%;
+  overflow: hidden;
+  margin: auto;
+}
+
+.popup-doc {
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+}
+
+:host {
+  display: block;
+}
+p {
+  font-family: Lato;
+}
+
+.card-img-top {
+  background-size: contain;
+  width: 12rem;
+  height: 12rem;
+}
+
+.default-height {
+  height: auto !important;
 }

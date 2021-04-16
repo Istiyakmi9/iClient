@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    this.baseUrl = "http://localhost:5000/api/";
-    //this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
+    //this.baseUrl = "http://localhost:5000/api/";
+    this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
   }
 
   public GetImageBasePath() {
@@ -129,26 +129,8 @@ export class AjaxService {
           },
           (error: HttpErrorResponse) => {
             this.commonService.HideLoaderByAjax();
-            if (error.status === 401) {
+              this.handleErrorCode(error.status);
               reject(false);
-              this.commonService.ShowToast(
-                "Your session expired. Please login again."
-              );
-              this.nav.navigate("/", "");
-            } else if (error.status === 404) {
-              this.commonService.ShowToast("Requested page not found.");
-              reject(error);
-            } else if (error.status === 400) {
-              this.commonService.ShowToast(
-                "Bad request. Please check URL and Request type matching."
-              );
-              reject(false);
-            } else {
-              this.commonService.ShowToast(
-                "Server error. Please contact to admin."
-              );
-              reject(error);
-            }
           }
         );
     });
@@ -156,7 +138,7 @@ export class AjaxService {
 
   get(Url: string, IsLoaderRequired: boolean = true): Promise<any> {
     return new Promise((resolve, reject) => {
-      let _header = null;
+      let _header = this.RequestHeader();
       if (typeof IsLoaderRequired !== undefined) {
         if (IsLoaderRequired) {
           this.commonService.ShowLoaderByAjax();
@@ -178,42 +160,28 @@ export class AjaxService {
             if (IsValidType(Token)) {
               if (IsValidResponse(res)) {
                 let response: IResponse = res.body;
-                this.commonService.HideLoaderByAjax();
-                resolve(response);
+                if(this.handleResponse(response)) {
+                  this.commonService.HideLoaderByAjax();
+                  resolve(response);
+                } else {
+                  reject(false);
+                }
               }
             } else {
               this.commonService.HideLoaderByAjax();
-              resolve([]);
+              resolve(null);
             }
           },
           (error: HttpErrorResponse) => {
             this.commonService.HideLoaderByAjax();
-            if (error.status === 401) {
+              this.handleErrorCode(error.status);
               reject(false);
-              this.commonService.ShowToast(
-                "Your session expired. Please login again."
-              );
-              this.nav.navigate("/login", "");
-            } else if (error.status === 404) {
-              this.commonService.ShowToast("Requested page not found.");
-              reject(error);
-            } else if (error.status === 400) {
-              this.commonService.ShowToast(
-                "Bad request. Please check URL and Request type matching."
-              );
-              reject(false);
-            } else {
-              this.commonService.ShowToast(
-                "Server error. Please contact to admin."
-              );
-              reject(error);
-            }
           }
         );
     });
   }
 
-  post(Url: string, Param: any): Promise<any> {
+  post(Url: string, Param: any, byPassAuthenticationCheck: boolean = false): Promise<any> {
     return new Promise((resolve, reject) => {
       this.commonService.ShowLoaderByAjax();
       let _header = this.RequestHeader();
@@ -226,10 +194,10 @@ export class AjaxService {
           .subscribe(
             (res: HttpResponse<any>) => {
               let Token = res.headers.get(TokenName);
-              if (IsValidType(Token)) {
+              if (IsValidType(Token) || byPassAuthenticationCheck) {
                 if (IsValidResponse(res)) {
                   let response: IResponse = res.body;
-                  if (Url === "UserLogin/AuthenticateUser") {
+                  if (Url.toLocaleLowerCase() === "userlogin/authenticateuser") {
                     if (
                       response.AuthenticationToken !== null &&
                       response.AuthenticationToken !== ""
@@ -244,16 +212,20 @@ export class AjaxService {
                   }
                   let Data = "";
                   try {
-                    if (res.body !== null && res.body !== "") {
-                      this.commonService.HideLoaderByAjax();
-                      if (typeof res.body === "string")
-                        Data = JSON.parse(res.body);
-                      else Data = res.body;
+                    if(this.handleResponse(res.body)) {
+                      if (res.body !== null && res.body !== "") {
+                        this.commonService.HideLoaderByAjax();
+                        if (typeof res.body === "string")
+                          Data = JSON.parse(res.body);
+                        else Data = res.body;
+                      } else {
+                        this.commonService.HideLoaderByAjax();
+                        this.commonService.ShowToast(
+                          "Server error. Please contact admin."
+                        );
+                      }
                     } else {
-                      this.commonService.HideLoaderByAjax();
-                      this.commonService.ShowToast(
-                        "Server error. Please contact admin."
-                      );
+                      reject(false);
                     }
                   } catch (e) {
                     console.log("Normal data");
@@ -274,34 +246,64 @@ export class AjaxService {
             },
             (error: HttpResponse<any>) => {
               this.commonService.HideLoaderByAjax();
-              switch (error.status) {
-                case 401:
-                  reject(false);
-                  this.commonService.ShowToast(
-                    "Your session expired. Please login again."
-                  );
-                  this.nav.navigate("/login", "");
-                  break;
-
-                case 500:
-                  reject(false);
-
-                case 400:
-                  this.commonService.ShowToast(
-                    "Bad request. Please check URL and Request type matching."
-                  );
-                  reject(false);
-
-                default:
-                  this.commonService.ShowToast(
-                    "Got internal error. Please contact to admin."
-                  );
-                  this.nav.navigate("/login", "");
-              }
+              this.handleErrorCode(error.status);
+              reject(false);
             }
           );
       }
     });
+  }
+
+  handleErrorCode(code: any) {
+    switch (code) {
+      case 401:
+        this.commonService.ShowToast(
+          "Your session expired. Please login again."
+        );
+        this.nav.navigate("/login", "");
+        break;
+
+      case 500:
+
+      case 400:
+        this.commonService.ShowToast(
+          "Bad request. Please check URL and Request type matching."
+        );
+
+      default:
+        this.commonService.ShowToast(
+          "Got internal error. Please contact to admin."
+        );
+        this.nav.navigate("/login", "");
+    }
+  }
+
+  handleResponse(res: IResponse): boolean {
+    let flag: boolean = false;
+    if(res != null && typeof res.HttpStatusCode !== "undefined"){
+      switch(res.HttpStatusCode) {
+        case 500:
+          flag = false;
+          this.commonService.ShowToast("Server error. Please contact admin.");
+          break;
+        case 404:
+          flag = false;
+          this.commonService.ShowToast("Invalid page requested.");
+          break;
+        case 401:
+          flag = false;
+          this.commonService.ShowToast("Unauthorized user. Please contact to admin.");
+          break;
+        case 402:
+          flag = false;
+          this.commonService.ShowToast("Invalid request type.");
+          break;
+        default:
+          flag = true;
+          break;
+      }
+    }
+    return flag;
   }
 
   upload(Url: string, Param: any): Promise<any> {
@@ -319,16 +321,20 @@ export class AjaxService {
             if (this.commonService.IsValid(Token) || this.byPassToken) {
               let Data = "";
               try {
-                if (res.body !== null && res.body !== "") {
-                  this.commonService.HideLoaderByAjax();
-                  if (typeof res.body === "string")
-                    Data = JSON.parse(res.body);
-                  else Data = res.body;
+                if(this.handleResponse(res.body)) {
+                  if (res.body !== null && res.body !== "") {
+                    this.commonService.HideLoaderByAjax();
+                    if (typeof res.body === "string")
+                      Data = JSON.parse(res.body);
+                    else Data = res.body;
+                  } else {
+                    this.commonService.HideLoaderByAjax();
+                    this.commonService.ShowToast(
+                      "Server error. Please contact admin."
+                    );
+                  }
                 } else {
-                  this.commonService.HideLoaderByAjax();
-                  this.commonService.ShowToast(
-                    "Server error. Please contact admin."
-                  );
+                  reject(false);
                 }
               } catch (e) {
                 console.log("Normal data");
@@ -397,4 +403,12 @@ export class AjaxService {
 export function resetCookies() {
   let token: string = "";
   document.cookie = TokenName + "=" + token + ";";
+}
+
+
+class ResponseModel {
+  AuthenticationToken: string = null;
+  HttpStatusCode: number = 0;
+  HttpStatusMessage: string = null;
+  ResponseBody: string = null;
 }

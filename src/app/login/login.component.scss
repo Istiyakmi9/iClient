@@ -114,12 +114,10 @@ $my-orange: rgb(255, 100, 0);
 .page {
   display: block;
   width: 100%;
+  height: 100vh;
 }
 
 //Individual Column Styling
-.row {
-  height: 100vh;
-}
 
 .logo-title {
   font-size: 4rem;
@@ -214,8 +212,9 @@ $my-orange: rgb(255, 100, 0);
   right: 0px;
   width: 100%;
   margin: auto;
-  height: 100%;
-  padding-top: 20%;
+  height: 94vh;
+  padding-top: 8rem;
+  overflow-y: scroll;
 }
 
 //Header and text Styling
@@ -231,7 +230,6 @@ $my-orange: rgb(255, 100, 0);
 
 //Button Styling
 .btn {
-  width: 200px;
   height: 53px;
   border-radius: 6px;
   font-weight: 500;
@@ -271,9 +269,6 @@ i {
 
 // BottomHalf Signature
 .footer {
-  position: absolute;
-  bottom: 0px;
-  right: 25px;
   color: darkcyan;
   text-decoration: underline;
   cursor: pointer;
