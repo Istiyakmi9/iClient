@@ -14,6 +14,7 @@ import {
   ServerError,
   SuccessMessage,
   Rooms,
+  Deleted,
 } from "src/providers/constants";
 import * as $ from "jquery";
 import { ITable } from "src/providers/Generic/Interface/ITable";
@@ -45,7 +46,6 @@ export class SettingsComponent implements OnInit {
   AssignedRoomNo: Array<any>;
   ManageRoomSettingForm: Array<ManageRoomsModal>;
   SectionType: string = "Zone";
-  IsDisabled: boolean = true;
 
   constructor(
     private commonService: CommonService,
@@ -70,12 +70,12 @@ export class SettingsComponent implements OnInit {
     this.IsClassRoomReady = false;
     this.EmptyMessage =
       "Enter no.# of total rooms available, including toilet bathroom office etc.";
-    this.LoadZone();
+    this.LoadRoomDetail();
   }
 
   LoadZone() {
     this.http.get("ApplicationSetting/GetZone").then((result) => {
-      if (IsValidString(result)) {
+      if (IsValidType(result)) {
         let Data = result.ResponseBody.Table;
         if (Data !== null) {
           this.ZoneDetail = [];
@@ -89,7 +89,6 @@ export class SettingsComponent implements OnInit {
         this.ZoneDetail.push(new Zone());
         this.BuildZone();
         this.IsZoneReady = true;
-        this.IsDisabled = false;
         this.commonService.ShowToast("No zone found.");
       }
     });
@@ -103,6 +102,7 @@ export class SettingsComponent implements OnInit {
     if (Type === "Zone") {
       this.CurrentSection = $("#zone");
       this.SectionType = "Zone";
+      this.LoadZone();
     } else if (Type === "Store") {
       this.CurrentSection = $("#store");
       this.SectionType = "Store";
@@ -120,7 +120,6 @@ export class SettingsComponent implements OnInit {
   AddNewItem() {
     if (this.SectionType === "Zone") {
       this.AddZone();
-      this.IsDisabled = false;
     } else if (this.SectionType === "Store") {
       
     } else if (this.SectionType === "ClassRoom") {
@@ -136,10 +135,14 @@ export class SettingsComponent implements OnInit {
 
   AddZone() {
     let ZoneArray: FormArray = this.ZoneForm.get("Zones") as FormArray;
+    let latestUid = 1;
+    if(this.ZoneDetail !== undefined && this.ZoneDetail !== null)
+      latestUid = this.ZoneDetail.length + 1;
     ZoneArray.push(
       this.fb.group({
         ZoneName: new FormControl("", Validators.required),
         ZoneDescription: new FormControl("", Validators.required),
+        ZoneUid: new FormControl(latestUid, Validators.required),
       })
     );
     return ZoneArray;
@@ -165,6 +168,10 @@ export class SettingsComponent implements OnInit {
             this.ZoneDetail[index].ZoneDescription,
             Validators.required
           ),
+          ZoneUid: new FormControl(
+            this.ZoneDetail[index].ZoneUid,
+            Validators.required
+          )
         })
       );
       index++;
@@ -218,7 +225,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  OnDelete($e: any) {}
+  OnRoomsDeleted($e: any) {}
 
   NextPage($e: any) {
     if (IsValidString($e)) {
@@ -262,6 +269,72 @@ export class SettingsComponent implements OnInit {
       this.commonService.ShowToast(
         "Unable to process your request. Please refresh or re-login."
       );
+    }
+  }
+
+  DeleteCurrent(e: any) {
+    let currentIndex = e.target.closest('div[name="item-container"]').querySelector('input[type="hidden"]').value;
+    if(currentIndex !== null && currentIndex !== "") {
+      let DeletingRecords: number = 0;
+      let item = this.ZoneForm.value;
+      if(item.Zones !== null && item.Zones.length > 0 && currentIndex !== "") {
+        item.Zones.map(elem => {
+          if(Number(currentIndex) == elem.ZoneUid) {
+            DeletingRecords = elem.ZoneUid;
+            return;
+          }
+        });
+
+        if(DeletingRecords > 0) {
+          this.http.delete("ApplicationSetting/DeleteService", DeletingRecords, false).then((result) => {
+            if (IsValidType(result) && result.ResponseBody !== null) {
+              let Data = result.ResponseBody.Table;
+              if (Data !== null) {
+                this.ZoneDetail = [];
+                this.ZoneDetail = Data;
+                this.BuildZone();
+                this.IsZoneReady = true;
+              }
+              this.commonService.ShowToast(SuccessMessage);
+            } else {
+              this.ZoneDetail = [];
+              this.ZoneDetail.push(new Zone());
+              this.BuildZone();
+              this.IsZoneReady = true;
+              this.commonService.ShowToast("No zone found.");
+            }
+          });
+        }
+      }
+    }
+  }
+
+  SaveOrUpdate(e: any){
+    let icon: any = e.target.querySelector('i');
+    icon.classList.add('d-none');
+    let image: any = e.target.querySelector('img');
+    image.classList.remove('d-none');
+    let currentIndex = e.target.querySelector('input[type="hidden"]').value;
+    let UpdateValues = [];
+    let item = this.ZoneForm.value;
+    if(item.Zones !== null && item.Zones.length > 0 && currentIndex !== "") {
+      item.Zones.map(elem => {
+        if(Number(currentIndex) == elem.ZoneUid) {
+          UpdateValues.push(elem);
+        }
+      });
+
+      this.http.post("ApplicationSetting/CreateOrUpdateServices", UpdateValues, false, false).then((result) => {
+        if (IsValidString(result.ResponseBody)) {
+          this.commonService.ShowToast(SuccessMessage);
+        } else {
+          this.commonService.ShowToast(ServerError);
+        }
+        icon.classList.remove('d-none');
+        image.classList.add('d-none');
+      }); 
+    } else {
+      this.commonService.ShowToast("Please modify before update.")
     }
   }
 
@@ -363,6 +436,14 @@ export class SettingsComponent implements OnInit {
     this.ModalObject.RoomType = "Not allocated.";
     this.StorePopup = true;
     this.IsUpdateRequest = false;
+  }
+
+  EnableEditing(e: any) {
+    if(e !== null){
+      let item: any = e.target.closest('div[name="item-container"]').querySelector('button[name="btnsave"]');
+      if(item != null)
+      item.classList.remove('disabledField');
+    }
   }
 
   GetFilteredData() {}

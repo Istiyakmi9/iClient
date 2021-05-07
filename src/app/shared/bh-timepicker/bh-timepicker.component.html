@@ -1,5 +1,5 @@
 <div name="bh-clock-parent">
-  <div class="col ibox-right p-0">
+  <div class="col ibox-right p-0" *ngIf="IsReady">
     <input name="timing" (blur)="CloseComponent()" class="form-control no-cursor" (keydown)="$event.preventDefault()"
       placeholder="HH:MM" [value]="SelectedTime" (input)="onChange($event.target.value)" />
     <i class="far fa-clock" (click)="GetClock()"></i>

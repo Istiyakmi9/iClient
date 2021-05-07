@@ -5,7 +5,8 @@
   }
 
   .form-group {
-    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 1rem;
+    padding-top: 2rem;
   }
 
   .lbl {
@@ -19,7 +20,7 @@
     position: relative;
   }
 
-  .desc>span {
+  .desc > span {
     position: absolute;
     bottom: 0px;
   }
@@ -65,11 +66,15 @@
 }
 
 .sm-h {
-  height: 35px;
+  height: 32px;
 }
 
 .colon {
   font-weight: bold;
   position: relative;
   top: 8px;
+}
+
+.card-header-padding {
+  padding: 0.5rem 1.25rem;
 }

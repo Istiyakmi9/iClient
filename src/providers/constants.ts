@@ -53,6 +53,7 @@ export const Columns = "Column";
 
 export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";
+export const Deleted = "Record deleted successfully.";
 export const ServerError = "Server error occured. Please contact to admin.";
 export const InvalidData = "Invalid data received. Please contact to admin.";
 export const MonthlyAttendance = "monthlyattendance";
@@ -130,10 +131,10 @@ export const GradeDetailColumn: Array<IColumns> = [
 ];
 
 export const Rooms: Array<IColumns> = [
+  { column: "RoomNo", header: "Room No.#" },
   { column: "Class", header: "Class" },
   { column: "Section", header: "Section" },
-  { column: "RoomType", header: "Used By" },
-  { column: "RoomNo", header: "Room No.#" },
+  { column: "RoomType", header: "Allocated To" },
   { column: "RoomUid", type: "hidden" },
 ];
 

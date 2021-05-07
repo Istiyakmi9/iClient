@@ -1,4 +1,4 @@
-ul.bar_tabs>li a {
+ul.bar_tabs > li a {
   padding: 10px 17px;
   background: #f5f7fa;
   margin: 0;
@@ -27,12 +27,12 @@ ul.bar_tabs {
   list-style: none;
 }
 
-ul.bar_tabs>li.active {
+ul.bar_tabs > li.active {
   border-right: 6px solid #d3d6da;
   margin-top: -15px;
 }
 
-ul.bar_tabs>li {
+ul.bar_tabs > li {
   border: 1px solid #e6e9ed;
   color: #333 !important;
   margin-top: -17px;
@@ -41,17 +41,17 @@ ul.bar_tabs>li {
   border-radius: 4px 4px 0 0;
 }
 
-.nav-tabs>li {
+.nav-tabs > li {
   float: left;
   margin-bottom: -1px;
 }
 
-.nav>li {
+.nav > li {
   position: relative;
   display: block;
 }
 
-.nav>li>a {
+.nav > li > a {
   position: relative;
   display: block;
   padding: 9px 16px 10px;
@@ -63,15 +63,15 @@ a {
   background-color: transparent;
 }
 
-ul.bar_tabs>li {
+ul.bar_tabs > li {
   flex: 1 1 0px;
 }
 
-ul.bar_tabs>li:last-child {
+ul.bar_tabs > li:last-child {
   margin-right: 20px;
 }
 
-ul.bar_tabs>li>a.active {
+ul.bar_tabs > li > a.active {
   border-right: 6px solid #d3d6da;
   color: #444 !important;
   background: #fff !important;
@@ -116,7 +116,7 @@ h5.card-title {
   border-radius: 4px;
 }
 
-.anc-close {
+.anc-btn {
   position: absolute;
   z-index: 9999;
   right: 1%;
@@ -132,10 +132,18 @@ h5.card-title {
   }
 }
 
+.anc-close {
+  top: 1%;
+}
+
+.anc-edit {
+  right: 4%;
+  top: 1%;
+}
+
 .action {
   cursor: pointer;
 }
-
 
 .action:hover {
   font-size: 14px !important;
@@ -164,4 +172,12 @@ span.checked-error {
   position: absolute;
   color: red;
   font-weight: 400;
+}
+
+.disabledField {
+  background: #90aee4 !important;
+}
+
+.btn-coin {
+  left: 20% !important;
 }

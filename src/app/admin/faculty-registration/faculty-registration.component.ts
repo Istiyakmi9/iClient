@@ -61,6 +61,9 @@ export class FacultyRegistrationComponent implements OnInit {
   ViewDocmentUrl: string = "";
   States: Array<any> = [];
   isCityDataEmpty: boolean = true;
+  PageTitle: string = `Faculty or Teaching staff Registration page`;
+  MaxDate: any = {year: (new Date).getFullYear(), month: (new Date).getMonth() + 1, day: (new Date).getDate()};
+  MinDate: any = {year: (new Date).getFullYear() - 70, month: 1, day: 1};
 
   constructor(
     private fb: FormBuilder,
@@ -76,6 +79,17 @@ export class FacultyRegistrationComponent implements OnInit {
     this.FacultyRoles = this.storage.get(null, 'Roles');
     this.InitPage();
     this.FacultyImage = DefaultUserImage;
+    this.IdentifyPage();
+  }
+
+  IdentifyPage(){
+    let url = location.href.toLocaleLowerCase();
+    if(url.indexOf("staffmemberregistration") > 0) {
+      this.PageTitle = `Non-Teaching staff Registration page like Driver, Guard, Pion etc`;
+      this.IsFaculty = false;
+    } else {
+      this.IsFaculty = true;
+    }
   }
 
   ngOnInit() {
@@ -234,6 +248,8 @@ export class FacultyRegistrationComponent implements OnInit {
         ExprienceInYear: new FormControl(FacultyData.ExprienceInYear),
         ExperienceInMonth: new FormControl(FacultyData.ExperienceInMonth),
         Title: new FormControl(FacultyData.Title),
+        ApplicationFor: new FormControl(this.IsFaculty ? "faculty" : "staff"),
+        AccessLevelUid: new FormControl(FacultyData.AccessLevelUid),
       });
       this.DefaultSubject = FacultyData.Subjects;
     }
@@ -312,7 +328,8 @@ export class FacultyRegistrationComponent implements OnInit {
       MarksObtain: new FormControl(0, Validators.required),
       Title: new FormControl(""),
       SchoolUniversityName: new FormControl(""),
-      //RoleUid: new FormControl(""),
+      ApplicationFor: new FormControl(this.IsFaculty ? "faculty" : "staff"),
+      AccessLevelUid: new FormControl(""),
     });
 
     this.ScrollTop();
@@ -668,7 +685,7 @@ export class FacultyModal {
   Title: string = "";
 }
 
-class Files {
+export class Files {
   FileName: string = "";
   FileExtension: string = "";
   FilePath: string = "";

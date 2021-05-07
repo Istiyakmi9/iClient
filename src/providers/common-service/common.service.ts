@@ -1,11 +1,13 @@
-import { ExamResult, ManageExamDetail, ManageExam, Pdf, Doc, Txt, Zip, Excel, FlatFile, Total, Rows, Columns, ZerothIndex, Ppt } from "./../constants";
+import { Pdf, Doc, Txt, Zip, Excel, FlatFile, Total, Rows, Columns, ZerothIndex, Ppt } from "./../constants";
 import { Injectable } from "@angular/core";
 import * as $ from "jquery";
 import { FormGroup } from "@angular/forms";
-import { FormControl } from "@angular/forms";
 import { MappedActionPage } from "./../MappedActionPage";
 
 const AllowedKey = [8, 9, 46];
+export const CurrentYear = `{year: ${(new Date).getFullYear()}, month: 1, day: 1}`;
+export const LastYear = `{year: ${(new Date).getFullYear() - 60}, month: 12, day: 31}`;
+
 @Injectable({
   providedIn: "root"
 })
@@ -616,7 +618,7 @@ export function IsValidType(Value): boolean {
         }
       } else if (ValueDataType === "object") {
         if (Array.isArray(Value)) {
-          if (Value.length > 0) Flag = true;
+          Flag = true;
         } else if (Value instanceof Date) {
           Flag = true;
         } else {
@@ -795,6 +797,20 @@ export function ActualOrDefault(data: any, modal: any): any {
     }
   }
   return data;
+}
+
+export function ShowAlert(title: string, bodyContent: Array<string>) {
+  $('#alertModalTitle').text(title);
+  let content: string = '';
+  if(bodyContent !== null && bodyContent.length > 0) {
+    let index = 0;
+    while(index < bodyContent.length) {
+      content += `<div>${bodyContent[index]}</div>`;
+      index++;
+    }
+  }
+  $('#alertModalBody').append(content);
+  $('#alert-modal').click();
 }
 
 export interface IResponse {

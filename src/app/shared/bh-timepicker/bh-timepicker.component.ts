@@ -22,13 +22,14 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
   ],
 })
 export class BhTimepickerComponent implements OnInit, ControlValueAccessor {
-  IsHour: boolean;
+  IsHour: boolean = true;
   EnableClock: boolean;
   Hour: string;
   Minute: string;
-  SelectedTime: string;
+  SelectedTime: string = "";
   IsOpened: boolean;
   Root: any;
+  IsReady: boolean = false;
 
   onTuched: () => {};
   onChange: (_: any) => {};
@@ -46,11 +47,11 @@ export class BhTimepickerComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {
     this.IsOpened = false;
-    this.SelectedTime = "";
     this.Hour = "00";
     this.Minute = "00";
     this.EnableClock = false;
     this.IsHour = true;
+    this.IsReady = true;
   }
 
   SelectedHour(HourValue: number) {

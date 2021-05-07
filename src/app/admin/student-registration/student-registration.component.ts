@@ -18,6 +18,7 @@ import {
 import { AjaxService } from "src/providers/ajax.service";
 import { ClassDetail } from "src/app/app.component";
 import { ApplicationStorage } from "src/providers/ApplicationStorage";
+import { Files } from "../faculty-registration/faculty-registration.component";
 
 @Component({
   selector: "app-student-registration",
@@ -36,7 +37,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   IsUpdating: boolean = true;
   IsReady: boolean = false;
   DocFiles: Array<any> = [];
-  ProfileImageName: string = "profile.";
+  ProfileImageName: string = "profile";
   StudentData: StudentModal;
   StudentForm: FormGroup;
   StudentImage: any;
@@ -48,6 +49,11 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
   DocumentImages: Array<any> = [];
   viewUrl: string = "";
   isEnlarge: boolean = false;
+  States: Array<any> = [];
+  isCityDataEmpty: boolean = true;
+  cities: Array<any> = [];
+  MaxDate: any = {year: (new Date).getFullYear(), month: (new Date).getMonth() + 1, day: (new Date).getDate()};
+  MinDate: any = {year: (new Date).getFullYear() - 20, month: 1, day: 1};
 
   DocumentImageObjects: Array<any> = [];
 
@@ -57,13 +63,22 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
     private http: AjaxService,
     private storage: ApplicationStorage,
     private nav: iNavigation
+    //config: NgbDatepickerConfig
   ) {
     this.ImagePath = `${this.http.GetImageBasePath()}`;
     this.ClassDetail = this.storage.GetClassDetail();
     this.StudentImage = DefaultUserImage;
+    // config.minDate = {year:currentDate.getFullYear(), month:currentDate.getMonth()+1, day: currentDate.getDate()};
+    // config.maxDate = {year: 2099, month: 12, day: 31};
+  }
+
+  SelectedDate(e: any){
+    let TotalYears = (new Date().getFullYear()) - e.year;
+    this.StudentForm.controls["Age"].setValue(TotalYears);
   }
 
   ngOnInit() {
+    this.States = this.commonService.GetStates();
     let Data = this.nav.getValue();
     let EditData = JSON.parse(Data);
     if (IsValidType(EditData) && IsValidType(EditData["studentUid"])) {
@@ -100,6 +115,12 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
     }
   }
 
+  BindCities(e: any) {
+    this.cities = this.commonService.GetCities(e.target.value);
+    if(IsValidType(this.cities))
+      this.isCityDataEmpty = false;
+  }
+
   BuildImagesArray(DocImages: any) {
     if (IsValidType(DocImages)) {
       this.DocFiles = DocImages;
@@ -110,7 +131,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         ProfileImageDetail = ProfileImageDetail[ZerothIndex];
         this.StudentImage = `${this.http.GetImageBasePath()}${
           ProfileImageDetail.FilePath
-        }/${ProfileImageDetail.FileName}`;
+        }/${ProfileImageDetail.FileName}.${ProfileImageDetail.FileExtension}`;
       }
       let DocumentDetail = DocImages.filter(
         (x) => x.FileName.indexOf(this.ProfileImageName) === -1
@@ -123,10 +144,11 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
           LocalFilePath = this.commonService.OtherFilePath(
             DocumentDetail[index].FileExtension
           );
-          if (LocalFilePath === "") {
+
+          if (LocalFilePath === null || LocalFilePath === "") {
             LocalFilePath = `${this.http.GetImageBasePath()}${
               DocumentDetail[index].FilePath
-            }/${DocumentDetail[index].FileName}`;
+            }/${DocumentDetail[index].FileName}.${DocumentDetail[index].FileExtension}`;
           }
 
           ActualPath = `${this.http.GetImageBasePath()}${
@@ -521,6 +543,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         ErrorFields.push("Pincode");
       }
 
+      let files = Array<Files>();
       this.StudentForm.controls["AdmissionDatetime"].setValue(new Date());
       if (ErrorFields.length > 0) {
         this.ScrollTop();
@@ -543,16 +566,25 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         this.commonService.ShowToast("Please fill all red marked fields.");
       } else {
         let formData = new FormData();
-        formData.append("profile", this.StudentImageType);
+        if (
+          typeof this.StudentImageType !== 'undefined' &&
+          this.StudentImageType !== null
+        ){
+          formData.append("profile", this.StudentImageType);
+          this.BuildFilesModel(files, "profile", this.StudentImageType);
+        }
+        
         if (this.DocumentImages.length > 0) {
           let index = 0;
           while (index < this.DocumentImages.length) {
             formData.append("file_" + index, this.DocumentImages[index]);
+            this.BuildFilesModel(files, "file_" + index, this.DocumentImages[index]);
             index++;
           }
         }
         let StudentObject = this.StudentForm.value;
         formData.append("studentObject", JSON.stringify(StudentObject));
+        formData.append("fileDetail", JSON.stringify(files));
 
         this.http.upload("Registration/StudentRegistration", formData).then(
           (response) => {
@@ -579,6 +611,14 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         "Getting some error. Please re-verify form again."
       );
     }
+  }
+
+  BuildFilesModel(filesModel: Array<Files>, uniqueKey: string, data: File) {
+    let file = new Files();
+    file.FileExtension = data.type;
+    file.FileName = uniqueKey;
+    file.FileUid = uniqueKey;
+    filesModel.push(file);
   }
 
   GetFile(fileInput: any) {

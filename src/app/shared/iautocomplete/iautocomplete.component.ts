@@ -121,6 +121,9 @@ export class IautocompleteComponent implements OnInit {
         this.InitData = JSON.stringify(elems[0].value);
       } else if (elems.length > 1) {
       }
+    } else {
+      this.InitValue = this.placeholder;
+      this.InitData = "";
     }
   }
 

@@ -62,10 +62,9 @@
         </div>
 
         <!-- Smart Wizard -->
-        <p>
-          Use this page for only teaching & non-teaching staff registration. It
-          will take all necessary information.
-        </p>
+        <h5>
+          {{PageTitle}}
+        </h5>
         <div class="col-12 row p-0">
           <div class="col-md-3 pl-2 col-sm-12">
             <div class="profile-dv">
@@ -156,6 +155,8 @@
                       ngbDatepicker
                       #d="ngbDatepicker"
                       [(ngModel)]="dateModel"
+                      [minDate]="MinDate"
+                      [maxDate]="MaxDate"
                     />
                     <div class="input-group-append">
                       <button
@@ -169,63 +170,65 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group" *ngIf="IsFaculty">
-                <div class="col-md-12 col-sm-12 row">
-                  <label class="col-sm-3 col-form-label"> Class </label>
-                  <div class="col-md-8 d-flex p-0">
-                    <div class="col-md-5 pr-0">
-                      <select
-                        class="form-control"
-                        (change)="EnableSection()"
-                        formControlName="Class"
-                        id="Class"
-                        name="Class"
-                      >
-                        <option value="">Choose Class</option>
-                        <option *ngFor="let item of Classes" [value]="item">
-                          {{ item }}
-                        </option>
-                      </select>
-                    </div>
-                    <label class="col-sm-3 col-form-label">Section</label>
-                    <div class="col-md-5">
-                      <select
-                        class="form-control"
-                        [disabled]="IsEnableSection"
-                        formControlName="ClassDetailUid"
-                        id="section"
-                        name="ClassDetailUid"
-                      >
-                        <option value="">Section</option>
-                        <option
-                          *ngFor="let item of Sections"
-                          [value]="item.ClassDetailUid"
-                        >
-                          {{ item.Section }}
-                        </option>
-                      </select>
+
+              <ng-container *ngIf="IsFaculty">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Class teacher for:</label>
+                  <div class="col-md-8 p-0">
+                    <div class="col-12 row p-0 m-0">
+                      <div class="col-md-6 pr-0">
+                        <select class="form-control" (change)="EnableSection()" formControlName="Class" id="Class" name="Class">
+                          <option value="">Choose Class</option>
+                          <option *ngFor="let item of Classes" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailUid" id="section" 
+                          name="ClassDetailUid">
+                          <option value="">Section</option>
+                          <option *ngFor="let item of Sections" [value]="item.ClassDetailUid">
+                            {{ item.Section }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group row" *ngIf="!IsFaculty">
-                <label class="col-sm-3 col-form-label"> User's Role </label>
-                <div class="col-md-8">
-                  <select
-                    class="form-control"                    
-                    name="RoleUid"
-                    id="RoleUid"
-                  >
-                    <option value="">Select use's role</option>
-                    <option
-                      *ngFor="let item of FacultyRoles"
-                      [value]="item.RoleId"
-                    >
-                      {{ item.RoleName }}
-                    </option>
-                  </select>
+
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label"> User's Role </label>
+                  <div class="col-md-8">
+                    <select class="form-control" name="AccessLevelUid" id="AccessLevelUid" formControlName="AccessLevelUid">
+                      <option value="">Select user's role</option>
+                      <option
+                        *ngFor="let item of FacultyRoles"
+                        [value]="item.AccessLevelUid"
+                      >
+                        {{ item.RoleName }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+              </ng-container>
+
+              <ng-container *ngIf="!IsFaculty">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Designation</label>
+                  <div class="col-md-8">
+                    <select class="form-control" name="RoleUid" id="RoleUid">
+                      <option value="">Select staff designation</option>
+                      <option
+                        *ngFor="let item of FacultyRoles"
+                        [value]="item.RoleId"
+                      >
+                        {{ item.RoleName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -476,7 +479,7 @@
             <div class="form-group row" *ngIf="IsFaculty">
               <label class="col-sm-3 col-form-label"> Type </label>
               <div class="col-sm-8">
-                <select id="type" class="form-control" name="type">
+                <select id="Type" class="form-control" name="Type" formControlName="Type">
                   <option selected="selected" value="">Select Type</option>
                   <option value="PGT">PGT</option>
                   <option value="TGT">TGT</option>

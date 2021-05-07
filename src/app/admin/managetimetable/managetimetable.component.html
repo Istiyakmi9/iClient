@@ -20,187 +20,104 @@
                   <div class="col-md-12 col-sm-12 d-md-flex p-0">
                     <div class="x_panel pb-0">
                       <div class="x_title">
-                        <h2 class="StepTitle">Contact information<small>Personal information.</small></h2>
+                        <h2 class="StepTitle">School Timetable<small>Define school period and timetable.</small></h2>
                         <div class="clearfix"></div>
                       </div>
                       <div class="section-card">
-                        <div class="form-group row pt-4">
-                          <label class="col-sm-3 col-form-label">
-                            <span>School start time:#</span>
-                          </label>
-                          <div class="col-sm-12 col-md-4 col dd-dv">
-                            <div class="d-flex">
-                              <div class="input-group">
-                                <div class="input-group-prepend sm-h">
-                                  <span class="input-group-text">
-                                    <i class="fas fa-caret-left"></i>
-                                  </span>
-                                </div>
-                                <input type="text" class="form-control" number="2" id="starthrs"
-                                  (keyup)="SetStartHours()" placeholder="HH(Hrs)">
-                                <div class="input-group-append sm-h">
-                                  <span class="input-group-text">
-                                    <i class="fas fa-caret-right"></i>
-                                  </span>
-                                </div>
-                              </div>
-                              <span class="colon ml-1 mr-1">:</span>
-                              <div class="input-group">
-                                <div class="input-group-prepend sm-h">
-                                  <span class="input-group-text">
-                                    <i class="fas fa-caret-left"></i>
-                                  </span>
-                                </div>
-                                <input type="text" class="form-control" number="2" (keyup)="SetStartMinutes()"
-                                  placeholder="MM(Min)" id="startmins">
-                                <div class="input-group-append sm-h">
-                                  <span class="input-group-text">
-                                    <i class="fas fa-caret-right"></i>
-                                  </span>
-                                </div>
-                              </div>
+                        <div class="col-12 row p-0 m-0">
+                          <div class="col-3 form-group">
+                            <label for="total-period">School start time</label>
+                            <div>
+                              <app-bh-timepicker formControlName="SchoolStartTime">
+                              </app-bh-timepicker>
                             </div>
                           </div>
-                          <div class="col-md-5 desc">
-                            <span>Description</span>
+
+                          <div class="col-3 form-group">
+                            <label for="total-period">Total no.# of periods</label>
+                            <div>
+                              <select class="form-control" [disabled]="EnablePeriods" formControlName="TotalPeriods"
+                                (change)="BuildPeriods()">
+                                <option value="">No.# of Perods</option>
+                                <option *ngFor="let p of PeriodsCounts" [value]="p">{{p}}</option>
+                              </select> 
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-group row pt-4 ">
-                          <label class="col-sm-3 col-form-label">
-                            <span class="lbl">Total no of period:#</span>
-                          </label>
-                          <div class="col-sm-4 col dd-dv">
-                            <select class="form-control col-9" [disabled]="EnablePeriods" formControlName="TotalPeriods"
-                              (change)="BuildPeriods()">
-                              <option value="">Select Perods.#</option>
-                              <option *ngFor="let p of PeriodsCounts" [value]="p">{{p}}</option>
-                            </select>
+
+                          <div class="col-3 form-group">
+                            <label for="total-period">Lunch after period</label>
+                            <div>
+                              <select class="form-control" [disabled]="EnableSlots"
+                                formControlName="LunchAfterPeriod">
+                                <option value="">Select Perods.#</option>
+                                <option *ngFor="let p of ActualPeriods" [value]="p">{{p}}</option>
+                              </select>
+                            </div>
                           </div>
-                          <div class="col-md-5 desc">
-                            <span>Description</span>
+
+                          <div class="col-3 form-group">
+                            <label for="total-period">Period Duration (in HH:MM)</label>
+                            <div>
+                              <app-bh-timepicker formControlName="PeriodsDuration">
+                              </app-bh-timepicker>
+                            </div>
                           </div>
                         </div>
 
-                        <div class="form-group row pt-4">
-                          <label class="col-sm-3 col-form-label">
-                            <span class="lbl">Lunch after period:</span>
-                          </label>
-                          <div class="col-sm-4 col dd-dv">
-                            <select class="form-control col-9" [disabled]="EnableSlots"
-                              formControlName="LunchAfterPeriod" (change)="LunchAfterPeriod()">
-                              <option value="">Select Perods.#</option>
-                              <option *ngFor="let p of ActualPeriods" [value]="p">{{p}}</option>
-                            </select>
-                          </div>
-                          <div class="col-md-5 desc">
-                            <span>Description</span>
+                        <div class="col-12 row p-0 m-0">
+                          <div class="col-12 text-right mb-4">
+                            <button class="btn btn-outline-dark mr-2">
+                              <i class="fas fa-undo-alt"></i>
+                              Reset
+                            </button>
+                            <button class="btn btn-primary" (click)="GenerateNextPeriods()">
+                              <i class="fas fa-wrench pr-1"></i>
+                              Generate
+                            </button>
                           </div>
                         </div>
+
                       </div>
                       <div class="section-card">
-                        <div class="col-md-12">
-                          <div class="col-md-12 mt-5">
-                            <label class="d-block w-100 text-center">
-                              Use below table to set timing.
-                            </label>
-                          </div>
-                          <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col">Period.#</th>
-                                <th scope="col">
-                                  <div class="d-flex">
-                                    <span>
-                                      Duration in hours
+                        <div class="col-12 row" formArrayName="Timing">
+                          <<ng-container *ngIf="Timing.controls.length > 0">
+                            <div class="col-3 mt-2" *ngFor="let el of Timing.controls; let i = index" [formGroupName]="i">
+                              <div class="card">
+                                <div class="card-header card-header-padding">
+                                  <label class="m-0">{{el.get('SufixedNumber').value}}</label>
+                                </div>
+                                <div class="col-12 card-body">
+                                  <label>
+                                    <span class="pr-1">Time:</span>
+                                    {{el.get('MeridianTime').value}}
+                                  </label>
+                                  <div>
+                                    <span class="pr-1">
+                                      <b>Duration: </b>
                                     </span>
-                                    <div class="input-group">
-                                      <div class="input-group-prepend sm-h">
-                                        <span class="input-group-text">
-                                          <i class="fas fa-caret-left"></i>
-                                        </span>
-                                      </div>
-                                      <input type="text" class="form-control" number="2"
-                                        (keyup)="GlobalHourSetting($event)" placeholder="HH (set all hours)">
-                                      <div class="input-group-append sm-h">
-                                        <span class="input-group-text">
-                                          <i class="fas fa-caret-right"></i>
-                                        </span>
-                                      </div>
-                                    </div>
+                                    <span class="pr-2">{{el.get('DurationInHrs').value}} Hrs</span>
+                                    <span>{{el.get('DurationInMin').value}} Mins</span>
                                   </div>
-                                </th>
-                                <th scope="col">
-                                  <div class="d-flex">
-                                    <span>
-                                      Duration in minuts
-                                    </span>
-                                    <div class="input-group">
-                                      <div class="input-group-prepend sm-h">
-                                        <span class="input-group-text">
-                                          <i class="fas fa-caret-left"></i>
-                                        </span>
-                                      </div>
-                                      <input type="text" class="form-control" number="2"
-                                        (keyup)="GlobalMinuteSetting($event)" placeholder="MM (set all minutes)">
-                                      <div class="input-group-append sm-h">
-                                        <span class="input-group-text">
-                                          <i class="fas fa-caret-right"></i>
-                                        </span>
-                                      </div>
-                                    </div>
+                                  <div>
+                                    <app-bh-timepicker [value]="el.get('StandardTime').value" formControlName="DurationInHrs">
+                                    </app-bh-timepicker>
+                                    <input type="hidden" formControlName="DurationInMin">
                                   </div>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody formArrayName="Timing">
-                              <tr *ngFor="let el of Timing.controls; let i = index" [formGroupName]="i">
-                                <th scope="row">{{el.get('SufixedNumber').value}}:</th>
-                                <td>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend sm-h">
-                                      <span class="input-group-text">
-                                        <i class="fas fa-caret-left"></i>
-                                      </span>
-                                    </div>
-                                    <input type="text" class="form-control" number="2" formControlName="DurationInHrs"
-                                      placeholder="HH (for {{el.get('SufixedNumber').value}})">
-                                    <div class="input-group-append sm-h">
-                                      <span class="input-group-text">
-                                        <i class="fas fa-caret-right"></i>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend sm-h">
-                                      <span class="input-group-text">
-                                        <i class="fas fa-caret-left"></i>
-                                      </span>
-                                    </div>
-                                    <input type="text" class="form-control" number="2" formControlName="DurationInMin"
-                                      placeholder="MM (for {{el.get('SufixedNumber').value}})">
-                                    <div class="input-group-append sm-h">
-                                      <span class="input-group-text">
-                                        <i class="fas fa-caret-right"></i>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
                         </div>
-                      </div>
-                      <div class="col-12 text-right mb-4">
-                        <button class="btn btn-outline-dark mr-2">
-                          <i class="fas fa-undo-alt"></i>
-                          Reset
-                        </button>
-                        <button class="btn btn-warning" (click)="SaveSetting()">
-                          <i class="fas fa-save"></i>
-                          Save
-                        </button>
+                        <div class="col-12 text-right mb-4">
+                          <button class="btn btn-outline-dark mr-2">
+                            <i class="fas fa-undo-alt"></i>
+                            Reset
+                          </button>
+                          <button class="btn btn-warning" (click)="SaveSetting()">
+                            <i class="fas fa-save"></i>
+                            Save
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

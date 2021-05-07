@@ -37,6 +37,8 @@ export class ManagetimetableComponent implements OnInit {
   TimeSetting: any = {};
   TimingDetailRows: Array<TimingModal> = [];
   RuleBooks: Array<RuleBook> = [];
+  TimingArray: Array<string> = [];
+
   constructor(
     private commonService: CommonService,
     private http: AjaxService,
@@ -61,7 +63,11 @@ export class ManagetimetableComponent implements OnInit {
     this.http
       .get("Events/GetApplicationSetting")
       .then((result) => {
-        let Data = JSON.parse(result.ResponseBody);
+        if(result.ResponseBody == null){
+          return null;
+        }
+
+        let Data = result.ResponseBody;
         if (IsValidType(Data["SchoolOtherDetail"])) {
           let SchoolOtherDetailData = Data["SchoolOtherDetail"][ZerothIndex];
           let StartTime = this.BuildTime(SchoolOtherDetailData.SchoolStartTime);
@@ -181,6 +187,9 @@ export class ManagetimetableComponent implements OnInit {
             DurationInHrs: ExistingPeriods[index].DurationInHrs,
             TimingFor: ExistingPeriods[index].TimingFor,
             TimingDetailUid: ExistingPeriods[index].TimingDetailUid,
+            MeridianTime: ExistingPeriods[index].MeridianTime,
+            StandardTime: ExistingPeriods[index].StandardTime,
+            TimingArray: ExistingPeriods[index].TimingArray
           })
         );
         index++;
@@ -195,59 +204,147 @@ export class ManagetimetableComponent implements OnInit {
     }
   }
 
-  LunchAfterPeriod() {
+  FindPeriodTime(currntHour: number, currntMinute: number, durationHrs: number, durationMin: number) {
+    let newTime = {
+      hour: 0,
+      minute: 0,
+      periodMeridian: 'AM',
+      standartTime: ''
+    };
+
+    let totalMin = (currntHour + durationHrs) * 60 + currntMinute + durationMin;
+    let standardHour = Math.floor(totalMin / 60);
+    let standardMinute = Math.floor(totalMin % 60);
+    newTime.standartTime = `${standardHour}:${standardMinute}`;
+    if(totalMin > 720) {
+      let nextMinutes: number = totalMin - 720;
+      newTime.hour = Math.floor(nextMinutes / 60);
+      newTime.minute = Math.floor(nextMinutes % 60);
+      newTime.periodMeridian = 'PM';
+    } else {
+      newTime.hour = Math.floor(totalMin / 60);
+      newTime.minute = Math.floor(totalMin % 60);
+      newTime.periodMeridian = 'AM';
+    }
+
+    return newTime;
+  }
+
+  FindSchoolEndTime(){
+
+  }
+
+  GenerateNextPeriods() {
     try {
-      let LunchPeriod = parseInt(
-        this.PeriodSections.get("LunchAfterPeriod").value
-      );
       let index = 1;
       const Items = this.PeriodSections.get("Timing") as FormArray;
       let TotalPeriod = parseInt(this.PeriodSections.get("TotalPeriods").value);
-      while (index <= TotalPeriod) {
-        if (index === LunchPeriod) {
-          Items.push(
-            this.GetTimingFormGroup({
-              SufixedNumber: this.commonService.SufixNumber(index) + " period",
-              DurationInMin: 0,
-              RulebookUid: "",
-              DurationInHrs: 0,
-              TimingFor: index.toString(),
-              TimingDetailUid: "",
-            })
-          );
+      //let timeState = this.FindPeriodTime(starthours, startmins, hours, mins);
+      Items.push(
+        this.GetTimingFormGroup({
+          SufixedNumber: this.commonService.SufixNumber(index) + " period",
+          DurationInMin: 50,
+          RulebookUid: "",
+          DurationInHrs: 0,
+          TimingFor: index.toString(),
+          TimingDetailUid: "",
+          MeridianTime: `10:00 AM`,
+          StandardTime: '10:00',
+          TimingArray: [],
+        })
+      );
+    } catch (e) {
+      this.commonService.ShowToast("Invalid value passed.");
+    }
+  }
 
-          Items.push(
-            this.GetTimingFormGroup({
-              SufixedNumber: "Lunch",
-              DurationInMin: 0,
-              RulebookUid: "",
-              DurationInHrs: 0,
-              TimingFor: "lunch",
-              TimingDetailUid: "",
-            })
-          );
+  GeneratePeriods() {
+    try {
+      let startTime = this.PeriodSections.get("SchoolStartTime").value;
+      let totalPeriods = this.PeriodSections.get("TotalPeriods").value;
+      let lunchAfterPeriod = this.PeriodSections.get("LunchAfterPeriod").value;
+      let periodDuration = this.PeriodSections.get("PeriodsDuration").value;
+      if(startTime !== "" && totalPeriods !== "" && lunchAfterPeriod !== "" && periodDuration !== "") {
+        let times = periodDuration.split(":");
+        let schoolStartTime = startTime.split(":");
+        if(times.length === 2 && schoolStartTime.length == 2) {
+          let hours = parseInt(times[0]);
+          let mins = parseInt(times[1]);
+          let starthours = parseInt(schoolStartTime[0]);
+          let startmins = parseInt(schoolStartTime[1]);
+          let LunchPeriod = parseInt(lunchAfterPeriod);
+          let index = 1;
+          const Items = this.PeriodSections.get("Timing") as FormArray;
+          let TotalPeriod = parseInt(this.PeriodSections.get("TotalPeriods").value);
+          while (index <= TotalPeriod) {
+            let timeState = this.FindPeriodTime(starthours, startmins, hours, mins);
+            starthours = timeState.hour;
+            startmins = timeState.minute;
+            if (index === LunchPeriod) {
+              Items.push(
+                this.GetTimingFormGroup({
+                  SufixedNumber: this.commonService.SufixNumber(index) + " period",
+                  DurationInMin: mins,
+                  RulebookUid: "",
+                  DurationInHrs: hours,
+                  TimingFor: index.toString(),
+                  TimingDetailUid: "",
+                  MeridianTime: `${starthours}:${startmins} ${timeState.periodMeridian}`,
+                  StandardTime: timeState.standartTime,
+                  TimingArray: [],
+                })
+              );
+  
+              Items.push(
+                this.GetTimingFormGroup({
+                  SufixedNumber: "Lunch Break",
+                  DurationInMin: mins,
+                  RulebookUid: "",
+                  DurationInHrs: hours,
+                  TimingFor: "lunch",
+                  TimingDetailUid: "",
+                  MeridianTime: `${starthours}:${startmins} ${timeState.periodMeridian}`,
+                  StandardTime: timeState.standartTime,
+                  TimingArray: this.BuildTimingArray("0", "0"),
+                })
+              );
+            } else {
+              Items.push(
+                this.GetTimingFormGroup({
+                  SufixedNumber: this.commonService.SufixNumber(index) + " period",
+                  DurationInMin: mins,
+                  RulebookUid: "",
+                  DurationInHrs: hours,
+                  TimingFor: index.toString(),
+                  TimingDetailUid: "",
+                  MeridianTime: `${starthours}:${startmins} ${timeState.periodMeridian}`,
+                  StandardTime: timeState.standartTime,
+                  TimingArray: this.BuildTimingArray("0", "0"),
+                })
+              );
+            }
+            index++;
+          }
+          if (Items.length > 0) {
+            this.EnableSlots = true;
+          } else {
+            this.EnableSlots = false;
+          }
         } else {
-          Items.push(
-            this.GetTimingFormGroup({
-              SufixedNumber: this.commonService.SufixNumber(index) + " period",
-              DurationInMin: 0,
-              RulebookUid: "",
-              DurationInHrs: 0,
-              TimingFor: index.toString(),
-              TimingDetailUid: "",
-            })
-          );
+          this.commonService.ShowToast("Invalid duration selected.");
         }
-        index++;
-      }
-      if (Items.length > 0) {
-        this.EnableSlots = true;
       } else {
-        this.EnableSlots = false;
+        this.commonService.ShowToast("All fields are mandatory.");
       }
     } catch (e) {
       this.commonService.ShowToast("Invalid value passed.");
     }
+  }
+
+  BuildTimingArray(startTime: string, lastTime: string): Array<string> {
+    let times: Array<string> = [];
+    this.TimingArray = [];
+    return times;
   }
 
   GetTimingFormGroup(modalData: TimingModal) {
@@ -270,6 +367,8 @@ export class ManagetimetableComponent implements OnInit {
         modalData.TimingDetailUid,
         Validators.required
       ),
+      MeridianTime: new FormControl(modalData.MeridianTime, Validators.required),
+      StandardTime: new FormControl(modalData.StandardTime, Validators.required),
     });
   }
 
@@ -278,6 +377,7 @@ export class ManagetimetableComponent implements OnInit {
       SchoolOtherDetailUid: new FormControl(null),
       SchoolStartTime: new FormControl("", Validators.required),
       TotalPeriods: new FormControl("", Validators.required),
+      PeriodsDuration: new FormControl("", Validators.required),
       LunchAfterPeriod: new FormControl("", Validators.required),
       LunchTime: new FormControl("", Validators.required),
       TimingDescription: new FormControl("", Validators.required),
@@ -531,6 +631,9 @@ class TimingModal {
   TimingFor: string = "";
   DurationInHrs: number = 0;
   DurationInMin: number = 0;
+  MeridianTime: string = '';
+  StandardTime: string = '';
+  TimingArray: Array<string> = [];
 }
 
 interface RuleBook {

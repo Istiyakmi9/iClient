@@ -36,6 +36,7 @@ export class ViewClassesComponent implements OnInit {
   ClassdetailView: Array<ClassdetailModal>;
   OriginalRoomNos: Array<IAutoCompleteModal>;
   currentItem: ClassdetailModal;
+  ButtonText: string = "Add Class & Section";
 
   constructor(
     private http: AjaxService,
@@ -102,14 +103,15 @@ export class ViewClassesComponent implements OnInit {
           this.BuildPage(response);
         } else {
           this.commonService.ShowToast(
-            "Server error. Please contact to admin."
+            "No record found."
           );
         }
+        this.IsReady = true;
       });
   }
 
   BuildPage(response: any) {
-    let Data = JSON.parse(response.ResponseBody);
+    let Data = response.ResponseBody;
     if (IsValidType(Data["Table"]) && IsValidType(Data["Table1"])) {
       if (IsValidType(Data["Table2"])) {
         this.OriginalRoomNos = [];
@@ -138,7 +140,7 @@ export class ViewClassesComponent implements OnInit {
         pageSize: this.SearchQuery.PageSize,
         totalCount: TotalCount,
       };
-      this.IsReady = true;
+      this.LoadForm(new ClassdetailModal());
     } else {
       this.commonService.ShowToast(InvalidData);
     }
@@ -156,6 +158,7 @@ export class ViewClassesComponent implements OnInit {
 
     let TotalSeats = this.Classdetail.get("TotalSeats").value;
     if (TotalSeats === "") {
+      this.Classdetail.get("TotalSeats").setValue(0);
       Error.push("TotalSeats");
     } else {
       this.Classdetail.get("TotalSeats").setValue(parseInt(TotalSeats));
@@ -163,6 +166,7 @@ export class ViewClassesComponent implements OnInit {
 
     let GirlSeats = this.Classdetail.get("GirlSeats").value;
     if (GirlSeats === "") {
+      this.Classdetail.get("GirlSeats").setValue(0);
       Error.push("GirlSeats");
     } else {
       this.Classdetail.get("GirlSeats").setValue(parseInt(GirlSeats));
@@ -170,6 +174,7 @@ export class ViewClassesComponent implements OnInit {
 
     let BoySeats = this.Classdetail.get("BoySeats").value;
     if (BoySeats === "") {
+      this.Classdetail.get("BoySeats").setValue(0);
       Error.push("BoySeats");
     } else {
       this.Classdetail.get("BoySeats").setValue(parseInt(BoySeats));
@@ -181,22 +186,16 @@ export class ViewClassesComponent implements OnInit {
       this.http
         .post("AdminMaster/InsertNewClassInfo", this.Classdetail.value)
         .then((response) => {
+          this.ButtonText = "Add Class & Section";
           if (IsValidType(response.ResponseBody)) {
-            let Data = JSON.parse(response.ResponseBody);
+            let Data = response.ResponseBody;
             if (
               typeof Data["Table"] === "undefined" ||
               typeof Data["Table1"] === "undefined"
             ) {
               this.commonService.ShowToast(InvalidData);
             } else {
-              let TotalCount = Data["Table1"][ZerothIndex]["Total"];
-              this.GridData = {
-                rows: Data["Table"],
-                headers: ClassDetailColumn,
-                pageIndex: this.SearchQuery.PageIndex,
-                pageSize: this.SearchQuery.PageSize,
-                totalCount: TotalCount,
-              };
+              this.BuildPage(response);
               this.IsReady = true;
               this.commonService.ShowToast("Insert or update successfull.");
               this.LoadForm(new ClassdetailModal());
@@ -214,6 +213,7 @@ export class ViewClassesComponent implements OnInit {
     if (IsValidType($e)) {
       let CurrentItem: ClassdetailModal = JSON.parse($e);
       this.LoadForm(CurrentItem);
+      this.ButtonText = "Update Class & Section";
     }
   }
 
@@ -229,8 +229,8 @@ export class ViewClassesComponent implements OnInit {
   OnDelete($e: any) {
     this.currentItem = JSON.parse($e);
     if(IsValidType(this.currentItem)) {
-      this.http.delete("AdminMaster/DeleteClassDetail", this.currentItem).then(response => {
-        if(IsValidResponse(response.ResponseBody)) {
+      this.http.delete("AdminMaster/DeleteClassDetail", `${this.currentItem.Class}/${this.currentItem.Section}`).then(response => {
+        if(IsValidType(response.ResponseBody)) {
           this.BuildPage(response);
           this.commonService.ShowToast("Deleted successfully");
         } else {
@@ -259,5 +259,5 @@ export class ClassdetailModal {
   GirlSeats?: number = null;
   BoySeats?: number = null;
   RoomNo?: string = null;
-  RoomUid?: number = null;
+  RoomUid?: number = -1;
 }

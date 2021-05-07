@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    //this.baseUrl = "http://localhost:5000/api/";
-    this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
+    this.baseUrl = "http://localhost:5000/api/";
+    //this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
   }
 
   public GetImageBasePath() {
@@ -95,23 +95,13 @@ export class AjaxService {
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       let _header = null;
-      if (typeof IsLoaderRequired !== undefined) {
-        if (IsLoaderRequired) {
-          this.commonService.ShowLoaderByAjax();
-        } else {
-          _header = this.RequestPlainHeader();
-        }
-      } else {
+      if (IsLoaderRequired)
         this.commonService.ShowLoaderByAjax();
-      }
       _header = this.RequestHeader();
       this.http
-        .delete(this.baseUrl + Url, {
+        .delete(this.baseUrl + Url + "/" + Param, {
           headers: _header,
           observe: "response",
-          params: {
-            data: Param,
-          },
         })
         .subscribe(
           (res: any) => {
@@ -181,9 +171,10 @@ export class AjaxService {
     });
   }
 
-  post(Url: string, Param: any, byPassAuthenticationCheck: boolean = false): Promise<any> {
+  post(Url: string, Param: any, byPassAuthenticationCheck: boolean = false, IsLoaderRequired: any = true): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.commonService.ShowLoaderByAjax();
+      if(IsLoaderRequired)
+        this.commonService.ShowLoaderByAjax();
       let _header = this.RequestHeader();
       if (this.commonService.IsValid(Param)) {
         this.http

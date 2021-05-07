@@ -60,20 +60,20 @@
       </h2>
       <div class="clearfix"></div>
     </div>
-    <div class="x_content d-none">
+    <div class="x_content">
       <div class="" role="tabpanel" data-example-id="togglable-tabs" class="mt-5">
         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+          <li role="presentation">
+            <a href="#tab_content3" id="content3-tab" role="tab" class="active" data-toggle="tab" aria-selected="true"
+              (click)="SelectSection('ClassRoom')">Manage Rooms</a>
+          </li>
           <li role="presentation" class="">
-            <a href="#tab_content1" role="tab" id="content1-tab" class="active" data-toggle="tab"
-              (click)="SelectSection('Zone')" aria-selected="true">Zone</a>
+            <a href="#tab_content1" role="tab" id="content1-tab" data-toggle="tab"
+              (click)="SelectSection('Zone')" aria-selected="false">New Service</a>
           </li>
           <li role="presentation">
             <a href="#tab_content2" id="content2-tab" role="tab" data-toggle="tab" aria-expanded="false" class=""
               (click)="SelectSection('Store')" aria-selected="false">Store</a>
-          </li>
-          <li role="presentation">
-            <a href="#tab_content3" id="content3-tab" role="tab" data-toggle="tab" aria-selected="false"
-              (click)="SelectSection('ClassRoom')">Organization Rooms</a>
           </li>
           <li role="presentation" class="">
             <a href="#tab_content4" role="tab" id="content4-tab" data-toggle="tab" aria-selected="false"
@@ -81,8 +81,8 @@
           </li>
         </ul>
         <div class="tab-equipment">
-          <div role="tabpanel" class="tab-pane fade in active show" id="tab_content1" aria-labelledby="content1-tab">
-            <!-- <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
+          <div role="tabpanel" class="mt-5 tab-pane fade" id="tab_content1" aria-labelledby="content1-tab">
+            <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
               <div formArrayName="Zones" id="zone">
                 <div class="header-content">
                   <p class="title-label m-0">
@@ -93,14 +93,17 @@
                   </p>
                 </div>
                 <ng-container *ngFor="let item of GetZoneNames().controls; let i = index" [formGroupName]="i">
-                  <div class="col-12 p-0 mt-4 border-bottom position-relative">
-                    <a class="anc-close">
+                  <div name="item-container" class="col-12 p-0 mt-4 border-bottom position-relative">
+                    <a class="anc-btn anc-close" (click)="DeleteCurrent($event)">
                       <i class="fas fa-times"></i>
+                    </a>
+                    <a class="anc-btn anc-edit" (click)="EnableEditing($event)">
+                      <i class="far fa-edit"></i>
                     </a>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label text-right">{{ i + 1 | sufix }} Zone Name</label>
                       <div class="col-md-6" [attr.name]="'zone-' + i">
-                        <input class="form-control" upper placeholder="First zone name" formControlName="ZoneName" />
+                        <input class="form-control t" upper placeholder="First zone name" formControlName="ZoneName" />
                       </div>
                     </div>
                     <div class="form-group row">
@@ -110,22 +113,36 @@
                           placeholder="Enter zone or area description"></textarea>
                       </div>
                     </div>
+                    <div class="col-12 text-right p-0 mb-4">
+                      <button name="btnsave" class="btn btn-blue btn-s disabledField" (click)="SaveOrUpdate($event)">
+                        <i class="fa fa-save pr-1"></i>
+                        <img class="loading-img d-none" src="assets/buttonloading.gif" alt="">
+                        <input type="hidden" formControlName="ZoneUid" name="ZoneUid"/>
+                        Save
+                      </button>
+                    </div>
                   </div>
                 </ng-container>
-                <div class="div-12 mt-3 p-0">
-                  <button class="btn btn-blue btn-s" (click)="SaveZones()">
-                    <i class="fa fa-save pr-1"></i>
-                    Save
-                  </button>
-                </div>
               </div>
             </div>
             <div *ngIf="!IsZoneReady">
               <app-noitempage [Data]="'NO ZONE DETAIL FOUND'"></app-noitempage>
-            </div> -->
+            </div>
+          </div>   
+          
+          <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="content2-tab">
+            <div id="store">
+              <p>
+                Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                single-origin coffee squid. Exercitation +1 labore velit, blog
+                sartorial PBR leggings next level wes anderson artisan four loko
+                farm-to-table craft beer twee. Qui photo booth letterpress,
+                commodo enim craft beer mlkshk aliquip
+              </p>
+            </div>
           </div>
 
-          <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="content3-tab">
+          <div role="tabpanel" class="tab-pane fade in active show" id="tab_content3" aria-labelledby="content3-tab">
             <div id="classroom">
               <div class="col-12 p-0 mt-4" *ngIf="!IsClassRoomReady">
                 <h4>
@@ -172,7 +189,7 @@
                 </div>
                 <div>
                   <div>
-                    <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" (Delete)="OnDelete($event)"
+                    <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" (Delete)="OnRoomsDeleted($event)"
                       (Next)="NextPage($event)" (Previous)="PreviousPage($event)">
                     </app-dynamic-grid>
                   </div>
@@ -199,7 +216,7 @@
         </div>
       </div>
     </div>
-
+<!-- 
     <div class="x_content">
       <div role="tabpanel" class="mt-5 tab-pane fade in active show" id="tab_content1" aria-labelledby="content1-tab">
         <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
@@ -213,9 +230,12 @@
               </p>
             </div>
             <ng-container *ngFor="let item of GetZoneNames().controls; let i = index" [formGroupName]="i">
-              <div class="col-12 p-0 mt-4 border-bottom position-relative">
-                <a class="anc-close">
+              <div name="item-container" class="col-12 p-0 mt-4 border-bottom position-relative">
+                <a class="anc-btn anc-close" (click)="DeleteCurrent($event)">
                   <i class="fas fa-times"></i>
+                </a>
+                <a class="anc-btn anc-edit" (click)="EnableEditing($event)">
+                  <i class="far fa-edit"></i>
                 </a>
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label text-right">{{ i + 1 | sufix }} Zone Name</label>
@@ -230,20 +250,22 @@
                       placeholder="Enter zone or area description"></textarea>
                   </div>
                 </div>
+                <div class="col-12 text-right p-0 mb-4">
+                  <button name="btnsave" class="btn btn-blue btn-s disabledField" (click)="SaveOrUpdate($event)">
+                    <i class="fa fa-save pr-1"></i>
+                    <img class="loading-img d-none" src="assets/buttonloading.gif" alt="">
+                    <input type="hidden" formControlName="ZoneUid" name="ZoneUid"/>
+                    Save
+                  </button>
+                </div>
               </div>
             </ng-container>
-            <div class="div-12 mt-3 p-0">
-              <button class="btn btn-blue btn-s" [ngClass]="{'disabledField': IsDisabled}" [disabled]="IsDisabled" (click)="SaveZones()">
-                <i class="fa fa-save pr-1"></i>
-                Save
-              </button>
-            </div>
           </div>
         </div>
         <div *ngIf="!IsZoneReady">
           <app-noitempage [Data]="'NO ZONE DETAIL FOUND'"></app-noitempage>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

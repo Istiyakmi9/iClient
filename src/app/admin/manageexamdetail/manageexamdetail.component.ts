@@ -14,6 +14,7 @@ import {
   IsValidType,
   IsValidString,
   FormateDate,
+  ShowAlert,
 } from "src/providers/common-service/common.service";
 import { iNavigation } from "src/providers/iNavigation";
 import { Component, OnInit } from "@angular/core";
@@ -198,8 +199,8 @@ export class ManageexamdetailComponent implements OnInit {
         `Exam/ExamDetail?Class=${this.SelectedClass}&ExamDescriptionUid=${this.ExamDescriptionUid}`
       )
       .then((result) => {
-        if (IsValidString(result.ResponseBody)) {
-          let Data = JSON.parse(result.ResponseBody);
+        if (IsValidType(result.ResponseBody)) {
+          let Data = result.ResponseBody;
           if (
             IsValidType(Data["Table"]) &&
             IsValidType(Data["Table1"]) &&
@@ -211,6 +212,9 @@ export class ManageexamdetailComponent implements OnInit {
               this.PageData = this.PageData[ZerothIndex];
             }
             this.ExamDetail = Data["Table1"];
+            if(this.ExamDetail.length == 0){
+              this.showSubjectAlert();
+            }
             let Rooms = Data["Table2"];
             this.Faculties = Data["Table3"];
             this.RoomNos = [];
@@ -266,6 +270,16 @@ export class ManageexamdetailComponent implements OnInit {
         }
       }
     }
+  }
+
+  showSubjectAlert() {
+    ShowAlert(
+      'Manage Exam Alert', 
+      [
+        'No subject found. Please add subject first before scheduling exam time.',
+        'Click here <a href="#/admin/subjects">Add Subject For Classes</a> to add sujects.',
+        ''
+      ]);
   }
 }
 
