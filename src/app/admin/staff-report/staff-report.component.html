@@ -24,7 +24,13 @@
                   class="fa fa-filter"></i>&ensp;Advance Search</button>
             </div>
           </div>
-          <app-dynamic-grid [Data]="GridData"></app-dynamic-grid>
+          <app-dynamic-grid 
+            [Data]="GridData"
+            (Edit)="OnEdit($event)"
+            (Delete)="OnDelete($event)"
+            (Next)="NextPage($event)"
+            (Previous)="PreviousPage($event)"
+            ></app-dynamic-grid>
         </div>
       </div>
     </div>

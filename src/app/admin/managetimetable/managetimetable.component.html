@@ -19,47 +19,143 @@
                 <div class="mt-4">
                   <div class="col-md-12 col-sm-12 d-md-flex p-0">
                     <div class="x_panel pb-0">
-                      <div class="x_title">
+                      <div class="x_title position-relative">
                         <h2 class="StepTitle">School Timetable<small>Define school period and timetable.</small></h2>
                         <div class="clearfix"></div>
+                        <a href="javascript:void()" *ngIf="isEditMode" (click)="enableEditing()" class="edit-section edit-mode">
+                          View Timing <i class="pl-2 fab fa-rev"></i>
+                        </a>
                       </div>
-                      <div class="section-card">
+
+                      <ng-container *ngIf="isTimingReady">
+                        <div class="x_panel mt-4">
+                          <a href="javascript:void()" (click)="enableEditing()" class="edit-section">
+                            <i class="fa fa-edit"></i>
+                          </a>
+                          <div class="x_content mt-4">
+                            <div class="col-12">
+                              <div class="col-12 text-center">
+                                <h5>
+                                  <b>School starts time: {{TimingDisplayModel.StartTime}}</b>
+                                </h5>
+                              </div>
+                            </div>
+  
+                            <div class="col-12 text-center">
+                                <label class="pr-4">Total number of period's: {{TimingDisplayModel.TotalPeriod}}</label>
+                                <label>Period duration defained in below card</label>
+                            </div>
+  
+                            <div class="col-12 mt-4">
+                              <div class="col-12 text-center">
+                                <h5>
+                                  <b>Lunch start at: {{TimingDisplayModel.LunchStartTime}}</b>
+                                </h5>
+                              </div>
+                            </div>
+  
+                            <div class="col-12 text-center">
+                              <label class="pr-4">After: {{TimingDisplayModel.LunchAfter}} period</label>
+                              <label>Lunch break duration: 50 Minutes</label>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </ng-container>
+                      
+                      <div class="section-card" *ngIf="!isTimingReady">
                         <div class="col-12 row p-0 m-0">
-                          <div class="col-3 form-group">
-                            <label for="total-period">School start time</label>
-                            <div>
-                              <app-bh-timepicker formControlName="SchoolStartTime">
-                              </app-bh-timepicker>
+                            <div class="col-4 form-group">
+                              <label for="total-period">School start time</label>
+                              <div>
+                                <app-bh-timepicker formControlName="SchoolStartTime">
+                                </app-bh-timepicker>
+                              </div>
                             </div>
-                          </div>
-
-                          <div class="col-3 form-group">
-                            <label for="total-period">Total no.# of periods</label>
-                            <div>
-                              <select class="form-control" [disabled]="EnablePeriods" formControlName="TotalPeriods"
-                                (change)="BuildPeriods()">
-                                <option value="">No.# of Perods</option>
-                                <option *ngFor="let p of PeriodsCounts" [value]="p">{{p}}</option>
-                              </select> 
+  
+                            <div class="col-4 form-group">
+                              <label for="total-period">Total no.# of periods</label>
+                              <div>
+                                <select class="form-control" formControlName="TotalPeriods"
+                                  (change)="BuildPeriods()">
+                                  <option value="">No.# of Perods</option>
+                                  <option *ngFor="let p of PeriodsCounts" [value]="p">{{p}}</option>
+                                </select> 
+                              </div>
                             </div>
-                          </div>
+  
+                            <div class="col-4 form-group">
+                              <label for="total-period">Period Duration</label>
+                              <div>
+                                <select class="form-control" name="PeriodsDuration" formControlName="PeriodsDuration">
+                                  <option value="">Duration (in Minutes)</option>
+                                  <option value="10">10 (0 Hrs: 10 Mins)</option>
+                                  <option value="15">15 (0 Hrs: 15 Mins)</option>
+                                  <option value="20">20 (0 Hrs: 20 Mins)</option>
+                                  <option value="25">25 (0 Hrs: 25 Mins)</option>
+                                  <option value="30">30 (0 Hrs: 30 Mins)</option>
+                                  <option value="35">35 (0 Hrs: 35 Mins)</option>
+                                  <option value="40">40 (0 Hrs: 40 Mins)</option>
+                                  <option value="45">45 (0 Hrs: 45 Mins)</option>
+                                  <option value="50">50 (0 Hrs: 50 Mins)</option>
+                                  <option value="55">55 (0 Hrs: 55 Mins)</option>
+                                  <option value="60">60 (1 Hrs: 00 Mins)</option>
+                                  <option value="65">65 (1 Hrs: 05 Mins)</option>
+                                  <option value="70">70 (1 Hrs: 10 Mins)</option>
+                                  <option value="75">75 (1 Hrs: 15 Mins)</option>
+                                  <option value="80">80 (1 Hrs: 20 Mins)</option>
+                                  <option value="85">85 (1 Hrs: 25 Mins)</option>
+                                  <option value="90">90 (1 Hrs: 30 Mins)</option>
+                                  <option value="95">95 (1 Hrs: 35 Mins)</option>
+                                  <option value="100">100 [1 Hrs: 40 Mins]</option>
+                                  <option value="105">105 [1 Hrs: 45 Mins]</option>
+                                  <option value="110">110 [1 Hrs: 50 Mins]</option>
+                                  <option value="115">115 [1 Hrs: 55 Mins]</option>
+                                  <option value="120">120 [2 Hrs: 00 Mins]</option>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
 
-                          <div class="col-3 form-group">
+                        <div class="col-12 row p-0 m-0">
+                          <div class="col-4 form-group">
                             <label for="total-period">Lunch after period</label>
                             <div>
-                              <select class="form-control" [disabled]="EnableSlots"
-                                formControlName="LunchAfterPeriod">
-                                <option value="">Select Perods.#</option>
+                              <select class="form-control" formControlName="LunchAfterPeriod">
+                                <option value="">Select Lunch Perods.#</option>
                                 <option *ngFor="let p of ActualPeriods" [value]="p">{{p}}</option>
                               </select>
                             </div>
                           </div>
-
-                          <div class="col-3 form-group">
-                            <label for="total-period">Period Duration (in HH:MM)</label>
+                          <div class="col-4 form-group">
+                            <label for="total-period">Lunch Duration</label>
                             <div>
-                              <app-bh-timepicker formControlName="PeriodsDuration">
-                              </app-bh-timepicker>
+                              <select class="form-control" name="PeriodsDuration" formControlName="LunchDuration">
+                                <option value="">Duration (in Minutes)</option>
+                                <option value="10">10 (0 Hrs: 10 Mins)</option>
+                                <option value="15">15 (0 Hrs: 15 Mins)</option>
+                                <option value="20">20 (0 Hrs: 20 Mins)</option>
+                                <option value="25">25 (0 Hrs: 25 Mins)</option>
+                                <option value="30">30 (0 Hrs: 30 Mins)</option>
+                                <option value="35">35 (0 Hrs: 35 Mins)</option>
+                                <option value="40">40 (0 Hrs: 40 Mins)</option>
+                                <option value="45">45 (0 Hrs: 45 Mins)</option>
+                                <option value="50">50 (0 Hrs: 50 Mins)</option>
+                                <option value="55">55 (0 Hrs: 55 Mins)</option>
+                                <option value="60">60 (1 Hrs: 00 Mins)</option>
+                                <option value="65">65 (1 Hrs: 05 Mins)</option>
+                                <option value="70">70 (1 Hrs: 10 Mins)</option>
+                                <option value="75">75 (1 Hrs: 15 Mins)</option>
+                                <option value="80">80 (1 Hrs: 20 Mins)</option>
+                                <option value="85">85 (1 Hrs: 25 Mins)</option>
+                                <option value="90">90 (1 Hrs: 30 Mins)</option>
+                                <option value="95">95 (1 Hrs: 35 Mins)</option>
+                                <option value="100">100 [1 Hrs: 40 Mins]</option>
+                                <option value="105">105 [1 Hrs: 45 Mins]</option>
+                                <option value="110">110 [1 Hrs: 50 Mins]</option>
+                                <option value="115">115 [1 Hrs: 55 Mins]</option>
+                                <option value="120">120 [2 Hrs: 00 Mins]</option>
+                              </select>
                             </div>
                           </div>
                         </div>
@@ -70,7 +166,7 @@
                               <i class="fas fa-undo-alt"></i>
                               Reset
                             </button>
-                            <button class="btn btn-primary" (click)="GenerateNextPeriods()">
+                            <button class="btn btn-primary" (click)="GeneratePeriods()">
                               <i class="fas fa-wrench pr-1"></i>
                               Generate
                             </button>
@@ -78,46 +174,62 @@
                         </div>
 
                       </div>
-                      <div class="section-card">
-                        <div class="col-12 row" formArrayName="Timing">
-                          <<ng-container *ngIf="Timing.controls.length > 0">
-                            <div class="col-3 mt-2" *ngFor="let el of Timing.controls; let i = index" [formGroupName]="i">
-                              <div class="card">
-                                <div class="card-header card-header-padding">
-                                  <label class="m-0">{{el.get('SufixedNumber').value}}</label>
-                                </div>
-                                <div class="col-12 card-body">
-                                  <label>
-                                    <span class="pr-1">Time:</span>
-                                    {{el.get('MeridianTime').value}}
-                                  </label>
-                                  <div>
-                                    <span class="pr-1">
-                                      <b>Duration: </b>
-                                    </span>
-                                    <span class="pr-2">{{el.get('DurationInHrs').value}} Hrs</span>
-                                    <span>{{el.get('DurationInMin').value}} Mins</span>
+                      <div class="section-card mt-4">
+                        <ng-container *ngIf="isTimingReady">
+                          <div class="col-12 row" formArrayName="Timing">
+                            <ng-container *ngIf="Timing.controls.length > 0">
+                              <div [ngClass]="{'lunch-sec col-12': el.get('TimingFor').value === 'lunch'}" class="col-3 mt-2" 
+                                *ngFor="let el of Timing.controls; let i = index" [formGroupName]="i">
+                                <div [ngSwitch]="el.get('TimingFor').value">
+                                  <div *ngSwitchCase="'lunch'" class="m-4 text-center">
+                                    <h5>Lunch Break</h5>
+                                    <div class="lunch-break p-0">
+                                      <div class="info col-12 row m-0">
+                                        <label><b>Lunch Break Time:</b> {{el.get('MeridianTime').value}}</label>
+                                        <label class="ml-4">Duration: {{el.get('LunchDuration').value}} Minutes</label>
+                                      </div>
+                                    </div>                                  
                                   </div>
-                                  <div>
-                                    <app-bh-timepicker [value]="el.get('StandardTime').value" formControlName="DurationInHrs">
-                                    </app-bh-timepicker>
-                                    <input type="hidden" formControlName="DurationInMin">
+                                  <div *ngSwitchDefault>
+                                    <div class="card">
+                                      <div class="card-header pl-3 pr-3">
+                                        <label class="m-0 position-relative d-block text-left">
+                                          {{el.get('SufixedNumber').value}}
+                                          <a class="edit-tile" (click)="getActionPopover($event, el.get('Period').value)">
+                                            <i class="fa fa-edit"></i>
+                                          </a>
+                                        </label>
+                                      </div>
+                                      <div class="col-12 card-body">
+                                        <label>
+                                          <span class="pr-1">Time:</span>
+                                          {{el.get('MeridianTime').value}}
+                                        </label>
+                                        <div>
+                                          <span class="pr-1">
+                                            <b>Duration: </b>
+                                          </span>
+                                          <span class="pr-2">{{el.get('DurationInHrs').value}} Hrs</span>
+                                          <span>{{el.get('DurationInMin').value}} Mins</span>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </ng-container>
-                        </div>
-                        <div class="col-12 text-right mb-4">
-                          <button class="btn btn-outline-dark mr-2">
-                            <i class="fas fa-undo-alt"></i>
-                            Reset
-                          </button>
-                          <button class="btn btn-warning" (click)="SaveSetting()">
-                            <i class="fas fa-save"></i>
-                            Save
-                          </button>
-                        </div>
+                              <div class="col-12 text-right mb-4 mt-4">
+                                <button class="btn btn-outline-dark mr-2">
+                                  <i class="fas fa-undo-alt"></i>
+                                  Reset
+                                </button>
+                                <button class="btn btn-warning" (click)="SaveSetting()">
+                                  <i class="fas fa-save"></i>
+                                  Save
+                                </button>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
                       </div>
                     </div>
                   </div>
@@ -156,6 +268,53 @@
           </ngb-tabset>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="popover d-none" id="menu-dv">
+  <div class="card">
+    <div class="card-header">
+      Move menu
+      <a class="anc-popover-close" (click)="closePopover()" href="javascript:void(0)">
+        <i class="fas fa-times"></i>
+      </a>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Category</label>
+        <div>
+          <select class="form-control" name="newDuration">
+            <option value="">Duration (in Minutes)</option>
+            <option value="10">10 (0 Hrs: 10 Mins)</option>
+            <option value="15">15 (0 Hrs: 15 Mins)</option>
+            <option value="20">20 (0 Hrs: 20 Mins)</option>
+            <option value="25">25 (0 Hrs: 25 Mins)</option>
+            <option value="30">30 (0 Hrs: 30 Mins)</option>
+            <option value="35">35 (0 Hrs: 35 Mins)</option>
+            <option value="40">40 (0 Hrs: 40 Mins)</option>
+            <option value="45">45 (0 Hrs: 45 Mins)</option>
+            <option value="50">50 (0 Hrs: 50 Mins)</option>
+            <option value="55">55 (0 Hrs: 55 Mins)</option>
+            <option value="60">60 (1 Hrs: 00 Mins)</option>
+            <option value="65">65 (1 Hrs: 05 Mins)</option>
+            <option value="70">70 (1 Hrs: 10 Mins)</option>
+            <option value="75">75 (1 Hrs: 15 Mins)</option>
+            <option value="80">80 (1 Hrs: 20 Mins)</option>
+            <option value="85">85 (1 Hrs: 25 Mins)</option>
+            <option value="90">90 (1 Hrs: 30 Mins)</option>
+            <option value="95">95 (1 Hrs: 35 Mins)</option>
+            <option value="100">100 [1 Hrs: 40 Mins]</option>
+            <option value="105">105 [1 Hrs: 45 Mins]</option>
+            <option value="110">110 [1 Hrs: 50 Mins]</option>
+            <option value="115">115 [1 Hrs: 55 Mins]</option>
+            <option value="120">120 [2 Hrs: 00 Mins]</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button type="button" class="btn btn-block btn-outline-dark" (click)="updateTime()">Update</button>
     </div>
   </div>
 </div>
