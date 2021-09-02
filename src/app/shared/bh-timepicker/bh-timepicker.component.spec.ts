@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BhTimepickerComponent } from './bh-timepicker.component';
 
@@ -6,7 +6,7 @@ describe('BhTimepickerComponent', () => {
   let component: BhTimepickerComponent;
   let fixture: ComponentFixture<BhTimepickerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BhTimepickerComponent ]
     })

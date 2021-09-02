@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NoitempageComponent } from './noitempage.component';
 
@@ -6,7 +6,7 @@ describe('NoitempageComponent', () => {
   let component: NoitempageComponent;
   let fixture: ComponentFixture<NoitempageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NoitempageComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PageBreadCrumComponent } from './page-bread-crum.component';
 
@@ -6,7 +6,7 @@ describe('PageBreadCrumComponent', () => {
   let component: PageBreadCrumComponent;
   let fixture: ComponentFixture<PageBreadCrumComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PageBreadCrumComponent ]
     })

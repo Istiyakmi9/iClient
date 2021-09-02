@@ -25,7 +25,7 @@ export class AjaxService {
     private nav: iNavigation
   ) {
     this.baseUrl = "http://localhost:5000/api/";
-    //this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
+    //this.baseUrl = "http://www.schoolinmind.com/simserver/api/";
   }
 
   public GetImageBasePath() {
