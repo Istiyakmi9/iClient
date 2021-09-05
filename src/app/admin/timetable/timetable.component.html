@@ -78,39 +78,43 @@
           </div>
         </div>
       </div>
-      <div class="col-12 p-0" *ngIf="IsReady">
-        <div class="col-12 p-0 d-flex m-0 table">
-          <div class="w-100 cell">
-            Day's
-          </div>
-          <div class="w-100 cell" *ngFor="let time of TimingDetail" [ngClass]="{'small-line': time.TimingFor === 'R'}">
-            {{time.TimingFor}}
-          </div>
-        </div>
-        <div class="col-12 p-0 d-flex body" *ngFor="let tableDetail of RoutineTable">
-          <ng-container *ngFor="let table of tableDetail.Data">
-            <div class="w-100 cell small-line" *ngIf="table.Period === 0">
-              {{table.SubjectName}}
-            </div>
-            <div *ngIf="table.Period === -1" class="w-100 cell">
-              <div class="content">
-                {{table.SubjectName}}
-              </div>
-            </div>
-            <div *ngIf="table.Period > 0" class="w-100 cell" [ngClass]="{'empty': table.FacultyUid === ''}">
-              <a class="action" (click)="OpenSubjectSelection(table)">
-                <i class="far fa-edit"></i>
-              </a>
-              <div class="content">
-                {{table.SubjectName}}
-                <div class="small">
-                  <blockquote>{{table.FacultyName}}</blockquote>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </div>
+      <table class="col-12 p-0 border-bottomz" *ngIf="IsReady">
+        <thead class="col-12 p-0 m-0">
+          <tr>
+            <th class="cell">
+              Day's
+            </th>
+            <th class="cell" *ngFor="let time of TimingDetail" [ngClass]="{'small-line': time.TimingFor === 'R'}">
+              {{time.TimingFor}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="col-12 p-0" *ngFor="let tableDetail of RoutineTable">
+            <ng-container *ngFor="let table of tableDetail.Data">
+                <td class="cell small-line" *ngIf="table.Period === 0">
+                  {{table.SubjectName}}
+                </td>
+                <td *ngIf="table.Period === -1" class="cell">
+                  <div class="content">
+                    {{table.SubjectName}}
+                  </div>
+                </td>
+                <td *ngIf="table.Period > 0" class="cell" [ngClass]="{'empty': table.FacultyUid === ''}">
+                  <a class="action" (click)="OpenSubjectSelection(table)">
+                    <i class="far fa-edit"></i>
+                  </a>
+                  <div class="content">
+                    {{table.SubjectName}}
+                    <div class="small">
+                      <blockquote>{{table.FacultyName}}</blockquote>
+                    </div>
+                  </div>
+                </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

@@ -58,7 +58,6 @@ export class FacultyRegistrationComponent implements OnInit {
   ImagePath: string = "";
   IsImage: boolean = true;
   DocmentUrl: string = "";
-  ViewDocmentUrl: string = "";
   States: Array<any> = [];
   isCityDataEmpty: boolean = true;
   PageTitle: string = `Faculty or Teaching staff Registration page`;
@@ -614,32 +613,47 @@ export class FacultyRegistrationComponent implements OnInit {
     $("#document-btn").click();
   }
 
-  IsImageFile(FileName: string): boolean {
-    let flag = false;
+  GetFileType(FileName: string): string {
+    let type = "";
     if(IsValidType(FileName)) {
       if(FileName.lastIndexOf(".") > 0) {
         let ext = FileName.substr(FileName.lastIndexOf(".") + 1);
-        if(ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "gif")
-          flag = true;
+        switch(ext) {
+          case "jpg" || "jpeg" || "png" || "gif":
+            type = "img";
+          case "pdf":
+            type = "pdf";
+          case "doc" || "docx":
+            type = "doc";
+          default: type = ext;
+        }
       }
     }
-    return flag;
+    return type;
   }
 
   EnlargeItem(Url: string) {
+    this.IsImage = false;
     this.DocmentUrl = "";
     if(Url !== null && Url !== "") {
-      let isImageFile = this.IsImageFile(Url);
-      if(isImageFile) {
+      let type = this.GetFileType(Url);
+      if(type == "img") {
         $('#img-container').attr('src', `${Url}`);
         $('#framedv').removeClass('d-none');
-      } else {
-        this.DocmentUrl = "http://www.africau.edu/images/default/sample.pdf"; //`${Url}`;
+        this.IsImage = true;
+      } else if(type == "pdf") {
+        $('#pdfframe').attr('src', `${Url}`);
         $('#framedv').removeClass('d-none');
+      } else {
+        var filterPath = Url.split("5000/Files/");
+        if(filterPath != null && filterPath.length == 2) {
+          this.http.post(`ApplicationSetting/GetHtml`, { "FileUploadFolderName": filterPath[1] }).then(response => {
+            if(response.ResponseBody !== null) {
+              alert(response.ResponseBody);
+            }
+          });
+        }
       }
-
-      this.ViewDocmentUrl = `https://docs.google.com/gview?url=%${Url}%&embedded=true`;
-      this.IsImage = isImageFile;
     }
   }
 
