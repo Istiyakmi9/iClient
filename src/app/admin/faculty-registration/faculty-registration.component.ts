@@ -649,7 +649,16 @@ export class FacultyRegistrationComponent implements OnInit {
         if(filterPath != null && filterPath.length == 2) {
           this.http.post(`ApplicationSetting/GetHtml`, { "FileUploadFolderName": filterPath[1] }).then(response => {
             if(response.ResponseBody !== null) {
-              alert(response.ResponseBody);
+              $('#framedv')
+              let doc: any = new DOMParser().parseFromString(response.ResponseBody, "text/xml");
+              this.removeUnwantedElement(doc, filterPath[1]);
+              doc.querySelector('body').setAttribute("style", "background:#fff;");
+              let bodyContent = doc.querySelector('html').innerHTML;
+              let iframe: any = document.getElementById('pdfframe'); 
+              let iframeDoc: any = iframe.contentWindow.document;
+              iframeDoc.open();
+              iframeDoc.write(bodyContent);
+              $('#framedv').removeClass('d-none');
             }
           });
         }
@@ -657,8 +666,41 @@ export class FacultyRegistrationComponent implements OnInit {
     }
   }
 
+  removeUnwantedElement(doc: any, path: string) {
+    let index = 0;
+    let FacultyUid = this.FacultyForm.value.StaffMemberUid;
+    let images = doc.querySelectorAll('img');
+    while(index < images.length) {
+      let style = images[index].getAttribute('style')
+      if(style.indexOf('position') !== -1 && style.indexOf('absolute') !== -1) {
+        images[index].remove();
+      } else {
+        let src = images[index].getAttribute("src");
+        if(src !== undefined && src !== null) {
+          src = `${this.http.GetImageBasePath()}UploadedFiles/Faculty/${FacultyUid}/${src}`;
+          images[index].setAttribute("src", src);
+        }
+      }
+      index++;
+    }
+    
+    index = 0;
+    let content = '';
+    let spans = doc.querySelectorAll('span');
+    while(index < spans.length) {
+      content = spans[index].innerHTML;
+      if(content.indexOf("Aspose") !== -1) {
+        spans[index].remove();
+      } else {
+        content = '';
+      }
+      index++;
+    }
+  }
+
   closeViewer() {
-    $('#frame').attr('src', '');
+    $('#pdfframe').attr('src', '');
+    document.getElementById('pdfframe').innerHTML = '';
     $('#framedv').addClass('d-none');
   }
 }
